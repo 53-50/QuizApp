@@ -23,6 +23,7 @@ public class MainMenuController {
     @FXML
     private RadioButton rbLearnMode;
 
+    @FXML
     private ToggleGroup difficultyToggleGroup;
 
     @FXML
