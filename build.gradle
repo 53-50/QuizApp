@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'application'                 // Damit wir "gradle run" verwenden können
+    id 'org.openjfx.javafxplugin' version '0.0.14' // JavaFX-Gradle-Plugin
+}
+group = "com.example"
+version = "1.0-SNAPSHOT"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // JSON-Bibliothek Gson
+    implementation 'com.google.code.gson:gson:2.10'
+
+    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+}
+
+// Konfig für JavaFX-Plugin
+javafx {
+    version = "17.0.8"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+// Konfig für das "application"-Plugin, damit wir wissen, welche Main-Klasse gestartet wird
+application {
+    mainClass = 'com.example.QuizApp'
+}
+
+
+tasks.test {
+    useJUnitPlatform()
+}

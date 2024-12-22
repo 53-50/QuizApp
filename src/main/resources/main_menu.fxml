@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="243.0" prefWidth="510.0" spacing="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="com.example.Controller.MainMenuController">
+
+    <Label text="Willkommen zum Quiz!" />
+
+    <!-- RadioButtons: alle zeigen auf dieselbe ToggleGroup -->
+    <RadioButton fx:id="rbEasy" text="Leicht">
+      <toggleGroup>
+         <ToggleGroup fx:id="difficultyToggleGroup" />
+      </toggleGroup></RadioButton>
+    <RadioButton fx:id="rbMedium" text="Mittel" toggleGroup="$difficultyToggleGroup" />
+    <RadioButton fx:id="rbHard" text="Schwer" toggleGroup="$difficultyToggleGroup" />
+    <RadioButton fx:id="rbLearnMode" text="Lernmodus" toggleGroup="$difficultyToggleGroup" />
+
+    <Button onAction="#onStartQuizClick" text="Spiel starten" />
+    <Button onAction="#onExitClick" text="Beenden" />
+
+</VBox>
