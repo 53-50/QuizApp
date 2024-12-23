@@ -25,11 +25,10 @@
         <Label text="Willkommen zum Quiz!" />
 
         <!-- HBox to arrange RadioButtons horizontally -->
-        <HBox alignment="CENTER" spacing="10"
-              style="-fx-background-color: white;"> <!-- optional, if you want the HBox also white -->
-            <RadioButton fx:id="rbEasy" text="Leicht" />
-            <RadioButton fx:id="rbMedium" text="Mittel" />
-            <RadioButton fx:id="rbHard" text="Schwer" />
+        <HBox alignment="CENTER" spacing="10">
+            <RadioButton fx:id="rbEasy" text="Leicht" toggleGroup="$difficultyToggleGroup" />
+            <RadioButton fx:id="rbMedium" text="Mittel" toggleGroup="$difficultyToggleGroup" />
+            <RadioButton fx:id="rbHard" text="Schwer" toggleGroup="$difficultyToggleGroup" />
             <RadioButton fx:id="rbLearnMode" text="Lernmodus" />
         </HBox>
 

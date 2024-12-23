@@ -39,25 +39,50 @@ public class MainMenuController {
         rbEasy.setSelected(true);
     }
 
+    private String getSelectedDifficulty() {
+        // Check which radio button is selected
+        if (difficultyToggleGroup.getSelectedToggle() == rbEasy) {
+            return "easy";
+        } else if (difficultyToggleGroup.getSelectedToggle() == rbMedium) {
+            return "medium";
+        } else if (difficultyToggleGroup.getSelectedToggle() == rbHard) {
+            return "hard";
+        } else if (difficultyToggleGroup.getSelectedToggle() == rbLearnMode) {
+            return "learn";
+        }
+        return "easy"; // Default to "easy" if none selected (shouldn't happen with rbEasy setSelected(true))
+    }
+
     @FXML
     private void onStartQuizClick(ActionEvent event) {
-        // Prüfen, welcher RadioButton ausgewählt ist:
-        if (rbLearnMode.isSelected()) {
-            // Lernmodus starten
-            loadLearnModeScene(event);
-        } else {
-            // Quiz starten mit passendem Schwierigkeitsgrad
-            // (easy, medium, hard)
-            String difficulty = "easy";  // Default
-            if (rbMedium.isSelected()) {
-                difficulty = "medium";
-            } else if (rbHard.isSelected()) {
-                difficulty = "hard";
-            }
+        try {
+            // Load the Quiz layout
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/quiz_layout.fxml"));
+            Parent quizRoot = loader.load();
 
-            loadQuizScene(event, difficulty);
+            // Get the QuizController
+            QuizController quizController = loader.getController();
+
+            String selectedDifficulty = getSelectedDifficulty();
+            quizController.setDifficulty(selectedDifficulty); // Pass the selected difficulty
+
+            quizController.resetQuiz(); // Reset the quiz for a new game
+
+            // Start the quiz (load the first question)
+            quizController.loadNewQuestion(); // <-- Call it explicitly here
+
+
+            // Switch to the quiz scene
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(quizRoot));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
+
 
     @FXML
     private void onExitClick(ActionEvent event) {
