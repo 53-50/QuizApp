@@ -89,6 +89,8 @@ public class QuizController {
             }
     }
 
+
+    //Methode ist, um zurück zum Hauptmenü zu kommen
     private void returnToMainMenu() {
         try {
             // Load the main menu FXML
