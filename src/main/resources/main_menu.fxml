@@ -33,7 +33,9 @@
         </HBox>
 
         <Button onAction="#onStartQuizClick" text="Spiel starten" />
-        <Button onAction="#onExitClick"       text="Beenden"       />
+        <Button onAction="#onUploadClick" text="Fragen hochladen" />
+        <Button onAction="#onDownloadClick" text="Fragen herunterladen" />
+        <Button onAction="#onExitClick" text="Beenden" />
     </VBox>
 
 </VBox>

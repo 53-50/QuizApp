@@ -1,7 +1,65 @@
-package com.example;
+package com.example.Questions;
 
 import java.util.List;
 
+import java.util.List;
+
+public class TriviaQuestion extends AbstractQuestion {
+    private String category; // Kategorie der Frage
+    private String difficulty; // Schwierigkeitsgrad
+    private List<String> tags; // API-spezifisch
+    private List<String> regions; // API-spezifisch
+
+    public TriviaQuestion(String id, String questionText, String correctAnswer, List<String> incorrectAnswers,
+                          String category, String difficulty, List<String> tags, List<String> regions) {
+        super(id, questionText, correctAnswer, incorrectAnswers); // Ruft den Konstruktor der Basisklasse auf
+        this.category = category;
+        this.difficulty = difficulty;
+        this.tags = tags;
+        this.regions = regions;
+    }
+
+    @Override
+    public String getCategory() {
+        return category;
+    }
+
+    @Override
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    @Override
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    @Override
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    // Zusätzliche Methoden für API-spezifische Felder
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public List<String> getRegions() {
+        return regions;
+    }
+
+    public void setRegions(List<String> regions) {
+        this.regions = regions;
+    }
+}
+
+
+
+/*
 public class TriviaQuestion {
     private String id;
     private Question question;
@@ -20,6 +78,16 @@ public class TriviaQuestion {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public String getQuestionText() {
+        return "";
+    }
+
+    @Override
+    public void setQuestionText(String questionText) {
+
     }
 
     public String getCorrectAnswer() {
@@ -90,3 +158,4 @@ public class TriviaQuestion {
     }
 
 }
+*/

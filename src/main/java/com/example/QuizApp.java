@@ -14,7 +14,7 @@ public class QuizApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         // Hauptmenü-FXML laden
         Parent mainMenuRoot = FXMLLoader.load(getClass().getResource("/main_menu.fxml"));
-        Scene mainMenuScene = new Scene(mainMenuRoot, 400, 300);
+        Scene mainMenuScene = new Scene(mainMenuRoot, 500, 800);
 
         primaryStage.setTitle("QuizApp");
         primaryStage.setScene(mainMenuScene);

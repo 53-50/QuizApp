@@ -4,16 +4,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="388.0" prefWidth="519.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.LernmodusController">
 
-    <Label alignment="BOTTOM_CENTER" contentDisplay="TEXT_ONLY" text="Eigene Frage eingeben:">
-      <font>
-         <Font size="24.0" />
-      </font></Label>
-    <TextField fx:id="txtQuestion" promptText="Fragetext" />
-    <TextField fx:id="txtCorrectAnswer" promptText="Korrekte Antwort" />
-    <TextField fx:id="txtWrongAnswers" promptText="Falsche Antworten (Komma-getrennt)" />
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10"
+      xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.Controller.LernmodusController">
 
-    <Button onAction="#onSaveClick" text="Speichern" />
-    <Button onAction="#onBackClick" text="Zurück zum Menü" />
+    <Label fx:id="lblQuestion" text="Hier erscheint die Frage" wrapText="true">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+
+    <TextField fx:id="txtAnswer" promptText="Gib hier deine Antwort ein" />
+
+    <Button text="Antwort abschicken" onAction="#onSubmitClick" />
+    <Button text="Zurück zum Menü" onAction="#onBackClick" />
 </VBox>

@@ -1,39 +1,101 @@
 package com.example.Controller;
 
+
+import com.example.Questions.LernmodusQuestion;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.List;
 
 public class LernmodusController {
 
     @FXML
-    private TextField txtQuestion;
+    private Label lblQuestion; // Label zur Anzeige der aktuellen Frage
     @FXML
-    private TextField txtCorrectAnswer;
+    private TextField txtAnswer; // Textfeld zur Eingabe der Antwort
     @FXML
-    private TextField txtWrongAnswers;
 
+    private List<LernmodusQuestion> questions; // Liste der hochgeladenen Fragen
+    private int currentQuestionIndex = 0; // Aktueller Index in der Fragenliste
+    private String csvFilePath; // Pfad zur CSV-Datei
+
+
+    // Methode, um den Dateipfad zu setzen (wird vom MainMenuController aufgerufen)
+    public void setCsvFilePath(String filePath) {
+        this.csvFilePath = filePath;
+        loadQuestionsFromCsv();
+    }
+
+    // CSV-Datei laden
+    private void loadQuestionsFromCsv() {
+        try {
+            questions = LernmodusQuestion.importFromCsv(csvFilePath);
+            if (questions == null || questions.isEmpty()) {
+                lblQuestion.setText("Keine Fragen in der CSV-Datei gefunden.");
+            } else {
+                showQuestion(questions.get(currentQuestionIndex));
+            }
+        } catch (IOException e) {
+            lblQuestion.setText("Fehler beim Laden der CSV-Datei: " + e.getMessage());
+        }
+    }
+
+    // Zeigt die aktuelle Frage an
+    private void showQuestion(LernmodusQuestion question) {
+        lblQuestion.setText(question.getQuestionText());
+        txtAnswer.clear(); // Antwortfeld leeren
+    }
+
+    // Wenn Benutzer auf "Weiter" klickt, zur nächsten Frage wechseln
     @FXML
-    private void onSaveClick(ActionEvent event) {
-        // Frage und Antworten auslesen
-        String question = txtQuestion.getText();
-        String correct = txtCorrectAnswer.getText();
-        String wrongs = txtWrongAnswers.getText();
+    private void onSubmitClick(ActionEvent event) {
+        if (questions == null || questions.isEmpty()) {
+            return;
+        }
 
-        // z.B. falsche Antworten per Komma trennen
-        // oder anderes Format
-        // Dann irgendwo speichern (Datei, DB, Cloud?)
+        String userAnswer = txtAnswer.getText();
+        String correctAnswer = questions.get(currentQuestionIndex).getCorrectAnswer();
 
-        System.out.println("Speichere Frage: " + question);
+        if (userAnswer.equalsIgnoreCase(correctAnswer)) {
+            lblQuestion.setText("Richtig!");
+        } else {
+            lblQuestion.setText("Falsch! Die richtige Antwort war: " + correctAnswer);
+        }
+
+        // Nächste Frage laden
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.size()) {
+            showQuestion(questions.get(currentQuestionIndex));
+        } else {
+            lblQuestion.setText("Alle Fragen beantwortet!");
+        }
     }
 
     @FXML
     private void onBackClick(ActionEvent event) {
-        // Zurück zum Hauptmenü
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        // Hier kannst du wie vorher main_menu.fxml laden
-        // oder du rufst die MainMenuController-Methode
+        try {
+            // Lade die Hauptmenü-Szene
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main_menu.fxml"));
+            Parent mainMenuRoot = loader.load();
+
+            Scene mainMenuScene = new Scene(mainMenuRoot);
+
+            // Wechsle zur Hauptmenü-Szene
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(mainMenuScene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

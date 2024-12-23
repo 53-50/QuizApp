@@ -1,7 +1,7 @@
 package com.example.Controller;
 
-import com.example.TriviaApiService;
-import com.example.TriviaQuestion;
+import com.example.Services.TriviaApiService;
+import com.example.Questions.TriviaQuestion;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -64,7 +64,7 @@ public class QuizController {
 
 
                 // Display the question
-                questionLabel.setText(question.getQuestion().getText());
+                questionLabel.setText(question.getQuestionText());
 
                 // Combine and shuffle answers
                 List<String> allAnswers = new ArrayList<>();

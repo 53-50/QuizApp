@@ -1,6 +1,7 @@
 // API from https://the-trivia-api.com/docs/v2/
 
-package com.example;
+package com.example.Services;
+import com.example.Questions.TriviaQuestion;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
