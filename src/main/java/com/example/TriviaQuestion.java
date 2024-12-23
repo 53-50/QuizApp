@@ -14,7 +14,6 @@ public class TriviaQuestion {
     
     // Getter & Setter
 
-
     public String getId() {
         return id;
     }

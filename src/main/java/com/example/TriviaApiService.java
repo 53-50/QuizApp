@@ -1,10 +1,8 @@
 // API from https://the-trivia-api.com/docs/v2/
 
 package com.example;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -25,6 +23,7 @@ public class TriviaApiService {
      * @throws IOException          If there is an issue with the API call or response.
      * @throws InterruptedException If the HTTP request is interrupted.
      */
+
     public static TriviaQuestion fetchSingleQuestion(String difficulty) throws IOException, InterruptedException {
         // Construct the API URL with the difficulty parameter
         String apiUrl = BASE_URL + "&difficulties=" + difficulty;

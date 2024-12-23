@@ -71,7 +71,6 @@ public class MainMenuController {
             // Start the quiz (load the first question)
             quizController.loadNewQuestion(); // <-- Call it explicitly here
 
-
             // Switch to the quiz scene
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(quizRoot));
@@ -81,7 +80,6 @@ public class MainMenuController {
             e.printStackTrace();
         }
     }
-
 
 
     @FXML
@@ -131,6 +129,5 @@ public class MainMenuController {
             e.printStackTrace();
         }
     }
-
 
 }
