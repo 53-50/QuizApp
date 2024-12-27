@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -27,6 +28,10 @@ public class MainMenuController {
     private RadioButton rbLearnMode;
     @FXML
     private ToggleGroup difficultyToggleGroup;
+
+    //für Text Eingabe benötigt
+    @FXML
+    private TextField inputTextField;
 
     @FXML
     public void initialize() {
@@ -199,6 +204,17 @@ public class MainMenuController {
                 System.err.println("Fehler beim Herunterladen der Datei: " + e.getMessage());
             }
         }
+    }
+
+
+    // Namen Eingabe - Wird mal nur gespeichert in der Variable und dann bei Enter in der Console ausgegeben
+    @FXML
+    public String onButtonClick(ActionEvent event) {
+        String currentName = inputTextField.getText();
+
+        System.out.println(currentName);
+
+        return currentName;
     }
 
 }

@@ -1,0 +1,42 @@
+/* application.css */
+/* allgemein ist es eine möglichkeit das Design von der Spiellogik zu trennen */
+
+/* Hintergrundbild für die gesamte Szene */
+.root {
+    -fx-background-image: url("/images/background.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+
+/* Styling für den inneren VBox */
+.vbox-inner {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-spacing: 20;
+}
+
+/* Styling für Label */
+.label-welcome {
+    -fx-text-fill: black; /* Beispiel */
+    -fx-font-size: 24px;
+}
+
+/* Styling für Buttons */
+.button {
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: pink;
+}
+
+/* Styling für HBox */
+.hbox-radio {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+}

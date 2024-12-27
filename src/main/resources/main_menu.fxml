@@ -1,41 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextField?>
 
-<VBox alignment="CENTER" prefHeight="500.0" prefWidth="800.0" spacing="10"
-      xmlns:fx="http://javafx.com/fxml/1"
-      xmlns="http://javafx.com/javafx/17.0.2-ea"
-      fx:controller="com.example.Controller.MainMenuController"
-      style="
-        -fx-background-image: url(https://img.freepik.com/vektoren-kostenlos/nebel-transparenter-vektorgalaxie-sternhintergrund_107791-20522.jpg);
-         -fx-background-repeat: no-repeat;
-         -fx-background-size: cover;
-      ">
-<!-- fx-background-image: nimmt komischerweise wirklich nur URLs und keine lokalen-->
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.8" fx:controller="com.example.Controller.MainMenuController">
 
-    <VBox alignment="CENTER" spacing="20"
-          style="
-            -fx-background-color: white;
-            -fx-padding: 20;
-            -fx-background-radius: 10;
-            -fx-border-radius: 10;
-          ">
+    <!-- reinladen vom CSS File -->
+    <stylesheets>
+        <URL value="@application.css" />
+    </stylesheets>
 
-        <Label text="Willkommen zum Quiz!" />
+    <VBox fx:id="mainVBox" alignment="CENTER" prefHeight="500.0" prefWidth="800.0" spacing="10">
 
-        <!-- HBox to arrange RadioButtons horizontally -->
-        <HBox alignment="CENTER" spacing="10">
-            <RadioButton fx:id="rbEasy" text="Leicht" toggleGroup="$difficultyToggleGroup" />
-            <RadioButton fx:id="rbMedium" text="Mittel" toggleGroup="$difficultyToggleGroup" />
-            <RadioButton fx:id="rbHard" text="Schwer" toggleGroup="$difficultyToggleGroup" />
-            <RadioButton fx:id="rbLearnMode" text="Lernmodus" />
-        </HBox>
+        <!-- Inner VBox for the content -->
+        <VBox fx:id="innerVBox" alignment="CENTER" spacing="20" styleClass="vbox-inner">
 
-        <Button onAction="#onStartQuizClick" text="Spiel starten" />
-        <Button onAction="#onUploadClick" text="Fragen hochladen" />
-        <Button onAction="#onDownloadClick" text="Fragen herunterladen" />
-        <Button onAction="#onExitClick" text="Beenden" />
+            <Label fx:id="welcomeLabel" styleClass="label-welcome" text="Willkommen zum Quiz!" />
+
+            <!-- Namen Eingabe ermöglichen -->
+         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+            <children>
+               <TextField fx:id="inputTextField" prefHeight="50.0" prefWidth="400.0" promptText="Gib bitte deinen Namen ein" />
+               <Button fx:id="inputTextFieldButton" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="20.0" prefWidth="200.0" text="Enter" />
+            </children>
+         </HBox>
+
+            <!-- HBox for arranging RadioButtons horizontally -->
+            <HBox fx:id="difficultyRadioButtons" alignment="CENTER" spacing="10" styleClass="hbox-radio">
+                <RadioButton fx:id="rbEasy" text="Leicht">
+               <toggleGroup>
+                  <ToggleGroup fx:id="difficultyToggleGroup" />
+               </toggleGroup></RadioButton>
+                <RadioButton fx:id="rbMedium" text="Mittel" toggleGroup="$difficultyToggleGroup" />
+                <RadioButton fx:id="rbHard" text="Schwer" toggleGroup="$difficultyToggleGroup" />
+                <RadioButton fx:id="rbLearnMode" text="Lernmodus" />
+            </HBox>
+
+            <!-- Action Buttons -->
+            <Button onAction="#onStartQuizClick" styleClass="button" text="Spiel starten" />
+            <Button onAction="#onUploadClick" styleClass="button" text="Fragen hochladen" />
+            <Button onAction="#onDownloadClick" styleClass="button" text="Fragen herunterladen" />
+            <Button onAction="#onExitClick" styleClass="button" text="Beenden" />
+
+        </VBox>
+
     </VBox>
-
 </VBox>
