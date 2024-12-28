@@ -40,6 +40,7 @@
                 <RadioButton fx:id="rbMedium" text="Mittel" toggleGroup="$difficultyToggleGroup" />
                 <RadioButton fx:id="rbHard" text="Schwer" toggleGroup="$difficultyToggleGroup" />
                 <RadioButton fx:id="rbLearnMode" text="Lernmodus" />
+                <RadioButton fx:id="rbTutorial" text="Story/Tutorial" />
             </HBox>
 
             <!-- Action Buttons -->

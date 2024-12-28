@@ -1,5 +1,7 @@
 package com.example.Controller;
 
+//  Controller steuert die Logik und Benutzerinteraktionen für das Hauptmenü
+
 import com.example.Questions.LernmodusQuestion;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +20,7 @@ import java.util.List;
 
 public class MainMenuController {
 
+    public RadioButton rbTutorial;
     @FXML
     private RadioButton rbEasy;
     @FXML
@@ -37,10 +40,13 @@ public class MainMenuController {
     public void initialize() {
         difficultyToggleGroup = new ToggleGroup();
 
+        // Zweck: Die RadioButtons sollen gruppiert werden, sodass immer nur eine Option ausgewählt werden kann.
+
         rbEasy.setToggleGroup(difficultyToggleGroup);
         rbMedium.setToggleGroup(difficultyToggleGroup);
         rbHard.setToggleGroup(difficultyToggleGroup);
         rbLearnMode.setToggleGroup(difficultyToggleGroup);
+        rbTutorial.setToggleGroup(difficultyToggleGroup);
 
         // Optional: Standardmäßig z.B. rbEasy auswählen
         rbEasy.setSelected(true);
@@ -56,6 +62,8 @@ public class MainMenuController {
             return "hard";
         } else if (difficultyToggleGroup.getSelectedToggle() == rbLearnMode) {
             return "learn";
+        } else if (difficultyToggleGroup.getSelectedToggle() == rbTutorial) {
+            return "tutorial";
         }
         return "easy"; // Default to "easy" if none selected (shouldn't happen with rbEasy setSelected(true))
     }
@@ -68,41 +76,67 @@ public class MainMenuController {
         if (selectedDifficulty.equals("learn")) {
             // Wenn Lernmodus ausgewählt ist, lade die Lernmodus-Szene
             loadLearnModeScene(event);
-        } else {
+        } else if (selectedDifficulty.equals("easy") || selectedDifficulty.equals("medium") || selectedDifficulty.equals("hard")){
             // Andernfalls starte den API-basierten Quiz-Modus
-            loadQuizScene(event, selectedDifficulty);
+            // loadQuizScene(event, selectedDifficulty);
+
+            try {
+                // Load the Quiz layout
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/quiz_layout.fxml"));
+                Parent quizRoot = loader.load();
+
+                // Get the QuizController
+                QuizController quizController = loader.getController();
+
+                selectedDifficulty = getSelectedDifficulty();
+                quizController.setDifficulty(selectedDifficulty); // Pass the selected difficulty
+
+                quizController.resetQuiz(); // Reset the quiz for a new game
+
+                // Start the quiz (load the first question)
+                quizController.loadNewQuestion(); // <-- Call it explicitly here
+
+                // Switch to the quiz scene
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(quizRoot));
+                stage.show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else if (selectedDifficulty.equals("tutorial")){
+            // loadTutorialScene(event);
         }
     }
 
-/*
-    @FXML
-    private void onStartQuizClick(ActionEvent event) {
-        try {
-            // Load the Quiz layout
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/quiz_layout.fxml"));
-            Parent quizRoot = loader.load();
-
-            // Get the QuizController
-            QuizController quizController = loader.getController();
-
-            String selectedDifficulty = getSelectedDifficulty();
-            quizController.setDifficulty(selectedDifficulty); // Pass the selected difficulty
-
-            quizController.resetQuiz(); // Reset the quiz for a new game
-
-            // Start the quiz (load the first question)
-            quizController.loadNewQuestion(); // <-- Call it explicitly here
-
-            // Switch to the quiz scene
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(quizRoot));
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-*/
+//    @FXML
+//    private void onStartQuizClick(ActionEvent event) {
+//        try {
+//            // Load the Quiz layout
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/quiz_layout.fxml"));
+//            Parent quizRoot = loader.load();
+//
+//            // Get the QuizController
+//            QuizController quizController = loader.getController();
+//
+//            String selectedDifficulty = getSelectedDifficulty();
+//            quizController.setDifficulty(selectedDifficulty); // Pass the selected difficulty
+//
+//            quizController.resetQuiz(); // Reset the quiz for a new game
+//
+//            // Start the quiz (load the first question)
+//            quizController.loadNewQuestion(); // <-- Call it explicitly here
+//
+//            // Switch to the quiz scene
+//            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//            stage.setScene(new Scene(quizRoot));
+//            stage.show();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @FXML
     private void onExitClick(ActionEvent event) {
