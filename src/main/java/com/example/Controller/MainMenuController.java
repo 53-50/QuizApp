@@ -9,9 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
@@ -37,7 +35,25 @@ public class MainMenuController {
     private TextField inputTextField;
 
     @FXML
+    private Label errorLabel;
+
+    @FXML
+    private Button spielStarten;
+
+    @FXML
+    private Button tutorialSpielen;
+
+    public String currentname;
+
+
+
+
+    @FXML
     public void initialize() {
+
+        tutorialSpielen.setDisable(true);
+        spielStarten.setDisable(true);
+
         difficultyToggleGroup = new ToggleGroup();
 
         // Zweck: Die RadioButtons sollen gruppiert werden, sodass immer nur eine Option ausgewählt werden kann.
@@ -46,7 +62,6 @@ public class MainMenuController {
         rbMedium.setToggleGroup(difficultyToggleGroup);
         rbHard.setToggleGroup(difficultyToggleGroup);
         rbLearnMode.setToggleGroup(difficultyToggleGroup);
-        rbTutorial.setToggleGroup(difficultyToggleGroup);
 
         // Optional: Standardmäßig z.B. rbEasy auswählen
         rbEasy.setSelected(true);
@@ -62,8 +77,6 @@ public class MainMenuController {
             return "hard";
         } else if (difficultyToggleGroup.getSelectedToggle() == rbLearnMode) {
             return "learn";
-        } else if (difficultyToggleGroup.getSelectedToggle() == rbTutorial) {
-            return "tutorial";
         }
         return "easy"; // Default to "easy" if none selected (shouldn't happen with rbEasy setSelected(true))
     }
@@ -105,8 +118,6 @@ public class MainMenuController {
                 e.printStackTrace();
             }
 
-        } else if (selectedDifficulty.equals("tutorial")){
-            // loadTutorialScene(event);
         }
     }
 
@@ -243,12 +254,47 @@ public class MainMenuController {
 
     // Namen Eingabe - Wird mal nur gespeichert in der Variable und dann bei Enter in der Console ausgegeben
     @FXML
-    public String onButtonClick(ActionEvent event) {
-        String currentName = inputTextField.getText();
+    public void onButtonClick(ActionEvent event) {
 
-        System.out.println(currentName);
+        if (inputTextField.getText().trim().isEmpty()) {
+            // Zeige eine Fehlermeldung an
+            errorLabel.setVisible(true);
+            inputTextField.setStyle("-fx-border-color: #ff0000;");
+        } else { // Weiterverarbeiten der Eingabe
+            errorLabel.setVisible(false);
+            inputTextField.setStyle("-fx-border-color: black;");
+            String name = inputTextField.getText();
+            currentname = name;
+            System.out.println(currentname);
+            tutorialSpielen.setDisable(false);
+            spielStarten.setDisable(false);
 
-        return currentName;
+
+        }
     }
 
+
+    //FÜR TUTORIAL MODUS
+    // Holt sich die Stage welche dann benötigt wird sobald ein AcionEvent gesetzt wird
+    private void switchScene(ActionEvent event, String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            TutorialController tutorialController = loader.getController();
+            tutorialController.setPlayerName(currentname);
+
+            // Aktuelle Stage holen und neue Szene setzen
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // wenn TutorialMode geklickt wird gibt die Methode den fxml path an switchScene weiter
+    public void onTutorialModeClick(ActionEvent event) {
+        switchScene(event, "/tutorial_layout.fxml");
+    }
 }
