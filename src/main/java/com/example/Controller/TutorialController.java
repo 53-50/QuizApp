@@ -65,7 +65,7 @@ public class TutorialController {
     private int leben = 3;
     final private int questions = 6;
     private int rightOnes = 0;
-    private int questionsasked = 0;
+    private int questionsasked = 1;
 
     //jsonfile reinladen
     private List<TutorialQuestions> questionsjson;
@@ -198,6 +198,17 @@ public class TutorialController {
         System.out.println("Zeit abgelaufen! Frage wird als falsch gewertet.");
         // Frage als falsch werten und zur nächsten wechseln
         markQuestionAsWrong();
+        showFeedback("Zeit abgelaufen! Wegen dir stirbt die Maus :(", false);
+
+        //deaktivier die Buttons damit nichts weiter gedrückt werden kann
+        tutorialantwort1.setDisable(true);
+        tutorialantwort2.setDisable(true);
+        tutorialantwort3.setDisable(true);
+        tutorialantwort4.setDisable(true);
+
+        // Alle Buttons durchlaufen und die Farben ändern je nach richtig oder falsch
+        setAnswerButtonColors();
+
         loadNextQuestion();
     }
 
@@ -291,7 +302,7 @@ public class TutorialController {
 
         questionsasked++; // Zähler für gestellte Fragen erhöhen
 
-        if (leben > 0 && questionsasked < questionsjson.size()) {
+        if (leben > 0 && questionsasked <= questionsjson.size()) {
             PauseTransition pause = new PauseTransition(Duration.seconds(3)); // 3 Sekunden Pause
 
             pause.setOnFinished(event -> {
@@ -314,7 +325,11 @@ public class TutorialController {
 
             pause.play();
         } else {
+            PauseTransition pause = new PauseTransition(Duration.seconds(3));
+            pause.setOnFinished(event -> {
             showEndScreen();
+            });
+            pause.play();
         }
     }
 

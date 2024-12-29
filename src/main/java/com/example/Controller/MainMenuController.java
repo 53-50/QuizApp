@@ -34,6 +34,8 @@ public class MainMenuController {
     @FXML
     private TextField inputTextField;
 
+    private static final int MAX_CHARACTERS = 15;
+
     @FXML
     private Label errorLabel;
 
@@ -65,6 +67,28 @@ public class MainMenuController {
 
         // Optional: Standardmäßig z.B. rbEasy auswählen
         rbEasy.setSelected(true);
+
+        // Beschränkungen von den Zeichen indem Änderungen an der Texteingabe überwacht
+        // und überflüssige Zeichen abschneidet
+
+        // textProperty() gibt eine Bindung (eine sogenannte Property) des Textes zurück, der sich im TextField befindet.
+        // Mit dieser Property können wir Veränderungen am Textfeld überwachen.
+
+        // addListener fügt Listener hinzu.
+        // Listener ist Methode, die bei einer Veränderung ausgeführt wird. reagiert auf Änderungen der textProperty()
+
+        // observable: überwachte Objekt (in diesem Fall textProperty des Textfeldes). Für unseren Fall nicht direkt genutzt.
+        // oldValue: Der alte Wert (Text), bevor die Änderung erfolgte.
+        // newValue: Der neue Wert (Text), nachdem die Änderung eingetreten ist.
+        inputTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+
+            //Bedingung prüft, ob Länge des neuen Texts (nach der Änderung)
+            // maximale erlaubte Anzahl an Zeichen (MAX_CHARACTERS) überschreitet.
+            if (newValue.length() > MAX_CHARACTERS) {
+                // Kürze den Text, wenn er zu lang ist
+                inputTextField.setText(newValue.substring(0, MAX_CHARACTERS));
+            }
+        });
     }
 
     private String getSelectedDifficulty() {

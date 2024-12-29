@@ -81,6 +81,12 @@ public class WinLoseLayoutController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
+            //equals funktioniert mit String gut - muss man nicht overridden weil keine extra Logik benötigt
+            if (fxmlPath.equals("/tutorial_layout.fxml")) {
+                TutorialController tutorialController = loader.getController();
+                tutorialController.setPlayerName(playerName); // Name weitergeben
+            }
+
             // Aktuelle Stage holen und neue Szene setzen
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -90,7 +96,7 @@ public class WinLoseLayoutController {
         }
     }
 
-    // spiel nochmal spielen (TODO: Name wird bei Retry noch nicht mitübernommen)
+    // spiel nochmal spielen
     public void onRetryClick(ActionEvent event) {
         switchScene(event, "/tutorial_layout.fxml");
     }
