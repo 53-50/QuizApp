@@ -26,8 +26,6 @@ public class MainMenuController {
     @FXML
     private RadioButton rbHard;
     @FXML
-    private RadioButton rbLearnMode;
-    @FXML
     private ToggleGroup difficultyToggleGroup;
 
     //für Text Eingabe benötigt
@@ -47,7 +45,10 @@ public class MainMenuController {
 
     public String currentname;
 
+    private File uploadedCsvFile;
 
+    @FXML
+    private Button lernmodusButton;
 
 
     @FXML
@@ -63,7 +64,6 @@ public class MainMenuController {
         rbEasy.setToggleGroup(difficultyToggleGroup);
         rbMedium.setToggleGroup(difficultyToggleGroup);
         rbHard.setToggleGroup(difficultyToggleGroup);
-        rbLearnMode.setToggleGroup(difficultyToggleGroup);
 
         // Optional: Standardmäßig z.B. rbEasy auswählen
         rbEasy.setSelected(true);
@@ -99,8 +99,6 @@ public class MainMenuController {
             return "medium";
         } else if (difficultyToggleGroup.getSelectedToggle() == rbHard) {
             return "hard";
-        } else if (difficultyToggleGroup.getSelectedToggle() == rbLearnMode) {
-            return "learn";
         }
         return "easy"; // Default to "easy" if none selected (shouldn't happen with rbEasy setSelected(true))
     }
@@ -112,7 +110,7 @@ public class MainMenuController {
 
         if (selectedDifficulty.equals("learn")) {
             // Wenn Lernmodus ausgewählt ist, lade die Lernmodus-Szene
-            loadLearnModeScene(event);
+            /*loadLearnModeScene(event);*/
         } else if (selectedDifficulty.equals("easy") || selectedDifficulty.equals("medium") || selectedDifficulty.equals("hard")){
             // Andernfalls starte den API-basierten Quiz-Modus
             // loadQuizScene(event, selectedDifficulty);
@@ -174,6 +172,55 @@ public class MainMenuController {
 //    }
 
     @FXML
+    private void showCsvUploadDialog() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("CSV-Datei hochladen");
+        alert.setHeaderText(null);
+        alert.setContentText("Bitte .csv file hochladen.");
+
+        ButtonType uploadButton = new ButtonType("Hochladen");
+        ButtonType startButton = new ButtonType("Starten");
+
+        alert.getButtonTypes().setAll(uploadButton, startButton);
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == uploadButton) {
+                uploadCsvFile();
+            } else if (response == startButton) {
+                startProcess();
+            }
+        });
+    }
+
+    private void uploadCsvFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Dateien", "*.csv"));
+        Stage stage = new Stage();
+        uploadedCsvFile = fileChooser.showOpenDialog(stage);
+    }
+
+    private void startProcess() {
+        if (uploadedCsvFile != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/lernmodus_layout.fxml"));
+                Parent lenrmodusRoot = loader.load();
+
+                LernmodusController lernmodusController = loader.getController();
+                lernmodusController.loadQuestionsFromCsv(uploadedCsvFile);
+
+                Stage stage = (Stage) lernmodusButton.getScene().getWindow();
+                stage.setScene(new Scene(lenrmodusRoot));
+                stage.show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+
+        }
+    }
+
+    @FXML
     private void onExitClick(ActionEvent event) {
         // Fenster schließen
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -201,80 +248,6 @@ public class MainMenuController {
             e.printStackTrace();
         }
     }
-
-
-    // Methode zum Hochladen von Fragen (CSV-Datei)
-
-    private String uploadedCsvFilePath;
-
-    public void onUploadClick() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("CSV-Datei hochladen");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Dateien", "*.csv"));
-
-        File file = fileChooser.showOpenDialog(new Stage());
-        if (file != null) {
-             uploadedCsvFilePath = file.getAbsolutePath(); // Speichere den Pfad
-            try {
-                List<LernmodusQuestion> questions = LernmodusQuestion.importFromCsv(uploadedCsvFilePath);
-                System.out.println("Fragen erfolgreich hochgeladen: " + questions.size());
-            } catch (IOException e) {
-                System.err.println("Fehler beim Hochladen der Datei: " + e.getMessage());
-            }
-        }
-    }
-
-    private void loadLearnModeScene(ActionEvent event) {
-        if (uploadedCsvFilePath == null || uploadedCsvFilePath.isEmpty()) {
-            System.err.println("Keine CSV-Datei hochgeladen. Der Lernmodus kann nicht gestartet werden.");
-            return;
-        }
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lernmodus_layout.fxml"));
-            Parent learnRoot = loader.load();
-
-            // Übergabe des Dateipfads an den LernmodusController
-            LernmodusController lmController = loader.getController();
-            lmController.setCsvFilePath(uploadedCsvFilePath);
-
-            Scene learnScene = new Scene(learnRoot);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(learnScene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Methode zum Herunterladen von Fragen (CSV-Datei speichern)
-    public void onDownloadClick() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("CSV-Datei speichern");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Dateien", "*.csv"));
-
-        // Speicherort auswählen
-        File file = fileChooser.showSaveDialog(new Stage());
-        if (file != null) {
-            try {
-                // Beispiel-Fragen generieren (in der Praxis könnten diese aus einer Datenquelle stammen)
-                List<LernmodusQuestion> questions = List.of(
-                        new LernmodusQuestion("1", "Was ist Java?", "Eine Programmiersprache",
-                                List.of("Eine Insel", "Ein Kaffee", "Ein Auto"), "Programmierung"),
-                        new LernmodusQuestion("2", "Was ist 2+2?", "4",
-                                List.of("3", "5", "22"), "Mathematik")
-                );
-
-                // Fragen exportieren
-                LernmodusQuestion.exportToCsv(file.getAbsolutePath(), questions);
-                System.out.println("Fragen erfolgreich heruntergeladen.");
-            } catch (IOException e) {
-                System.err.println("Fehler beim Herunterladen der Datei: " + e.getMessage());
-            }
-        }
-    }
-
 
     // Namen Eingabe - Wird mal nur gespeichert in der Variable und dann bei Enter in der Console ausgegeben
     @FXML

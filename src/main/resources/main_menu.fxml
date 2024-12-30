@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -9,48 +13,55 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextField?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.8" fx:controller="com.example.Controller.MainMenuController">
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.MainMenuController">
 
     <!-- reinladen vom CSS File -->
     <stylesheets>
         <URL value="@css/application.css" />
     </stylesheets>
-
-    <VBox fx:id="mainVBox" alignment="CENTER" prefHeight="500.0" prefWidth="800.0" spacing="10">
-
-        <!-- Inner VBox for the content -->
-        <VBox fx:id="innerVBox" alignment="CENTER" spacing="20" styleClass="vbox-inner">
-
-            <Label fx:id="welcomeLabel" styleClass="label-welcome" text="Willkommen zum Quiz!" />
-
-            <!-- Namen Eingabe ermöglichen -->
-         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+   <children>
+   
+       <VBox fx:id="mainVBox" alignment="CENTER" prefHeight="500.0" prefWidth="800.0" spacing="10">
+      <children>
+      
+              <!-- Inner VBox for the content -->
+              <VBox fx:id="innerVBox" alignment="CENTER" spacing="20" styleClass="vbox-inner">
+         <children>
+         
+                     <Label fx:id="welcomeLabel" styleClass="label-welcome" text="Willkommen zum Quiz!" />
+         
+                     <!-- Namen Eingabe ermöglichen -->
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="inputTextField" prefHeight="50.0" prefWidth="400.0" promptText="Gib bitte deinen Namen ein" styleClass="required-field" />
+                        <Button fx:id="inputTextFieldButton" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="20.0" prefWidth="200.0" text="Enter" />
+                         <Label fx:id="errorLabel" styleClass="error-message" text="Namen eingabe erforderlich!" visible="false" />
+                     </children>
+                  </HBox>
+         
+                     <!-- HBox for arranging RadioButtons horizontally -->
+                     <HBox fx:id="difficultyRadioButtons" alignment="CENTER" spacing="10" styleClass="hbox-radio">
             <children>
-               <TextField fx:id="inputTextField" prefHeight="50.0" prefWidth="400.0" promptText="Gib bitte deinen Namen ein" styleClass="required-field"/>
-               <Button fx:id="inputTextFieldButton" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="20.0" prefWidth="200.0" text="Enter" />
-                <Label fx:id="errorLabel" text="Namen eingabe erforderlich!" styleClass="error-message" visible="false"/>
+                            <RadioButton fx:id="rbEasy" text="Leicht">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="difficultyToggleGroup" />
+                           </toggleGroup>
+                        </RadioButton>
+                            <RadioButton fx:id="rbMedium" text="Mittel" toggleGroup="$difficultyToggleGroup" />
+                            <RadioButton fx:id="rbHard" text="Schwer" toggleGroup="$difficultyToggleGroup" />
             </children>
-         </HBox>
-
-            <!-- HBox for arranging RadioButtons horizontally -->
-            <HBox fx:id="difficultyRadioButtons" alignment="CENTER" spacing="10" styleClass="hbox-radio">
-                <RadioButton fx:id="rbEasy" text="Leicht">
-               <toggleGroup>
-                  <ToggleGroup fx:id="difficultyToggleGroup" />
-               </toggleGroup></RadioButton>
-                <RadioButton fx:id="rbMedium" text="Mittel" toggleGroup="$difficultyToggleGroup" />
-                <RadioButton fx:id="rbHard" text="Schwer" toggleGroup="$difficultyToggleGroup" />
-                <RadioButton fx:id="rbLearnMode" text="Lernmodus" />
-            </HBox>
-
-            <!-- Action Buttons -->
-            <Button fx:id="spielStarten" onAction="#onStartQuizClick" styleClass="button" text="Spiel starten" />
-            <Button onAction="#onUploadClick" styleClass="button" text="Fragen hochladen" />
-            <Button onAction="#onDownloadClick" styleClass="button" text="Fragen herunterladen" />
-            <Button onAction="#onExitClick" styleClass="button" text="Beenden" />
-            <Button fx:id="tutorialSpielen" onAction="#onTutorialModeClick" styleClass="button" text="Tutorial beginnen" />
-
-        </VBox>
-
-    </VBox>
+                     </HBox>
+         
+                     <!-- Action Buttons -->
+                     <Button fx:id="spielStarten" onAction="#onStartQuizClick" styleClass="button" text="Spiel starten" />
+                  <Button fx:id="lernmodusButton" mnemonicParsing="false" onAction="#showCsvUploadDialog" prefHeight="45.0" prefWidth="113.0" text="Lernmodus" />
+                     <Button onAction="#onExitClick" styleClass="button" text="Beenden" />
+                     <Button fx:id="tutorialSpielen" onAction="#onTutorialModeClick" styleClass="button" text="Tutorial beginnen" />
+         </children>
+      
+              </VBox>
+      </children>
+   
+       </VBox>
+   </children>
 </VBox>
