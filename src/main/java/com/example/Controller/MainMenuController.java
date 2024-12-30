@@ -2,7 +2,6 @@ package com.example.Controller;
 
 //  Controller steuert die Logik und Benutzerinteraktionen für das Hauptmenü
 
-import com.example.Questions.LernmodusQuestion;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,7 +13,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public class MainMenuController {
 
@@ -117,7 +115,7 @@ public class MainMenuController {
 
             try {
                 // Load the Quiz layout
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/quiz_layout.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/quiz_layout.fxml"));
                 Parent quizRoot = loader.load();
 
                 // Get the QuizController
@@ -202,7 +200,7 @@ public class MainMenuController {
     private void startProcess() {
         if (uploadedCsvFile != null) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/lernmodus_layout.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/lernmodus_layout.fxml"));
                 Parent lenrmodusRoot = loader.load();
 
                 LernmodusController lernmodusController = loader.getController();
@@ -229,7 +227,7 @@ public class MainMenuController {
 
     private void loadQuizScene(ActionEvent event, String difficulty) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/quiz_layout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/quiz_layout.fxml"));
             Parent quizRoot = loader.load();
 
             // Controller holen, um den Schwierigkeitsgrad zu übergeben
@@ -292,6 +290,6 @@ public class MainMenuController {
 
     // wenn TutorialMode geklickt wird gibt die Methode den fxml path an switchScene weiter
     public void onTutorialModeClick(ActionEvent event) {
-        switchScene(event, "/tutorial_layout.fxml");
+        switchScene(event, "/Layouts/tutorial_layout.fxml");
     }
 }

@@ -12,7 +12,7 @@
 
     <!-- reinladen vom CSS File -->
     <stylesheets>
-        <URL value="@css/application.css" />
+        <URL value="@../css/application.css" />
     </stylesheets>
 
     <VBox alignment="CENTER">
