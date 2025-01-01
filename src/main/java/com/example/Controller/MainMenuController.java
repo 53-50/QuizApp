@@ -177,44 +177,50 @@ public class MainMenuController {
         alert.setContentText("Bitte .csv file hochladen.");
 
         ButtonType uploadButton = new ButtonType("Hochladen");
-        ButtonType startButton = new ButtonType("Starten");
 
-        alert.getButtonTypes().setAll(uploadButton, startButton);
+        alert.getButtonTypes().setAll(uploadButton);
 
         alert.showAndWait().ifPresent(response -> {
             if (response == uploadButton) {
                 uploadCsvFile();
-            } else if (response == startButton) {
-                startProcess();
             }
         });
     }
 
+    @FXML
     private void uploadCsvFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Dateien", "*.csv"));
-        Stage stage = new Stage();
-        uploadedCsvFile = fileChooser.showOpenDialog(stage);
+        Stage stage = (Stage) lernmodusButton.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+        if (selectedFile != null) {
+            uploadedCsvFile = selectedFile;
+            startLernmodus();
+        } else {
+            showAlert("Fehler", "Keine Datei ausgewählt. Bitte lade zuerst eine Datei hoch");
+        }
+        //uploadedCsvFile = fileChooser.showOpenDialog(stage);
     }
 
-    private void startProcess() {
+    private void startLernmodus() {
         if (uploadedCsvFile != null) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/lernmodus_layout.fxml"));
-                Parent lenrmodusRoot = loader.load();
+                Parent lernmodusRoot = loader.load();
 
                 LernmodusController lernmodusController = loader.getController();
                 lernmodusController.loadQuestionsFromCsv(uploadedCsvFile);
 
                 Stage stage = (Stage) lernmodusButton.getScene().getWindow();
-                stage.setScene(new Scene(lenrmodusRoot));
+                stage.setScene(new Scene(lernmodusRoot));
                 stage.show();
-
             } catch (IOException e) {
                 e.printStackTrace();
+                showAlert("Fehler", "Ein Problem ist beim Laden des Lernmodus aufgetreten.");
             }
         } else {
-
+            showAlert("Fehler", "Keine CSV-Datei vorhanden. Bitte lade zuerst eine Datei hoch");
         }
     }
 
@@ -291,5 +297,13 @@ public class MainMenuController {
     // wenn TutorialMode geklickt wird gibt die Methode den fxml path an switchScene weiter
     public void onTutorialModeClick(ActionEvent event) {
         switchScene(event, "/Layouts/tutorial_layout.fxml");
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
