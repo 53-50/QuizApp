@@ -17,6 +17,6 @@
 
     <TextField fx:id="txtAnswer" promptText="Gib hier deine Antwort ein" />
 
-    <Button text="Antwort abschicken" onAction="#onSubmitClick" />
+    <Button fx:id="btnSubmit" text="Antwort abschicken" onAction="#onSubmitClick" />
     <Button text="Zurück zum Menü" onAction="#onBackClick" />
 </VBox>

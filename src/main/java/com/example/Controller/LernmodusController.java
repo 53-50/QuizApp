@@ -3,11 +3,17 @@ package com.example.Controller;
 import com.example.Questions.LernmodusQuestion;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +26,6 @@ public class LernmodusController {
     private TextField txtAnswer;
     @FXML
     private Button btnSubmit;
-    @FXML
-    private Button btnBack;
 
     private List<LernmodusQuestion> questions;
     private int currentQuestionIndex;
@@ -36,7 +40,8 @@ public class LernmodusController {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
+                String delimiter = line.contains(";") ? ";" : ",";
+                String[] parts = line.split(delimiter);
                 if (parts.length == 2) {
                     questions.add(new LernmodusQuestion(parts[0], parts[1]));
                 }
@@ -81,7 +86,17 @@ public class LernmodusController {
 
     @FXML
     private void onBackClick(ActionEvent event) {
-        System.out.println("Zurück zum Menü");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/main_menu.fxml"));
+            Parent mainMenuRoot = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(mainMenuRoot));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Fehler", "Das Hauptmenü konnte nicht geladen werden");
+        }
     }
 
     private void showAlert(String title, String content) {

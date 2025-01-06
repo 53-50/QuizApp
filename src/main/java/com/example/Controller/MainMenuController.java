@@ -2,7 +2,6 @@ package com.example.Controller;
 
 //  Controller steuert die Logik und Benutzerinteraktionen für das Hauptmenü
 
-import com.example.Questions.LernmodusQuestion;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,7 +13,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public class MainMenuController {
 
@@ -117,7 +115,7 @@ public class MainMenuController {
 
             try {
                 // Load the Quiz layout
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/quiz_layout.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/quiz_layout.fxml"));
                 Parent quizRoot = loader.load();
 
                 // Get the QuizController
@@ -179,44 +177,50 @@ public class MainMenuController {
         alert.setContentText("Bitte .csv file hochladen.");
 
         ButtonType uploadButton = new ButtonType("Hochladen");
-        ButtonType startButton = new ButtonType("Starten");
 
-        alert.getButtonTypes().setAll(uploadButton, startButton);
+        alert.getButtonTypes().setAll(uploadButton);
 
         alert.showAndWait().ifPresent(response -> {
             if (response == uploadButton) {
                 uploadCsvFile();
-            } else if (response == startButton) {
-                startProcess();
             }
         });
     }
 
+    @FXML
     private void uploadCsvFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Dateien", "*.csv"));
-        Stage stage = new Stage();
-        uploadedCsvFile = fileChooser.showOpenDialog(stage);
+        Stage stage = (Stage) lernmodusButton.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+
+        if (selectedFile != null) {
+            uploadedCsvFile = selectedFile;
+            startLernmodus();
+        } else {
+            showAlert("Fehler", "Keine Datei ausgewählt. Bitte lade zuerst eine Datei hoch");
+        }
+        //uploadedCsvFile = fileChooser.showOpenDialog(stage);
     }
 
-    private void startProcess() {
+    private void startLernmodus() {
         if (uploadedCsvFile != null) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/lernmodus_layout.fxml"));
-                Parent lenrmodusRoot = loader.load();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/lernmodus_layout.fxml"));
+                Parent lernmodusRoot = loader.load();
 
                 LernmodusController lernmodusController = loader.getController();
                 lernmodusController.loadQuestionsFromCsv(uploadedCsvFile);
 
                 Stage stage = (Stage) lernmodusButton.getScene().getWindow();
-                stage.setScene(new Scene(lenrmodusRoot));
+                stage.setScene(new Scene(lernmodusRoot));
                 stage.show();
-
             } catch (IOException e) {
                 e.printStackTrace();
+                showAlert("Fehler", "Ein Problem ist beim Laden des Lernmodus aufgetreten.");
             }
         } else {
-
+            showAlert("Fehler", "Keine CSV-Datei vorhanden. Bitte lade zuerst eine Datei hoch");
         }
     }
 
@@ -229,7 +233,7 @@ public class MainMenuController {
 
     private void loadQuizScene(ActionEvent event, String difficulty) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/quiz_layout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/quiz_layout.fxml"));
             Parent quizRoot = loader.load();
 
             // Controller holen, um den Schwierigkeitsgrad zu übergeben
@@ -292,6 +296,14 @@ public class MainMenuController {
 
     // wenn TutorialMode geklickt wird gibt die Methode den fxml path an switchScene weiter
     public void onTutorialModeClick(ActionEvent event) {
-        switchScene(event, "/tutorial_layout.fxml");
+        switchScene(event, "/Layouts/tutorial_layout.fxml");
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

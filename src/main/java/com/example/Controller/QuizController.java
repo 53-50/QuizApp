@@ -94,7 +94,7 @@ public class QuizController {
     private void returnToMainMenu() {
         try {
             // Load the main menu FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main_menu.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/main_menu.fxml"));
             Parent mainMenuRoot = loader.load();
 
             // Switch to the main menu scene
