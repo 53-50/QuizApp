@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.12"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.HighscoreController">
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.HighscoreController">
 
     <Label fx:id="lblHighscore" text="Highscore" wrapText="true">
         <font>
@@ -15,19 +14,42 @@
     </Label>
    <MenuButton id="FilterMenueButton" mnemonicParsing="false" text="Filter">
      <items>
-       <MenuItem text="Leicht" onAction="#onFilterLeicht" />
-       <MenuItem text="Mittel" onAction="#onFilterMittel"/>
-         <MenuItem text="Schwer" onAction="#onFilterSchwer"/>
+       <MenuItem onAction="#onFilterLeicht" text="Leicht" />
+       <MenuItem onAction="#onFilterMittel" text="Mittel" />
+         <MenuItem onAction="#onFilterSchwer" text="Schwer" />
      </items>
    </MenuButton>
-   <TableView prefHeight="300.0" prefWidth="200.0">
-     <columns>
-       <TableColumn id="ColumnLeicht" prefWidth="200.00" text="Leicht" />
-       <TableColumn id="ColumnMittel" prefWidth="200.00" text="Mittel" />
-         <TableColumn id="ColumnSchwer" prefWidth="200.00" text="Schwer" />
-     </columns>
-   </TableView>
-    <Button onAction="#onBackClick" text="Zurück zum Menü">
+    <TableView prefHeight="300.0" prefWidth="600.0">
+        <columns>
+
+            <!-- LEICHT: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
+            <TableColumn id="ColumnLeicht" text="Leicht">
+                <columns>
+                    <TableColumn fx:id="colLeichtPlayer" prefWidth="100.0" text="Player" />
+                    <TableColumn fx:id="colLeichtScore" prefWidth="100.0" text="Score" />
+                </columns>
+            </TableColumn>
+
+            <!-- MITTEL: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
+            <TableColumn id="ColumnMittel" text="Mittel">
+                <columns>
+                    <TableColumn fx:id="colMittelPlayer" prefWidth="100.0" text="Player" />
+                    <TableColumn fx:id="colMittelScore" prefWidth="100.0" text="Score" />
+                </columns>
+            </TableColumn>
+
+            <!-- SCHWER: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
+            <TableColumn id="ColumnSchwer" text="Schwer">
+                <columns>
+                    <TableColumn fx:id="colSchwerPlayer" prefWidth="100.0" text="Player" />
+                    <TableColumn fx:id="colSchwerScore" prefWidth="100.0" text="Score" />
+                </columns>
+            </TableColumn>
+
+        </columns>
+    </TableView>
+
+    <Button onAction="#onBackClick" prefHeight="5.0" prefWidth="112.0" text="Zurück zum Menü">
       <VBox.margin>
          <Insets />
       </VBox.margin></Button>

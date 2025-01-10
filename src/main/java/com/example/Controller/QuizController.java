@@ -1,5 +1,6 @@
 package com.example.Controller;
 
+import com.example.Highscore.HighscoreManager;
 import com.example.Services.TriviaApiService;
 import com.example.Questions.TriviaQuestion;
 import javafx.animation.Timeline;
@@ -20,6 +21,7 @@ public class QuizController {
     private int questionCount = 0; // Tracks how many questions have been asked
     private static final int MAX_QUESTIONS = 10; // The total number of questions for the quiz
     private String difficulty = "easy"; // Default difficulty
+    private int correctAnswer = 0;//Variable to save correct Answers for Highscore-list
 
     @FXML
     private Label feedbackLabel;
@@ -48,7 +50,7 @@ public class QuizController {
 
     void loadNewQuestion() throws IOException {
         if (questionCount >= MAX_QUESTIONS) {
-            returnToMainMenu();
+            saveScoreAndreturnToMainMenu();
             return;
         }
 
@@ -90,8 +92,8 @@ public class QuizController {
     }
 
 
-    //Methode ist, um zurück zum Hauptmenü zu kommen
-    private void returnToMainMenu() {
+    //Methode ist, um zurück zum Hauptmenü zu kommen (+ Speichern von Ergebnis für Highscore Liste (Name, Schwierigkeit, Score))
+    private void saveScoreAndreturnToMainMenu() {
         try {
             // Load the main menu FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/main_menu.fxml"));
@@ -105,6 +107,11 @@ public class QuizController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //Save Player Score
+        //String playerName; ->Klärung Speicherung
+        HighscoreManager.getInstance().addScore(playerName, correctAnswer, difficulty); //Player Name fehlt noch, wegen Abklärung Speicherung
+        correctAnswer = 0;
     }
 
     @FXML
@@ -115,6 +122,7 @@ public class QuizController {
         if (isCorrect) {
             feedbackLabel.setText("Correct! Well done.");
             feedbackLabel.setStyle("-fx-text-fill: green;"); // Set feedback text color to green
+            correctAnswer++;
         } else {
             feedbackLabel.setText("Wrong! Try the next one.");
             feedbackLabel.setStyle("-fx-text-fill: red;"); // Set feedback text color to red

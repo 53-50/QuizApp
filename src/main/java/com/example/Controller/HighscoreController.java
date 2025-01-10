@@ -1,25 +1,22 @@
 package com.example.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import com.example.Highscore.HighscoreEntry;
+import com.example.Highscore.HighscoreManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 
     public class HighscoreController {
 
+        public Label lblHighscore;
+
         @FXML
-        private void onFilterChoice(ActionEvent event){
+        private void onFilterChoice(ActionEvent event) {
             MenuItem menuItem = (MenuItem) event.getSource();
             String chosenMode = menuItem.getText(); //Leicht, Mittel, Schwer
             applyFilter(chosenMode);
@@ -44,5 +41,31 @@ import java.util.ResourceBundle;
         //Methode für Zurück zum Menue
         public void onBackClick(ActionEvent actionEvent) {
         }
+
+        @FXML
+        private TableView<HighscoreEntry> tableHighscore;
+        @FXML
+        private TableColumn<HighscoreEntry, String> colName;
+        @FXML
+        private TableColumn<HighscoreEntry, Integer> colScore;
+        @FXML
+        private TableColumn<HighscoreEntry, String> colDifficulty;
+
+        @FXML
+        public void initialize() {
+            colName.setCellValueFactory(new PropertyValueFactory<>("playerName"));
+            colScore.setCellValueFactory(new PropertyValueFactory<>("score"));
+            colDifficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
+
+            // Daten aus dem Manager holen
+            List<HighscoreEntry> highscores = HighscoreManager.getInstance().getHighscoreList();
+
+            // ObservableList draus machen
+            ObservableList<HighscoreEntry> data = FXCollections.observableArrayList(highscores);
+
+            // In die Tabelle setzen
+            tableHighscore.setItems(data);
+        }
     }
+
 
