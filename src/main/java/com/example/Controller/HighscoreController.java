@@ -2,21 +2,47 @@ package com.example.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-public class HighscoreController {
+import java.net.URL;
+import java.util.ResourceBundle;
 
-    //Interne Liste zur Speicherung der Highscore Ergebnisse
+    public class HighscoreController {
 
-    private List<HighscoreController> entries;
+        @FXML
+        private void onFilterChoice(ActionEvent event){
+            MenuItem menuItem = (MenuItem) event.getSource();
+            String chosenMode = menuItem.getText(); //Leicht, Mittel, Schwer
+            applyFilter(chosenMode);
+        }
 
-    //Konstruktor wird Highscor Liste übergeben
+        //Methode Filter-Logik - zeigt im TableView nur Einträge des passenden Spielmodus an
+        private void applyFilter(String modus) {
+        }
 
-    public HighscoreController(String name, int score){
-        entries = new ArrayList<>();
+        //Methode für den gesetzten Filter Leicht
+        public void onFilterLeicht(ActionEvent actionEvent) {
+        }
+
+        //Methode für den gesetzten Filter Mittel
+        public void onFilterMittel(ActionEvent actionEvent) {
+        }
+
+        //Methode für den gesetzten Filter Schwer
+        public void onFilterSchwer(ActionEvent actionEvent) {
+        }
+
+        //Methode für Zurück zum Menue
+        public void onBackClick(ActionEvent actionEvent) {
+        }
     }
 
-    //Methode zum Generieren von Ergebnissen
-
-    public void addHighscore(String name, int score){
-        entries.add(new HighscoreController(name, score);
-    }

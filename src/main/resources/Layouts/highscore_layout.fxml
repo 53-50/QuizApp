@@ -1,14 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="HighscoreLayout"
-            prefHeight="400.0" prefWidth="600.0">
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.HighscoreController">
 
-</AnchorPane>
+    <Label fx:id="lblHighscore" text="Highscore" wrapText="true">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+   <MenuButton id="FilterMenueButton" mnemonicParsing="false" text="Filter">
+     <items>
+       <MenuItem text="Leicht" onAction="#onFilterLeicht" />
+       <MenuItem text="Mittel" onAction="#onFilterMittel"/>
+         <MenuItem text="Schwer" onAction="#onFilterSchwer"/>
+     </items>
+   </MenuButton>
+   <TableView prefHeight="300.0" prefWidth="200.0">
+     <columns>
+       <TableColumn id="ColumnLeicht" prefWidth="200.00" text="Leicht" />
+       <TableColumn id="ColumnMittel" prefWidth="200.00" text="Mittel" />
+         <TableColumn id="ColumnSchwer" prefWidth="200.00" text="Schwer" />
+     </columns>
+   </TableView>
+    <Button onAction="#onBackClick" text="Zurück zum Menü">
+      <VBox.margin>
+         <Insets />
+      </VBox.margin></Button>
+</VBox>
