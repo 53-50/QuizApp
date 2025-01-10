@@ -50,23 +50,20 @@ public class QuizController {
 
     void loadNewQuestion() throws IOException {
         if (questionCount >= MAX_QUESTIONS) {
+            progressLabel.setText("Quiz complete!");
             returnToMainMenu();
             return;
         }
 
             try {
-                // Fetch a new question based on the selected difficulty
-                TriviaQuestion question = TriviaApiService.fetchSingleQuestion(difficulty);
 
-                //Increment question count
-                questionCount++;
+                TriviaQuestion question = TriviaApiService.fetchSingleQuestion(difficulty); // Fetch a new question based on the selected difficulty
+                questionCount++; //Increment question count
 
-                // Update the progress label
-                progressLabel.setText("Question " + questionCount + " of " + MAX_QUESTIONS);
+                progressLabel.setText("Question " + questionCount + " of " + MAX_QUESTIONS); // Update the progress label
+                System.out.println("Loaded Question: " + question.getQuestionText()); // Debugging
 
-
-                // Display the question
-                questionLabel.setText(question.getQuestionText());
+                questionLabel.setText(question.getAPIQuestionData().getText());
 
                 // Combine and shuffle answers
                 List<String> allAnswers = new ArrayList<>();
