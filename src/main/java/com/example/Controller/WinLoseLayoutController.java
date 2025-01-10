@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import com.example.Highscore.HighscoreManager;
+
 
 import java.io.IOException;
 
@@ -104,5 +106,11 @@ public class WinLoseLayoutController {
     //Zum Hauptmenü
     public void onHomeClick(ActionEvent event) {
         switchScene(event, "/Layouts/main_menu.fxml");
+
+
+        //Name, Punkte und Schwierigkeit an Highscore Manager übergeben
+        int finalePunkte = tutorialController.getPunkte();
+        String difficulty = "Leicht";
+        HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);
     }
 }

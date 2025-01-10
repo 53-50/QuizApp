@@ -50,7 +50,7 @@ public class QuizController {
 
     void loadNewQuestion() throws IOException {
         if (questionCount >= MAX_QUESTIONS) {
-            saveScoreAndreturnToMainMenu();
+            returnToMainMenu();
             return;
         }
 
@@ -92,8 +92,8 @@ public class QuizController {
     }
 
 
-    //Methode ist, um zurück zum Hauptmenü zu kommen (+ Speichern von Ergebnis für Highscore Liste (Name, Schwierigkeit, Score))
-    private void saveScoreAndreturnToMainMenu() {
+    //Methode ist, um zurück zum Hauptmenü zu kommen
+    private void returnToMainMenu() {
         try {
             // Load the main menu FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/main_menu.fxml"));
@@ -108,10 +108,6 @@ public class QuizController {
             e.printStackTrace();
         }
 
-        //Save Player Score
-        //String playerName; ->Klärung Speicherung
-        HighscoreManager.getInstance().addScore(playerName, correctAnswer, difficulty); //Player Name fehlt noch, wegen Abklärung Speicherung
-        correctAnswer = 0;
     }
 
     @FXML
