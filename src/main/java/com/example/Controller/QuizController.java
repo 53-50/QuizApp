@@ -37,10 +37,10 @@ public class QuizController {
     private Button answerBtn4;
 
 
-    /*@FXML
+    @FXML
     public void initialize() throws IOException {
-       // loadNewQuestion();
-    }*/
+       loadNewQuestion();
+    }
 
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty; // Set the difficulty based on user selection

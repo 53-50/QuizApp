@@ -1,4 +1,4 @@
-package com.example.Questions;
+/*package com.example.Questions;
 
 import java.util.List;
 
@@ -61,4 +61,4 @@ public abstract class AbstractQuestion {
         System.out.println("Korrekte Antwort: " + correctAnswer);
         System.out.println("Falsche Antworten: " + incorrectAnswers);
     }
-}
+}*/
