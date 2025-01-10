@@ -59,8 +59,9 @@ public class QuizController {
                 questionCount++; //Increment question count
 
                 progressLabel.setText("Question " + questionCount + " of " + MAX_QUESTIONS); // Update the progress label
+                System.out.println("Loaded Question: " + question.getQuestionText()); // Debugging
 
-                questionLabel.setText(question.getQuestionText()); // Display the question
+                questionLabel.setText(question.getAPIQuestionData().getText());
 
                 // Combine and shuffle answers
                 List<String> allAnswers = new ArrayList<>();

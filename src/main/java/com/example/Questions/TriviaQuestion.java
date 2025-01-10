@@ -1,6 +1,44 @@
 package com.example.Questions;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
+
+public class TriviaQuestion extends BaseQuestionClass {
+
+    // Der Feldname muss 'question' sein, um mit dem JSON übereinzustimmen
+    @SerializedName("question")
+    private APIQuestionData APIQuestionData;
+
+    // Setter für 'APIQuestionData', wird von Gson aufgerufen
+    public void setAPIQuestionData(APIQuestionData APIQuestionData) {
+        this.APIQuestionData = APIQuestionData;
+        if (APIQuestionData != null) {
+            this.questionText = APIQuestionData.getText();
+            // Debug-Ausgabe
+            System.out.println("Setter 'APIQuestionData' aufgerufen. FrageText gesetzt auf: " + this.questionText);
+        } else {
+            System.out.println("Setter 'APIQuestionData' aufgerufen, aber Frage ist null.");
+        }
+    }
+
+    // Getter für 'APIQuestionData' (optional)
+    public APIQuestionData getAPIQuestionData() {
+        return APIQuestionData;
+    }
+
+    // Innere Klasse für das verschachtelte JSON-Objekt "question"
+    public static class APIQuestionData {
+        private String text;
+
+        public String getText() { return text; }
+        public void setText(String text) { this.text = text; }
+    }
+}
+
+
+
+
+/*
 
 public class TriviaQuestion extends BaseQuestionClass {
 
@@ -35,7 +73,7 @@ public class TriviaQuestion extends BaseQuestionClass {
     }
 }
 
-/*
+
 public class TriviaQuestion {
     private String id;
     private Question question; // Verschachteltes Objekt für den Fragetext
