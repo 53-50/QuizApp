@@ -1,5 +1,6 @@
 package com.example.Controller;
 
+import com.example.Highscore.HighscoreManager;
 import com.example.Services.TriviaApiService;
 import com.example.Questions.TriviaQuestion;
 import javafx.animation.Timeline;
@@ -20,6 +21,7 @@ public class QuizController {
     private int questionCount = 0; // Tracks how many questions have been asked
     private static final int MAX_QUESTIONS = 10; // The total number of questions for the quiz
     private String difficulty = "easy"; // Default difficulty
+    private int correctAnswer = 0;//Variable to save correct Answers for Highscore-list
 
     @FXML
     private Label feedbackLabel;
@@ -37,10 +39,10 @@ public class QuizController {
     private Button answerBtn4;
 
 
-    /*@FXML
+    @FXML
     public void initialize() throws IOException {
-       // loadNewQuestion();
-    }*/
+       loadNewQuestion();
+    }
 
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty; // Set the difficulty based on user selection
@@ -48,23 +50,20 @@ public class QuizController {
 
     void loadNewQuestion() throws IOException {
         if (questionCount >= MAX_QUESTIONS) {
+            progressLabel.setText("Quiz complete!");
             returnToMainMenu();
             return;
         }
 
             try {
-                // Fetch a new question based on the selected difficulty
-                TriviaQuestion question = TriviaApiService.fetchSingleQuestion(difficulty);
 
-                //Increment question count
-                questionCount++;
+                TriviaQuestion question = TriviaApiService.fetchSingleQuestion(difficulty); // Fetch a new question based on the selected difficulty
+                questionCount++; //Increment question count
 
-                // Update the progress label
-                progressLabel.setText("Question " + questionCount + " of " + MAX_QUESTIONS);
+                progressLabel.setText("Question " + questionCount + " of " + MAX_QUESTIONS); // Update the progress label
+                System.out.println("Loaded Question: " + question.getQuestionText()); // Debugging
 
-
-                // Display the question
-                questionLabel.setText(question.getQuestionText());
+                questionLabel.setText(question.getAPIQuestionData().getText());
 
                 // Combine and shuffle answers
                 List<String> allAnswers = new ArrayList<>();
@@ -94,7 +93,7 @@ public class QuizController {
     private void returnToMainMenu() {
         try {
             // Load the main menu FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/main_menu.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/main_menu.fxml"));
             Parent mainMenuRoot = loader.load();
 
             // Switch to the main menu scene
@@ -105,6 +104,7 @@ public class QuizController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     @FXML
@@ -115,6 +115,7 @@ public class QuizController {
         if (isCorrect) {
             feedbackLabel.setText("Correct! Well done.");
             feedbackLabel.setStyle("-fx-text-fill: green;"); // Set feedback text color to green
+            correctAnswer++;
         } else {
             feedbackLabel.setText("Wrong! Try the next one.");
             feedbackLabel.setStyle("-fx-text-fill: red;"); // Set feedback text color to red

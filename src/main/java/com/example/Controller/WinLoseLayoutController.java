@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import com.example.Highscore.HighscoreManager;
+
 
 import java.io.IOException;
 
@@ -82,7 +84,7 @@ public class WinLoseLayoutController {
             Parent root = loader.load();
 
             //equals funktioniert mit String gut - muss man nicht overridden weil keine extra Logik benötigt
-            if (fxmlPath.equals("/tutorial_layout.fxml")) {
+            if (fxmlPath.equals("/Layouts/tutorial_layout.fxml")) {
                 TutorialController tutorialController = loader.getController();
                 tutorialController.setPlayerName(playerName); // Name weitergeben
             }
@@ -98,11 +100,17 @@ public class WinLoseLayoutController {
 
     // spiel nochmal spielen
     public void onRetryClick(ActionEvent event) {
-        switchScene(event, "/tutorial_layout.fxml");
+        switchScene(event, "/Layouts/tutorial_layout.fxml");
     }
 
     //Zum Hauptmenü
     public void onHomeClick(ActionEvent event) {
-        switchScene(event, "/main_menu.fxml");
+        switchScene(event, "/Layouts/main_menu.fxml");
+
+
+        //Name, Punkte und Schwierigkeit an Highscore Manager übergeben
+        int finalePunkte = tutorialController.getPunkte();
+        String difficulty = "Leicht";
+        HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);
     }
 }

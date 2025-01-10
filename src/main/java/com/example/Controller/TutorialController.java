@@ -147,7 +147,7 @@ public class TutorialController {
     // system dass popups allgemein angezeigt werden und hintereinander angezeigt werden
     private void showPopup(String message) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/popups.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/popups.fxml"));
             Parent root = loader.load();
 
             PopupController popupController = loader.getController();
@@ -396,7 +396,7 @@ public class TutorialController {
     private void showEndScreen() {
         try {
             // Lade den Win Screen (FXML-Datei)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/win_lose_layout.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/win_lose_layout.fxml"));
             Parent winRoot = loader.load();
 
             // WinScreenController holen
@@ -449,7 +449,7 @@ public class TutorialController {
 
         // braucht man damit popup auftaucht und er nach bist du sicher das spiel beendet wird
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/popups.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/popups.fxml"));
             Parent root = loader.load();
 
             PopupController popupController = loader.getController();
@@ -469,7 +469,7 @@ public class TutorialController {
 
             if(popupController.isUserSure()) {
                 // Wenn das Pop-up geschlossen wird, führe das aus:
-                switchScene(event, "/main_menu.fxml");
+                switchScene(event, "/Layouts/main_menu.fxml");
             } else {
                 timer.play();
             }
@@ -479,6 +479,4 @@ public class TutorialController {
         }
 
     }
-
-
 }

@@ -22,7 +22,7 @@ public class QuizApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Hauptmenü-FXML laden => definiert Layout und die Benutzeroberfläche des Menüs.
-        Parent mainMenuRoot = FXMLLoader.load(getClass().getResource("/main_menu.fxml"));
+        Parent mainMenuRoot = FXMLLoader.load(getClass().getResource("/Layouts/main_menu.fxml"));
         Scene mainMenuScene = new Scene(mainMenuRoot, 500, 800);
         //zuweisen des css files zu der scene
         mainMenuScene.getStylesheets().add("/css/application.css");

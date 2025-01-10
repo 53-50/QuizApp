@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.HighscoreController">
+
+    <Label fx:id="lblHighscore" text="Highscore" wrapText="true">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+   <MenuButton id="FilterMenueButton" mnemonicParsing="false" text="Filter">
+     <items>
+       <MenuItem onAction="#onFilterLeicht" text="Leicht" />
+       <MenuItem onAction="#onFilterMittel" text="Mittel" />
+         <MenuItem onAction="#onFilterSchwer" text="Schwer" />
+     </items>
+   </MenuButton>
+    <TableView prefHeight="300.0" prefWidth="600.0">
+        <columns>
+
+            <!-- LEICHT: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
+            <TableColumn id="ColumnLeicht" text="Leicht">
+                <columns>
+                    <TableColumn fx:id="colLeichtPlayer" prefWidth="100.0" text="Player" />
+                    <TableColumn fx:id="colLeichtScore" prefWidth="100.0" text="Score" />
+                </columns>
+            </TableColumn>
+
+            <!-- MITTEL: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
+            <TableColumn id="ColumnMittel" text="Mittel">
+                <columns>
+                    <TableColumn fx:id="colMittelPlayer" prefWidth="100.0" text="Player" />
+                    <TableColumn fx:id="colMittelScore" prefWidth="100.0" text="Score" />
+                </columns>
+            </TableColumn>
+
+            <!-- SCHWER: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
+            <TableColumn id="ColumnSchwer" text="Schwer">
+                <columns>
+                    <TableColumn fx:id="colSchwerPlayer" prefWidth="100.0" text="Player" />
+                    <TableColumn fx:id="colSchwerScore" prefWidth="100.0" text="Score" />
+                </columns>
+            </TableColumn>
+
+        </columns>
+    </TableView>
+
+    <Button onAction="#onBackClick" prefHeight="5.0" prefWidth="112.0" text="Zurück zum Menü">
+      <VBox.margin>
+         <Insets />
+      </VBox.margin></Button>
+</VBox>
