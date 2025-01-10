@@ -31,7 +31,7 @@ public class TriviaApiService {
             String json = response.body();
             try {
                 TriviaQuestion[] questions = gson.fromJson(json, TriviaQuestion[].class);
-                return questions[0]; // Rückgabe der ersten Frage
+                return questions[0]; // Erste Frage zurückgeben
             } catch (JsonSyntaxException e) {
                 throw new IOException("Error parsing JSON: " + e.getMessage());
             }
@@ -40,81 +40,3 @@ public class TriviaApiService {
         }
     }
 }
-
-/*
-
-public class TriviaApiService {
-
-    private static final String BASE_URL = "https://the-trivia-api.com/v2/questions?limit=1";
-    private static final HttpClient httpClient = HttpClient.newHttpClient();
-    private static final Gson gson = new Gson();
-
-    /**
-     * Fetches a single trivia question from the API with the given difficulty.
-     *
-     * @param difficulty The difficulty level ("easy", "medium", "hard").
-     * @return The first trivia question returned by the API.
-     * @throws IOException          If there is an issue with the API call or response.
-     * @throws InterruptedException If the HTTP request is interrupted.
-     */
-/*
-    public static TriviaQuestion fetchSingleQuestion(String difficulty) throws IOException, InterruptedException {
-        // Construct the API URL with the difficulty parameter
-        String apiUrl = BASE_URL + "&difficulties=" + difficulty;
-
-        // Build the HTTP request
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .GET()
-                .build();
-
-        // Send the HTTP request and get the response
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() == 200) {
-            String json = response.body();
-
-            try {
-                // Parse the JSON response into an array of TriviaQuestion objects
-                TriviaQuestion[] questions = gson.fromJson(json, TriviaQuestion[].class);
-                return questions[0]; // Return the first question
-            } catch (JsonSyntaxException e) {
-                throw new IOException("Error parsing JSON: " + e.getMessage());
-            }
-        } else {
-            throw new IOException("API call failed: HTTP " + response.statusCode());
-        }
-    }
-
-
-    public static TriviaQuestion fetchSingleQuestion(String difficulty) throws IOException, InterruptedException {
-        // Construct the API URL with the difficulty parameter
-        String apiUrl = BASE_URL + "&difficulties=" + difficulty;
-
-        // Build the HTTP request
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .GET()
-                .build();
-
-        // Send the HTTP request and get the response
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() == 200) {
-            String json = response.body();
-
-            try {
-                // Parse the JSON response into an array of TriviaQuestion objects
-                TriviaQuestion[] questions = gson.fromJson(json, TriviaQuestion[].class);
-                return questions[0]; // Return the first question
-            } catch (JsonSyntaxException e) {
-                throw new IOException("Error parsing JSON: " + e.getMessage());
-            }
-        } else {
-            throw new IOException("API call failed: HTTP " + response.statusCode());
-        }
-    }
-
-}
-
-*/
