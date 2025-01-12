@@ -9,10 +9,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import java.io.File;
-import java.io.IOException;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.io.*;
 
 public class MainMenuController {
 
@@ -181,17 +186,30 @@ public class MainMenuController {
     @FXML
     private void showCsvUploadDialog() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("CSV-Datei hochladen");
+        alert.setTitle("CSV-Datei hochladen/Template herunterladen");
         alert.setHeaderText(null);
-        alert.setContentText("Bitte .csv file hochladen.");
+        alert.setContentText("Bitte .csv file hochladen oder ein Template herunterladen falls du noch keines hast.");
+
+        try {
+            ImageView customIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/KLKM_Logo.png")));
+            customIcon.setFitWidth(50);
+            customIcon.setFitHeight(50);
+            alert.setGraphic(customIcon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         ButtonType uploadButton = new ButtonType("Hochladen");
+        ButtonType downloadTemplateButton = new ButtonType("Template herunterladen");
+        ButtonType cancelButton = new ButtonType("Abbrechen", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-        alert.getButtonTypes().setAll(uploadButton);
+        alert.getButtonTypes().setAll(uploadButton, downloadTemplateButton, cancelButton);
 
         alert.showAndWait().ifPresent(response -> {
             if (response == uploadButton) {
                 uploadCsvFile();
+            } else if (response == downloadTemplateButton) {
+                downloadCsvTemplate();
             }
         });
     }
@@ -210,6 +228,39 @@ public class MainMenuController {
             showAlert("Fehler", "Keine Datei ausgewählt. Bitte lade zuerst eine Datei hoch");
         }
         //uploadedCsvFile = fileChooser.showOpenDialog(stage);
+    }
+
+    private void downloadCsvTemplate() {
+        String templateFileName = "/CSV Template/Lernmodus_CSV_Template.csv";
+        FileChooser fileChooser = new FileChooser();
+
+        fileChooser.setInitialFileName("Lernmodus_CSV_Template.csv");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Dateien", "*.csv"));
+
+        Stage stage = new Stage();
+        File targetFile = fileChooser.showSaveDialog(stage);
+
+        if (targetFile != null) {
+            try (InputStream inputStream = getClass().getResourceAsStream(templateFileName);
+                 OutputStream outputStream = new FileOutputStream(targetFile)) {
+
+                if (inputStream == null) {
+                    showAlert("Fehler", "Das Template konnte nicht gefunden werden.");
+                    return;
+                }
+
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+                showAlert("Erfolg", "Das Template wurde erfolgreich heruntergeladen: " + targetFile.getAbsolutePath());
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert("Fehler", "Das Template konnte nicht heruntergeladen werden.");
+            }
+        }
     }
 
     private void startLernmodus() {

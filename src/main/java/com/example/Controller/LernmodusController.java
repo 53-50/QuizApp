@@ -39,6 +39,9 @@ public class LernmodusController {
     public void loadQuestionsFromCsv(File file) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
+
+            reader.readLine();
+
             while ((line = reader.readLine()) != null) {
                 String delimiter = line.contains(";") ? ";" : ",";
                 String[] parts = line.split(delimiter);
