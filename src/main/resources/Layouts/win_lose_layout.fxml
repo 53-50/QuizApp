@@ -17,7 +17,7 @@
 
     <VBox alignment="CENTER">
         <Label fx:id="endeLabel" styleClass="label-winorlose" text="Win/Lose" />
-      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Wie wir nun erfahren haben, kam sie ein paar Jahre zu früh, verpasste den ersten Käse im All und fiel tragisch menschlichem Versagen zum Opfer. Lasst uns einen Moment innehalten, um diese unbekannte Maus zu ehren, die sich für ihren Traum geopfert hat. THE END" wrappingWidth="350.0">
+      <Text fx:id="geschichteLabel" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="350.0" visible="false">
          <VBox.margin>
             <Insets bottom="10.0" top="10.0" />
          </VBox.margin>
@@ -26,6 +26,7 @@
         <HBox alignment="CENTER" spacing="20.0">
             <Label fx:id="namenLabel" styleClass="label-statistik" text="Name" />
             <Label fx:id="punkteLabel" styleClass="label-statistik" text="Punkte" />
+            <Label fx:id="modusLabel" styleClass="label-statistik" text="Modus" />
         </HBox>
 
         <Label fx:id="lebenLabel" styleClass="label-statistik" text="Leben" />

@@ -1,6 +1,8 @@
 package com.example.Controller;
 
 import com.example.Highscore.HighscoreManager;
+import com.example.Interface.ControllerBase;
+import com.example.Interface.QuizBase;
 import com.example.Services.TriviaApiService;
 import com.example.Questions.TriviaQuestion;
 import javafx.animation.Timeline;
@@ -16,7 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.*;
 
-public class QuizController {
+public class QuizController implements QuizBase, ControllerBase {
 
     private int questionCount = 0; // Tracks how many questions have been asked
     private static final int MAX_QUESTIONS = 10; // The total number of questions for the quiz
@@ -38,6 +40,18 @@ public class QuizController {
     @FXML
     private Button answerBtn4;
 
+    //der Timer
+    private Timeline timer;
+    // Zeit pro Frage in Sekunde
+    private int timeRemaining = 15;
+
+    //namen übergabe
+    private String playerName;
+
+    public void setPlayerName(String name) {
+        this.playerName = name;
+    }
+
 
     @FXML
     public void initialize() throws IOException {
@@ -51,7 +65,7 @@ public class QuizController {
     void loadNewQuestion() throws IOException {
         if (questionCount >= MAX_QUESTIONS) {
             progressLabel.setText("Quiz complete!");
-            returnToMainMenu();
+            showEndScreen();
             return;
         }
 
@@ -106,6 +120,22 @@ public class QuizController {
         }
 
     }
+
+    // vom interface damit der exit button da ist
+    public void onQuizExit(ActionEvent event) {
+        QuizBase.super.onExit(event, timer); // Ruft die default-Methode aus dem Interface auf
+    }
+
+    public void setAnswerButtonColors() {
+        // logik für richtige button
+    }
+
+    private void showEndScreen() {
+        // brauchen wir für show endscreen
+        Stage stage = (Stage) questionLabel.getScene().getWindow();
+        QuizBase.super.showEndScreen(stage, playerName, this); // Ruft die default-Methode aus dem Interface auf
+    }
+
 
     @FXML
     public void onAnswerClick(ActionEvent actionEvent) throws IOException {

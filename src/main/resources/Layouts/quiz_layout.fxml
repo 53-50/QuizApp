@@ -7,6 +7,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.QuizController">
     <children>
         <VBox alignment="CENTER" fillWidth="false" prefHeight="500.0" prefWidth="800.0">
@@ -42,5 +44,29 @@
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
         </VBox>
+
+        <HBox alignment="CENTER" prefHeight="80.0" prefWidth="800.0" spacing="150.0">
+            <children>
+                <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
+                    <children>
+                        <ImageView pickOnBounds="true" preserveRatio="true" fitHeight="50.0" fitWidth="50.0">
+                            <image>
+                                <Image url="@../images/KLKM_Logo.png" />
+                            </image>
+                        </ImageView>
+                        <Label fx:id="quizLeben" text="00" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
+                    <children>
+                        <Label text="Punkte" />
+                        <Label fx:id="quizPunkte" text="Punkte" />
+                    </children>
+                </VBox>
+                <Label fx:id="quizTimer" text="Timer" />
+                <Button mnemonicParsing="false" onAction="#onQuizExit" text="Schließen" />
+            </children>
+        </HBox>
+
     </children>
 </AnchorPane>

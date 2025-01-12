@@ -1,5 +1,7 @@
 package com.example.Controller;
 
+import com.example.Interface.ControllerBase;
+import com.example.Interface.QuizBase;
 import com.example.Questions.QuestionLoader;
 import com.example.Questions.TutorialQuestions;
 import javafx.animation.KeyFrame;
@@ -14,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -23,7 +26,7 @@ import java.util.Queue;
 
 import javafx.animation.PauseTransition;
 
-public class TutorialController {
+public class TutorialController implements QuizBase, ControllerBase {
 
     @FXML
     private Label tutorialLeben;
@@ -157,6 +160,15 @@ public class TutorialController {
             popupStage.setTitle("Tutorial Pop-up");
             popupStage.setScene(new Scene(root));
 
+            // Modus von Stage festzulegen
+            // Blockiert alle anderen Fenster der Anwendung
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+
+            // Aussehen und Verhalten von Stage ändern
+            // keine Titelleiste + nicht verschiebbar od. größen verändertnd
+            popupStage.initStyle(StageStyle.UNDECORATED);
+
+
             if (timer != null) {
                 timer.pause();
                 // Pausiert den Timer - ist doppelt drinnen
@@ -283,16 +295,14 @@ public class TutorialController {
     }
 
     private void markQuestionAsWrong() {
-        // Logik zum Markieren der aktuellen Frage als falsch
         leben--;
-        tutorialLeben.setText(Integer.toString(leben) + " Leben");
+        QuizBase.super.markQuestionAsWrong(getLeben(), tutorialLeben);
     }
 
     private void markQuestionAsRight() {
-        // Logik zum Markieren der aktuellen Frage als falsch
         punkte++;
-        tutorialPunkte.setText(Integer.toString(punkte)+ " Punkte");
         rightOnes++;
+        QuizBase.super.markQuestionAsRight(getPunkte(), getRightOnes(), tutorialPunkte);
     }
 
     private void loadNextQuestion() {
@@ -327,14 +337,15 @@ public class TutorialController {
         } else {
             PauseTransition pause = new PauseTransition(Duration.seconds(3));
             pause.setOnFinished(event -> {
-            showEndScreen();
+                showEndScreen();
             });
             pause.play();
         }
     }
 
     // richtig und falsch buttons anzeigen
-    private void setAnswerButtonColors() {
+    @Override
+    public void setAnswerButtonColors() {
         // Über alle Antwort-Buttons iterieren und die Farben ändern
         Button[] answerButtons = {tutorialantwort1, tutorialantwort2, tutorialantwort3, tutorialantwort4};
 
@@ -351,11 +362,7 @@ public class TutorialController {
     }
 
     private void resetAnswerButtonColors() {
-        // Alle Buttons wieder auf die Standardfarbe setzen
-        Button[] answerButtons = {tutorialantwort1, tutorialantwort2, tutorialantwort3, tutorialantwort4};
-        for (Button button : answerButtons) {
-            button.setStyle("-fx-text-fill: black;"); // Standardfarbe zurücksetzen
-        }
+        QuizBase.super.resetAnswerButtonColors(tutorialantwort1, tutorialantwort2 ,tutorialantwort3, tutorialantwort4);
     }
 
     private void resetTimer() {
@@ -391,92 +398,17 @@ public class TutorialController {
         return questions;
     }
 
-
     //endscreen anzeigen
     private void showEndScreen() {
-        try {
-            // Lade den Win Screen (FXML-Datei)
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/win_lose_layout.fxml"));
-            Parent winRoot = loader.load();
-
-            // WinScreenController holen
-            WinLoseLayoutController winLoseLayoutControllerController = loader.getController();
-
-            // Referenz zum aktuellen QuizController und den Playernamen übergeben
-            winLoseLayoutControllerController.setQuizController(this);
-            winLoseLayoutControllerController.setPlayerName(playerName);
-
-            // Anzeige der Punktzahl aktualisieren
-            winLoseLayoutControllerController.displayPunkte();
-            winLoseLayoutControllerController.displayLeben();
-            winLoseLayoutControllerController.displayWinOrLose();
-            winLoseLayoutControllerController.displayRight();
-            winLoseLayoutControllerController.displayNamenLabel();
-
-            // Szene wechseln
-            Stage stage = (Stage) tutorialfrage.getScene().getWindow();
-            Scene winScene = new Scene(winRoot);
-            stage.setScene(winScene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // brauchen wir für show endscreen
+        Stage stage = (Stage) tutorialfrage.getScene().getWindow();
+        QuizBase.super.showEndScreen(stage, playerName, this); // Ruft die default-Methode aus dem Interface auf
     }
 
     // BUTTON: SCHLIEßEN
 
-    //allgemeinen Scenen switchen festlegen
-    private void switchScene(ActionEvent event, String fxmlPath) {
-        try {
-
-            //sich neues FXML holen
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-
-            // Aktuelle Stage holen und neue Szene setzen
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // wenn schließen button gedrückt wird
     public void onTutorialExit(ActionEvent event) {
-
-        // braucht man damit popup auftaucht und er nach bist du sicher das spiel beendet wird
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/popups.fxml"));
-            Parent root = loader.load();
-
-            PopupController popupController = loader.getController();
-            popupController.setPopupMessage("Bist du sicher?");  // Nachricht setzen
-
-            Stage popupStage = new Stage();
-            popupStage.setTitle("Tutorial Pop-up");
-            popupStage.setScene(new Scene(root));
-
-            if (timer != null) {
-                timer.pause();  // Pausiert den Timer
-            }
-
-            // Zeigt das Pop-up an und wartet, bis es geschlossen wird
-            popupStage.initModality(Modality.APPLICATION_MODAL);  // Macht das Pop-up modal (blockiert das Hauptfenster)
-            popupStage.showAndWait();
-
-            if(popupController.isUserSure()) {
-                // Wenn das Pop-up geschlossen wird, führe das aus:
-                switchScene(event, "/Layouts/main_menu.fxml");
-            } else {
-                timer.play();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        QuizBase.super.onExit(event, timer); // Ruft die default-Methode aus dem Interface auf
     }
+
 }

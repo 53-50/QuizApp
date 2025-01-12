@@ -1,5 +1,6 @@
 package com.example.Controller;
 
+import com.example.Interface.ControllerBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import com.example.Highscore.HighscoreManager;
 
@@ -15,6 +17,7 @@ import java.io.IOException;
 
 public class WinLoseLayoutController {
 
+    public Label modusLabel;
     @FXML
     private Label punkteLabel;
 
@@ -27,31 +30,56 @@ public class WinLoseLayoutController {
     @FXML
     private Label rightOnesLabel;
 
+    @FXML
+    private Text geschichteLabel;
+
     // namen
     @FXML
     private Label namenLabel;
 
     private String playerName;
 
-    // Infos von TutorialController holen damit man Statistik befüllen kann
-    private TutorialController tutorialController;
+    // Infos von Controller holen damit man Statistik befüllen kann
+    private ControllerBase controller;
 
-    public void setQuizController(TutorialController controller) {
-        this.tutorialController = controller;
+    // damit der modus angezeigt werden kann
+    private String modus;
+
+    // controller setzten: tutorial oder quiz?
+    public void setQuizController(ControllerBase controller) {
+        this.controller = controller;
+
+        //wenn tutorial dann wird geschichte angezeigt und modus
+        if (controller instanceof TutorialController) {
+            geschichteLabel.setText("Wie wir nun erfahren haben, kam sie ein paar Jahre zu früh," +
+                    "verpasste den ersten Käse im All und fiel tragisch menschlichem Versagen zum Opfer." +
+                    "Lasst uns einen Moment innehalten, um diese unbekannte Maus zu ehren, die sich für" +
+                    "ihren Traum geopfert hat." +
+                    "THE END");
+            geschichteLabel.setVisible(true);
+            modus = "Tutorial";
+        } else if(controller instanceof QuizController) {
+            modus = "Quiz";
+        }
+
+    }
+
+    public void displayModus() {
+        modusLabel.setText("Modus:" + modus);
     }
 
     public void displayPunkte() {
-        int finalePunkte = tutorialController.getPunkte();
+        int finalePunkte = controller.getPunkte();
         punkteLabel.setText("Punkte: " + finalePunkte);
     }
 
     public void displayRight() {
-        int rightOnes = tutorialController.getRightOnes();
-        rightOnesLabel.setText("Richtig beantwortet: " + rightOnes + "/" + tutorialController.getQuestions());
+        int rightOnes = controller.getRightOnes();
+        rightOnesLabel.setText("Richtig beantwortet: " + rightOnes + "/" + controller.getQuestions());
     }
 
     public void displayLeben() {
-        int finaleLeben = tutorialController.getLeben();
+        int finaleLeben = controller.getLeben();
 
         if (finaleLeben < 0) {
             lebenLabel.setText("Remaining Leben: Keine");
@@ -61,7 +89,7 @@ public class WinLoseLayoutController {
     }
 
     public void displayWinOrLose() {
-        if (tutorialController.getLeben() > 0) {
+        if (controller.getLeben() > 0) {
             endeLabel.setText("Gewonnen");
         } else {
             endeLabel.setText("Verloren! Keine Leben mehr übrig :(");
@@ -109,7 +137,7 @@ public class WinLoseLayoutController {
 
 
         //Name, Punkte und Schwierigkeit an Highscore Manager übergeben
-        int finalePunkte = tutorialController.getPunkte();
+        int finalePunkte = controller.getPunkte();
         String difficulty = "Leicht";
         HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);
     }

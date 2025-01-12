@@ -29,6 +29,10 @@ public class MainMenuController {
     //für Text Eingabe benötigt
     @FXML
     private TextField inputTextField;
+    @FXML
+    private Button inputTextFieldButton;
+    @FXML
+    private Button unlockInputTextFieldButton;
 
     private static final int MAX_CHARACTERS = 15;
 
@@ -51,6 +55,9 @@ public class MainMenuController {
 
     @FXML
     public void initialize() {
+
+        //damit das Eingabefeld nicht gleich fokussiert ist und man den Prompttext lesen kann
+        inputTextField.setFocusTraversable(false);
 
         tutorialSpielen.setDisable(true);
         spielStarten.setDisable(true);
@@ -120,6 +127,8 @@ public class MainMenuController {
 
                 // Get the QuizController
                 QuizController quizController = loader.getController();
+                // damit der playername auch beim quizspielen übergeben wird
+                quizController.setPlayerName(currentname);
 
                 selectedDifficulty = getSelectedDifficulty();
                 quizController.setDifficulty(selectedDifficulty); // Pass the selected difficulty
@@ -269,9 +278,25 @@ public class MainMenuController {
             System.out.println(currentname);
             tutorialSpielen.setDisable(false);
             spielStarten.setDisable(false);
+            inputTextField.setDisable(true);
 
-
+            unlockInputTextFieldButton.setDisable(false);
+            inputTextFieldButton.setDisable(true);
         }
+    }
+
+    // was passiert wenn man auf den UnlockButton klickt
+    @FXML
+    public void onButtonClickUnlock(ActionEvent event) {
+        //input wird wieder möglich aber zurückgesetzt
+        inputTextField.setDisable(false);
+        unlockInputTextFieldButton.setDisable(true);
+        inputTextFieldButton.setDisable(false);
+        inputTextField.clear();
+        currentname = null;
+        tutorialSpielen.setDisable(true);
+        spielStarten.setDisable(true);
+
     }
 
 

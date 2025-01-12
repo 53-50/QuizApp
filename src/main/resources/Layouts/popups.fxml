@@ -14,4 +14,5 @@
 
     <Label fx:id="popupMessage" styleClass="label" text="Willkommen zum Tutorial!" wrapText="true" />
     <Button onAction="#handleClosePopup" styleClass="button" text="OK" />
+    <Button fx:id="exitButton" onAction="#handleNotClosePopup" styleClass="button" text="Nicht OK" visible="false"/>
 </VBox>

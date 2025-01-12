@@ -34,7 +34,9 @@
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                      <children>
                         <TextField fx:id="inputTextField" prefHeight="50.0" prefWidth="400.0" promptText="Gib bitte deinen Namen ein" styleClass="required-field" />
-                        <Button fx:id="inputTextFieldButton" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="20.0" prefWidth="200.0" text="Enter" />
+                        <Button fx:id="inputTextFieldButton" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="20.0" prefWidth="200.0" text="Enter"/>
+                         <!-- damit die eingabe vom namen gesperrt und freigegeben werden kann -->
+                         <Button fx:id="unlockInputTextFieldButton" mnemonicParsing="false" onAction="#onButtonClickUnlock" prefHeight="20.0" prefWidth="200.0" text="Erase" disable="true"/>
                          <Label fx:id="errorLabel" styleClass="error-message" text="Namen eingabe erforderlich!" visible="false" />
                      </children>
                   </HBox>

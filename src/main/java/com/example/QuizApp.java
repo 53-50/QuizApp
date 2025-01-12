@@ -14,6 +14,8 @@ import javafx.scene.Scene;
 // Importiert Stage-Klasse, die das Hauptfenster der Anwendung darstellt.
 import javafx.stage.Stage;
 
+import javafx.scene.image.Image;
+
 // Klasse QuizApp erbt von JavaFX Application-Klasse = erforderlich, um JavaFX-Anwendung zu erstellen
 public class QuizApp extends Application {
 
@@ -26,6 +28,7 @@ public class QuizApp extends Application {
         Scene mainMenuScene = new Scene(mainMenuRoot, 500, 800);
         //zuweisen des css files zu der scene
         mainMenuScene.getStylesheets().add("/css/application.css");
+        primaryStage.getIcons().add(new Image("/images/KLKM_Logo.png")) ;
 
         // Breite der Stage fix festlegen am Beginn
         primaryStage.setWidth(800);
@@ -34,7 +37,7 @@ public class QuizApp extends Application {
         // Zum Debuggen vielleicht hilfreich weil Infos angezeigt wegen Versionen
         // System.out.println(System.getProperties());
 
-        primaryStage.setTitle("QuizApp");
+        primaryStage.setTitle("Mice in Space");
         primaryStage.setScene(mainMenuScene);
         primaryStage.show();
     }

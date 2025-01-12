@@ -7,6 +7,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.TutorialController">
    <children>
       <VBox alignment="CENTER" fillWidth="false" prefHeight="500.0" prefWidth="800.0">
@@ -46,7 +48,11 @@
          <children>
             <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                <children>
-                  <Label text="Leben" />
+                  <ImageView pickOnBounds="true" preserveRatio="true" fitHeight="50.0" fitWidth="50.0">
+                     <image>
+                        <Image url="@../images/KLKM_Logo.png" />
+                     </image>
+                  </ImageView>
                   <Label fx:id="tutorialLeben" text="00" />
                </children>
             </VBox>
