@@ -136,9 +136,35 @@ public class WinLoseLayoutController {
         switchScene(event, "/Layouts/main_menu.fxml");
 
 
-        //Name, Punkte und Schwierigkeit an Highscore Manager übergeben
+        /*Name, Punkte und Schwierigkeit an Highscore Manager übergeben
         int finalePunkte = controller.getPunkte();
         String difficulty = "Leicht";
-        HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);
+        HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);*/
+
+        // Nur Werte vom Quiz Controller werden übernommen
+        if (controller instanceof QuizController) {
+            // Dann Highscore-Eintrag schreiben
+            int finalePunkte = controller.getPunkte();
+            // Difficulty abfragen
+            String difficulty = ((QuizController) controller).getDifficulty();
+
+
+            HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);
+        }
     }
+
+    // WinLoseLayoutController
+    @FXML
+    public void onHighscoreClick(ActionEvent event) {
+        // Score ins Highscore-System übernehmen, nur wenn QuizController
+        if (controller instanceof QuizController) {
+            int finalePunkte = controller.getPunkte();
+            String difficulty = ((QuizController) controller).getDifficulty();
+            HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);
+        }
+
+        // Wechsel in die Highscore-Szene
+        switchScene(event, "/Layouts/highscore_layout.fxml");
+    }
+
 }

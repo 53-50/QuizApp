@@ -22,7 +22,7 @@ public class QuizController implements QuizBase, ControllerBase {
 
     private int questionCount = 0; // Tracks how many questions have been asked
     private static final int MAX_QUESTIONS = 10; // The total number of questions for the quiz
-    private String difficulty = "easy"; // Default difficulty
+    private String difficulty = "Leicht"; // Default difficulty
     private int correctAnswer = 0;//Variable to save correct Answers for Highscore-list
 
     @FXML
@@ -58,8 +58,17 @@ public class QuizController implements QuizBase, ControllerBase {
        loadNewQuestion();
     }
 
+    //Schwierigkeitsgrad abfragen
+    public String getDifficulty() {
+        return difficulty;
+    }
+
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty; // Set the difficulty based on user selection
+    }
+
+    public int getPunkte() {
+        return correctAnswer;
     }
 
     void loadNewQuestion() throws IOException {

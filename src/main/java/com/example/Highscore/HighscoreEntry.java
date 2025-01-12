@@ -6,9 +6,9 @@ public class HighscoreEntry {
     private String difficulty;
 
     public HighscoreEntry(String playerName, int score, String difficulty) {
-        this.playerName = getPlayerName();
-        this.score = getScore();
-        this.difficulty = getDifficulty();
+        this.playerName = playerName;
+        this.score = score;
+        this.difficulty = difficulty;
     }
 
     public String getPlayerName() {

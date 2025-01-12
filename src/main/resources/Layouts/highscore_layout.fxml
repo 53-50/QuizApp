@@ -1,25 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.HighscoreController">
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.Controller.HighscoreController">
 
-    <Label fx:id="lblHighscore" text="Highscore" wrapText="true">
+    <!-- Überschrift Highscore -->
+    <Label fx:id="Highscore" text="Highscore" wrapText="true">
         <font>
             <Font size="18.0" />
         </font>
     </Label>
-   <MenuButton id="FilterMenueButton" mnemonicParsing="false" text="Filter">
+
+    <!-- Filter Button -->
+    <HBox alignment="CENTER" spacing="10">
+   <MenuButton fx:id="HighscoreFilterButton" mnemonicParsing="false" text="Filter">
      <items>
        <MenuItem onAction="#onFilterLeicht" text="Leicht" />
        <MenuItem onAction="#onFilterMittel" text="Mittel" />
          <MenuItem onAction="#onFilterSchwer" text="Schwer" />
      </items>
    </MenuButton>
-    <TableView prefHeight="300.0" prefWidth="600.0">
+
+    <Button text="Filter zurücksetzen" onAction="#onClearFilter" />
+    </HBox>
+
+    <TableView fx:id="tableHighscore" prefHeight="300.0" prefWidth="600.0">
+
         <columns>
 
             <!-- LEICHT: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
@@ -45,12 +55,8 @@
                     <TableColumn fx:id="colSchwerScore" prefWidth="100.0" text="Score" />
                 </columns>
             </TableColumn>
-
         </columns>
     </TableView>
 
-    <Button onAction="#onBackClick" prefHeight="5.0" prefWidth="112.0" text="Zurück zum Menü">
-      <VBox.margin>
-         <Insets />
-      </VBox.margin></Button>
+    <Button onAction="#onBackClick" prefHeight="5.0" prefWidth="112.0" text="Zurück zum Menü" />
 </VBox>

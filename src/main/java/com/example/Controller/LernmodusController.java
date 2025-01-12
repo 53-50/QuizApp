@@ -106,4 +106,5 @@ public class LernmodusController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
 }
