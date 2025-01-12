@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10"
+      xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.Controller.LernmodusController">
+
+    <Label fx:id="lblQuestion" text="Hier erscheint die Frage" wrapText="true">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Label>
+
+    <TextField fx:id="txtAnswer" promptText="Gib hier deine Antwort ein" />
+
+    <Button fx:id="btnSubmit" text="Antwort abschicken" onAction="#onSubmitClick" />
+    <Button text="Zurück zum Menü" onAction="#onBackClick" />
+</VBox>

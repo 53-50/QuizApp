@@ -1,0 +1,25 @@
+/* application.css */
+/* allgemein ist es eine möglichkeit das Design von der Spiellogik zu trennen */
+
+.vbox {
+    -fx-background-color: rgba(0,0,0,0.7);
+    -fx-background-image: url("/images/background.png");
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-padding: 5 10;
+    -fx-font-size: 12px;
+    -fx-background-color: rgb(8, 5, 144);
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: white;
+    -fx-text-fill: rgb(8, 5, 144);
+}

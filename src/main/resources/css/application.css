@@ -1,0 +1,62 @@
+/* application.css */
+/* allgemein ist es eine möglichkeit das Design von der Spiellogik zu trennen */
+
+/* Hintergrundbild für die gesamte Szene */
+.root {
+    -fx-background-image: url("/images/background.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+/* Styling für den inneren VBox */
+.vbox-inner {
+    -fx-background-color: rgba(255,255,255,0.7);
+    -fx-padding: 20;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-spacing: 20;
+}
+
+/* Styling für Label */
+.label-welcome {
+    -fx-text-fill: black; /* Beispiel */
+    -fx-font-size: 24px;
+}
+
+.label-winorlose {
+    -fx-text-fill: white; /* Beispiel */
+    -fx-font-size: 24px;
+}
+
+.label-statistik {
+    -fx-text-fill: yellow;
+}
+
+/* Styling für Buttons */
+.button {
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: pink;
+}
+
+/* Styling für HBox */
+.hbox-radio {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+}
+
+/* Styling für Nameneingabe */
+
+.required-field {
+    -fx-border-color: black; /* RAND */
+}
+
+.error-message {
+    -fx-text-fill: red; /* Rote Farbe für die Fehlermeldung */
+}

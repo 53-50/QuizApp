@@ -1,0 +1,38 @@
+[
+  {
+    "question": "Wo begann die Reise dieser mutigen Maus?",
+    "correctAnswer": "New Mexico, USA (die Heimat von Käse-Legenden)",
+    "incorrectAnswers": ["Disneyland Paris, Frankreich (nein, es war kein Urlaub)",
+      "Moskau, Russland (schon Lenin mochte Mäuse)", "Burgenland, Österreich (mit einem Glas Wein)"]
+  },
+  {
+    "question": "Wann hat die erste Maus die galaktische Käsestraße betreten?",
+    "correctAnswer": "31.08.1950 (die Maus wollte das Universum erobern, genauso wie die Düsenflieger damals den Atlantik)",
+    "incorrectAnswers": ["22.07.1951 (die Maus wollte ihre Reise so schnell machen wie das erste Atom-U-Boot)",
+      "14.07.1949 (die Maus war ein echter Pionier – der Mond kam später)", "200 v. Chr. (Archimedes hatte damals schon crazy Ideen!)"]
+  },
+  {
+    "question": "Wie hieß die tapfere Maus?",
+    "correctAnswer": "Unbekannt (Held*innen brauchen keinen Namen)",
+    "incorrectAnswers": ["Tom (die Katze hat den Flug verpasst)",
+      "Jerry (der Käse-Liebhaber aus der Nachbarschaft)", "Mickey (Disney hat keine Rechte daran)"]
+  },
+  {
+    "question": "Welcher Käse hat es als erster ins Weltall geschafft?",
+    "correctAnswer": "Le Brouère (der Käse, der den Eiffelturm neidisch machte)",
+    "incorrectAnswers": ["Comté (dachte, es gibt Fondue im Orbit)",
+      "Emmentaler (der mit den Löchern für den Luftwiderstand)", "Noch keiner (die Käse-Lobby arbeitet daran!)"]
+  },
+  {
+    "question": "Wann hat es der Käse endlich ins Weltall geschafft?",
+    "correctAnswer": "07.02.2010 (dabei errang der Käse seinen „Weltmeistertitel“)",
+    "incorrectAnswers": ["31.08.1950 (da wollte die Maus ihn mitschmuggeln)",
+      "29.02.1951 (der Käse wartete auf ein Schaltjahr-Portal)", "06.06.2006 (das Datum klang einfach mystisch genug)"]
+  },
+  {
+    "question": "Woran scheiterte der Traum dieser heldenhaften Maus?",
+    "correctAnswer": "Fallschirmsystem versagte (Gravity hat gewonnen)",
+    "incorrectAnswers": ["Reaktion auf die Narkose (die Käse-Träumereien waren zu intensiv)",
+      "Altersschwäche (die galaktischen Jahre zählen halt doppelt)", "Käseentzug (eine wahre Tragödie für jede Maus)"]
+  }
+]
