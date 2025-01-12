@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
@@ -22,6 +23,15 @@ import java.io.*;
 public class MainMenuController {
 
     public RadioButton rbTutorial;
+
+    // benötigt für Schriftart umschalten
+    @FXML
+    private Button firstFont;
+    @FXML
+    private Button secondFont;
+    @FXML
+    private VBox root;
+
     @FXML
     private RadioButton rbEasy;
     @FXML
@@ -56,6 +66,8 @@ public class MainMenuController {
 
     @FXML
     private Button lernmodusButton;
+
+
 
 
     @FXML
@@ -381,5 +393,21 @@ public class MainMenuController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    // schriftartenwechsel gilt nur für Startseite
+    public void switchFirstFont(ActionEvent actionEvent) {
+        root.getStyleClass().removeAll("second-font");
+        root.getStyleClass().add("first-font");
+        secondFont.setDisable(false);
+        firstFont.setDisable(true);
+    }
+
+    // schriftartenwechsel gilt nur für Startseite
+    public void switchSecondFont(ActionEvent actionEvent) {
+        root.getStyleClass().removeAll("first-font");
+        root.getStyleClass().add("second-font");
+        firstFont.setDisable(false);
+        secondFont.setDisable(true);
     }
 }

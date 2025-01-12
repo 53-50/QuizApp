@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextField?>
 
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.MainMenuController">
+<VBox fx:id="root" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.MainMenuController">
 
     <!-- reinladen vom CSS File -->
     <stylesheets>
@@ -27,9 +27,9 @@
               <!-- Inner VBox for the content -->
               <VBox fx:id="innerVBox" alignment="CENTER" spacing="20" styleClass="vbox-inner">
          <children>
-         
+
                      <Label fx:id="welcomeLabel" styleClass="label-welcome" text="Willkommen zum Quiz!" />
-         
+
                      <!-- Namen Eingabe ermöglichen -->
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                      <children>
@@ -40,7 +40,7 @@
                          <Label fx:id="errorLabel" styleClass="error-message" text="Namen eingabe erforderlich!" visible="false" />
                      </children>
                   </HBox>
-         
+
                      <!-- HBox for arranging RadioButtons horizontally -->
                      <HBox fx:id="difficultyRadioButtons" alignment="CENTER" spacing="10" styleClass="hbox-radio">
             <children>
@@ -53,14 +53,21 @@
                             <RadioButton fx:id="rbHard" text="Schwer" toggleGroup="$difficultyToggleGroup" />
             </children>
                      </HBox>
-         
+
                      <!-- Action Buttons -->
                      <Button fx:id="spielStarten" onAction="#onStartQuizClick" styleClass="button" text="Spiel starten" />
                   <Button fx:id="lernmodusButton" mnemonicParsing="false" onAction="#showCsvUploadDialog" prefHeight="45.0" prefWidth="113.0" text="Lernmodus" />
                      <Button onAction="#onExitClick" styleClass="button" text="Beenden" />
                      <Button fx:id="tutorialSpielen" onAction="#onTutorialModeClick" styleClass="button" text="Tutorial beginnen" />
          </children>
-      
+
+                  <HBox>
+                      <children>
+                          <Button fx:id="firstFont" onAction="#switchFirstFont" styleClass="button" text="First Font" disable="true"/>
+                          <Button fx:id="secondFont" onAction="#switchSecondFont" styleClass="button" text="Second Font" />
+                      </children>
+                  </HBox>
+
               </VBox>
       </children>
    
