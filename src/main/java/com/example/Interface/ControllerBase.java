@@ -23,4 +23,6 @@ public interface ControllerBase {
         return 0;
     }
 
+    // default String getDifficulty() {return null; };
+
 }

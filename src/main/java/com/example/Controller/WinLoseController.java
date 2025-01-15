@@ -15,7 +15,7 @@ import com.example.Highscore.HighscoreManager;
 
 import java.io.IOException;
 
-public class WinLoseLayoutController {
+public class WinLoseController {
 
     public Label modusLabel;
     @FXML

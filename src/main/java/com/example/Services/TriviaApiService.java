@@ -56,7 +56,7 @@ public class TriviaApiService {
 
                 if (questions != null && questions.length > 0) {
 
-                    System.out.println("Deserialized question ID: " + questions[0].getId()); //Debugging
+                    //System.out.println("Deserialized question ID: " + questions[0].getId()); //Debugging
                     System.out.println("Deserialized question text: " + questions[0].getQuestionText()); //Debugging
 
                     return questions[0];

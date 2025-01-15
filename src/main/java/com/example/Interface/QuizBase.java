@@ -1,7 +1,10 @@
 package com.example.Interface;
 
 import com.example.Controller.PopupController;
-import com.example.Controller.WinLoseLayoutController;
+import com.example.Controller.QuizController;
+import com.example.Controller.WinLoseController;
+
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -13,11 +16,12 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public interface QuizBase {
-
 
     default void markQuestionAsRight(int punkte, int rightOnes, Label punktetext) {
         // Logik zum Markieren der aktuellen Frage als falsch
@@ -117,7 +121,7 @@ public interface QuizBase {
             Parent winRoot = loader.load();
 
             // WinScreenController holen
-            WinLoseLayoutController winLoseLayoutControllerController = loader.getController();
+            WinLoseController winLoseLayoutControllerController = loader.getController();
 
             // Referenz zum aktuellen QuizController und den Playernamen übergeben
             winLoseLayoutControllerController.setQuizController(controller);

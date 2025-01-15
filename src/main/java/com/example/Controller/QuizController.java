@@ -13,11 +13,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class QuizController implements QuizBase, ControllerBase {
 
@@ -72,7 +74,22 @@ public class QuizController implements QuizBase, ControllerBase {
         return correctAnswer;
     }
 
-    void loadNewQuestion() throws IOException {
+    @Override
+    public int getLeben() {
+        return 0;
+    }
+
+    @Override
+    public int getRightOnes() {
+        return 0;
+    }
+
+    @Override
+    public int getQuestions() {
+        return 0;
+    }
+
+    public void loadNewQuestion() throws IOException {
         if (questionCount >= MAX_QUESTIONS) {
             progressLabel.setText("Quiz complete!");
             showEndScreen();
@@ -133,12 +150,32 @@ public class QuizController implements QuizBase, ControllerBase {
  */
 
     // vom interface damit der exit button da ist
-    public void onQuizExit(ActionEvent event) {
+    public void onExit(ActionEvent event) {
         QuizBase.super.onExit(event, timer); // Ruft die default-Methode aus dem Interface auf
+    }
+
+
+    /* public void startTimer(AtomicInteger timeRemaining, Timeline timer, Label showTimer) {
+        QuizBase.super.startTimer(timeRemaining, timer, showTimer);
+    } */
+
+    @Override
+    public void markQuestionAsRight(int punkte, int rightOnes, Label punktetext) {
+        QuizBase.super.markQuestionAsRight(punkte, rightOnes, punktetext);
+    }
+
+    @Override
+    public void markQuestionAsWrong(int leben, Label lebentext) {
+        QuizBase.super.markQuestionAsWrong(leben, lebentext);
     }
 
     public void setAnswerButtonColors() {
         // logik für richtige button
+    }
+
+    @Override
+    public void resetAnswerButtonColors(Button antwort1, Button antwort2, Button antwort3, Button antwort4) {
+        QuizBase.super.resetAnswerButtonColors(antwort1, antwort2, antwort3, antwort4);
     }
 
     private void showEndScreen() {

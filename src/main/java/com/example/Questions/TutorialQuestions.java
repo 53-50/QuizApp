@@ -1,17 +1,16 @@
 package com.example.Questions;
 
+import com.example.Interface.Question;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class TutorialQuestions implements Question {
 
-    private String correctAnswer;
-    private List<String> incorrectAnswers;
-
-    protected String Id;
+    protected String correctAnswer;
+    protected List<String> incorrectAnswers;
     protected String QuestionText;
-    protected String category;
     protected String difficulty;
 
     public TutorialQuestions(String QuestionText, String correctAnswer, List<String> incorrectAnswers) {
@@ -22,17 +21,11 @@ public class TutorialQuestions implements Question {
 
     // Getter und Setter
 
-    public String getId() {
-        return Id;
-    }
 
     public String getQuestionText() {
         return QuestionText;
     }
 
-    public String getCategory() {
-        return category;
-    }
     public String getDifficulty() {
         return difficulty;
     }

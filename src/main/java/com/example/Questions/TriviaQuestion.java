@@ -1,9 +1,15 @@
 package com.example.Questions;
 
+import com.example.Interface.Question;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-public class TriviaQuestion extends BaseQuestionClass {
+public class TriviaQuestion implements Question {
+
+    protected String correctAnswer;
+    protected List<String> incorrectAnswers;
+    protected String QuestionText;
+    protected String difficulty;
 
     // Der Feldname muss 'question' sein, um mit dem JSON übereinzustimmen
     @SerializedName("question")
@@ -13,9 +19,9 @@ public class TriviaQuestion extends BaseQuestionClass {
     public void setAPIQuestionData(APIQuestionData APIQuestionData) {
         this.APIQuestionData = APIQuestionData;
         if (APIQuestionData != null) {
-            this.questionText = APIQuestionData.getText();
+            this.QuestionText = APIQuestionData.getText();
             // Debug-Ausgabe
-            System.out.println("Setter 'APIQuestionData' aufgerufen. FrageText gesetzt auf: " + this.questionText);
+            System.out.println("Setter 'APIQuestionData' aufgerufen. FrageText gesetzt auf: " + this.QuestionText);
         } else {
             System.out.println("Setter 'APIQuestionData' aufgerufen, aber Frage ist null.");
         }
@@ -24,6 +30,26 @@ public class TriviaQuestion extends BaseQuestionClass {
     // Getter für 'APIQuestionData' (optional)
     public APIQuestionData getAPIQuestionData() {
         return APIQuestionData;
+    }
+
+    @Override
+    public String getQuestionText() {
+        return QuestionText;
+    }
+
+    @Override
+    public String getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    @Override
+    public List<String> getIncorrectAnswers() {
+        return incorrectAnswers;
+    }
+
+    @Override
+    public String getDifficulty() {
+        return difficulty;
     }
 
     // Innere Klasse für das verschachtelte JSON-Objekt "question"
