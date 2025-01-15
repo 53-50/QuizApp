@@ -4,25 +4,41 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TutorialQuestions {
+public class TutorialQuestions implements Question {
 
-    private String question;
     private String correctAnswer;
     private List<String> incorrectAnswers;
 
-    public TutorialQuestions(String question, String correctAnswer, List<String> incorrectAnswers) {
-        this.question = question;
+    protected String Id;
+    protected String QuestionText;
+    protected String category;
+    protected String difficulty;
+
+    public TutorialQuestions(String QuestionText, String correctAnswer, List<String> incorrectAnswers) {
+        this.QuestionText = QuestionText;
         this.correctAnswer = correctAnswer;
         this.incorrectAnswers = incorrectAnswers;
     }
 
     // Getter und Setter
-    public String getQuestion() {
-        return question;
+
+    public String getId() {
+        return Id;
+    }
+
+    public String getQuestionText() {
+        return QuestionText;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+    public String getDifficulty() {
+        return difficulty;
     }
 
     public void setQuestion(String question) {
-        this.question = question;
+        this.QuestionText = QuestionText;
     }
 
     public String getCorrectAnswer() {

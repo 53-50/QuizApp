@@ -240,7 +240,7 @@ public class TutorialController implements QuizBase, ControllerBase {
             TutorialQuestions currentQuestion = questionsjson.get(currentQuestionIndex);
 
             // Frage anzeigen
-            tutorialfrage.setText(currentQuestion.getQuestion());
+            tutorialfrage.setText(currentQuestion.getQuestionText());
 
             // Antwortmöglichkeiten wurden randomized in TutorialQuestions hier nur Buttons zugewiesen
             List<String> allAnswers = currentQuestion.getAllAnswers();
