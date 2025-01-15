@@ -1,5 +1,7 @@
 package com.example.Questions;
 
+import com.example.Interface.Question;
+
 import java.util.List;
 
 public abstract class BaseQuestionClass implements Question {
