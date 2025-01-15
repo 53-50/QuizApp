@@ -3,6 +3,7 @@ package com.example.Controller;
 import com.example.Highscore.HighscoreManager;
 import com.example.Interface.ControllerBase;
 import com.example.Interface.QuizBase;
+import com.example.Questions.TutorialQuestions;
 import com.example.Services.TriviaApiService;
 import com.example.Questions.TriviaQuestion;
 import javafx.animation.Timeline;
@@ -111,7 +112,7 @@ public class QuizController implements QuizBase, ControllerBase {
             }
     }
 
-
+/*
     //Methode ist, um zurück zum Hauptmenü zu kommen
     private void returnToMainMenu() {
         try {
@@ -127,8 +128,9 @@ public class QuizController implements QuizBase, ControllerBase {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+
+ */
 
     // vom interface damit der exit button da ist
     public void onQuizExit(ActionEvent event) {
