@@ -19,6 +19,7 @@ import java.util.*;
 
 public class QuizController implements QuizBase, ControllerBase {
 
+
     //TODO - Katrin - Highscore
     private int correctAnswerHigh = 0;//Variable to save correct Answers for Highscore-list
 
@@ -33,6 +34,7 @@ public class QuizController implements QuizBase, ControllerBase {
     private int leben = 5;
     private int rightOnes;
 
+    private int streakcounter = 0;
 
     // ~~~~~~ API ~~~~~~
     //TriviaQuestion Klasse erstellen um später dann aus der API einzelne Variablen rauszuholen
@@ -53,6 +55,8 @@ public class QuizController implements QuizBase, ControllerBase {
     private Label progressLabel;
     @FXML
     private Label questionLabel;
+    @FXML
+    private Label streakLabel;
 
     @FXML
     private Button answerBtn1;
@@ -115,7 +119,7 @@ public class QuizController implements QuizBase, ControllerBase {
         timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
 
             //Debugging
-            System.out.println("~DEBUGGING~ *ST* Timer tick: " + timeRemaining);
+            //System.out.println("~DEBUGGING~ *ST* Timer tick: " + timeRemaining);
 
             timeRemaining--;
             quizTimerLabel.setText(timeRemaining + "s");
@@ -124,7 +128,7 @@ public class QuizController implements QuizBase, ControllerBase {
                 timer.stop(); // Timer stoppen
                 try {
                     //Debugging
-                    System.out.println("~DEBUGGING~ *ST* Timeout! Going to handleTimeOut()");
+                    //System.out.println("~DEBUGGING~ *ST* Timeout! Going to handleTimeOut()");
                     handleTimeOut(); // Zeit ist abgelaufen
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -141,7 +145,7 @@ public class QuizController implements QuizBase, ControllerBase {
     public void handleTimeOut() throws IOException {
 
         timer.stop();
-        System.out.println("~DEBUGGING~: *HTO* Timer gestoppt in handleTimeOut()"); //Debugging
+        //System.out.println("~DEBUGGING~: *HTO* Timer gestoppt in handleTimeOut()"); //Debugging
 
         // Frage als falsch werten und zur nächsten wechseln
         markQuestionAsWrong();
@@ -191,7 +195,7 @@ public class QuizController implements QuizBase, ControllerBase {
             questionCount++; //Zähler für gestellte Fragen
         }
 
-        System.out.println("~DEBUGGING~ *LNQ* loadNewQuestion aufgerufen. isFirstQuestion = " + isFirstQuestion);
+        //System.out.println("~DEBUGGING~ *LNQ* loadNewQuestion aufgerufen. isFirstQuestion = " + isFirstQuestion);
 
         // Prüfe, ob das Quiz weitergeht
         if (leben > 0 && questionCount <= questions) {
@@ -204,12 +208,12 @@ public class QuizController implements QuizBase, ControllerBase {
                 pause.play();
             } else {
                 // Direkt neue Frage vorbereiten
-                System.out.println("~DEBUGGING~ *LNQ* New Questione Else");
+                //System.out.println("~DEBUGGING~ *LNQ* New Questione Else");
                 prepareForNextQuestion();
             }
         } else {
             // Quiz beenden
-            System.out.println("~DEBUGGING~ *LNQ* Quiz endet. Endscreen wird geladen.");
+            //System.out.println("~DEBUGGING~ *LNQ* Quiz endet. Endscreen wird geladen.");
             timer.pause();
             showEndScreen();
         }
@@ -305,15 +309,15 @@ public class QuizController implements QuizBase, ControllerBase {
     public void displayCurrentQuestion() throws IOException, InterruptedException { //TODO
         // nachgeschaut ob noch fragen da sind
         //DEBUGGING
-        System.out.println("~DEBUGGING~ *DCQ* -> questionCount=" + questionCount
-        + ", timeRemaining=" + timeRemaining);
+        //System.out.println("~DEBUGGING~ *DCQ* -> questionCount=" + questionCount
+        //+ ", timeRemaining=" + timeRemaining);
 
         if (leben != 0) {
 
             recentQuestion = TriviaApiService.fetchSingleQuestion(difficultyQC); // Fetch a new question based on the selected difficulty
 
             // progressLabel.setText("~DEBUGGING~ *DCQ* Question " + questionCount + " of " + MAX_QUESTIONS); // Update the progress label
-            System.out.println("~DEBUGGING~ *DCQ* Loaded Question: " + recentQuestion.getQuestionText()); // Debugging
+            //System.out.println("~DEBUGGING~ *DCQ* Loaded Question: " + recentQuestion.getQuestionText()); // Debugging
 
                     questionLabel.setText(recentQuestion.getAPIQuestionData().getText());
 
@@ -336,7 +340,7 @@ public class QuizController implements QuizBase, ControllerBase {
                          answerBtn4.setUserData(allAnswers.get(3).equals(recentQuestion.getCorrectAnswer()));
 
         } else {
-            System.out.println("~DEBUGGING~ *DCQ* displayCurQue Endscreen");
+            //System.out.println("~DEBUGGING~ *DCQ* displayCurQue Endscreen");
             timer.pause();
             showEndScreen(); // Falls keine weiteren Fragen vorhanden sind zeig das Ende
         }
@@ -348,7 +352,7 @@ public class QuizController implements QuizBase, ControllerBase {
     @Override
     public void handleAnswerButtonClick(ActionEvent actionEvent) throws IOException, InterruptedException {
         //TODO
-        System.out.println("~DEBUGGING~ *oAC* Timer gestoppt bei Antwortauswahl");
+        //System.out.println("~DEBUGGING~ *oAC* Timer gestoppt bei Antwortauswahl");
         // Stoppe den Timer
         if (timer != null) {
             timer.stop();
@@ -388,6 +392,13 @@ public class QuizController implements QuizBase, ControllerBase {
 
     private void markQuestionAsWrong() {
         leben--;
+
+        if (streakcounter > 0) {
+            System.out.println("Streak Lost!");
+            streakLabel.setVisible(false);
+            streakcounter = 0;
+        }
+
         System.out.println("~DEBUGGING~ *mQaW* Leben: " + leben);
         QuizBase.super.markQuestionAsWrong(getLives(), quizLivesLabel);
     }
@@ -395,6 +406,43 @@ public class QuizController implements QuizBase, ControllerBase {
     private void markQuestionAsRight() {
         punkte += 10;
         rightOnes++;
+        streakcounter++;
+
+        final int streakGoal = 3;
+
+        switch (streakcounter) {
+            case 1:
+                streakLabel.setText("Streak: 1/"+ streakGoal);
+                streakLabel.setVisible(true);
+                break;
+            case 2:
+                streakLabel.setText("Streak: 2/"+ streakGoal);
+                streakLabel.setVisible(true);
+                break;
+            case 3:
+                streakLabel.setText("Streak: 3/" + streakGoal);
+                streakLabel.setVisible(true);
+                break;
+            }
+        /*
+        for (int i = 0; i < streakcounter; i++) {
+            streakcounter++;
+            System.out.println("Streak: " + streakcounter + "/" + streakGoal);
+            streakLabel.setVisible(true);
+            streakLabel.setText("Streak: " + streakcounter + "/" + streakGoal);
+        } */
+
+        if (streakcounter == streakGoal) {
+            leben++;
+            quizLivesLabel.setText(Integer.toString(leben));
+            streakLabel.setVisible(true);
+            streakLabel.setText("Streak! + 1 Life");
+            streakcounter = 0;
+        }
+
+        System.out.println("~DEBUGGING~ *mQaR* StreakCounter: " + streakcounter);
+        System.out.println("~DEBUGGING~ *mQaR* StreakGoal: " + streakGoal);
+
         System.out.println("~DEBUGGING~ *mQaR* punkte: " + punkte);
         System.out.println("~DEBUGGING~ *mQaR* rightOnes: " + rightOnes);
         QuizBase.super.markQuestionAsRight(getPoints(), getRightOnes(), quizPointsLabel);
@@ -417,7 +465,8 @@ public class QuizController implements QuizBase, ControllerBase {
         valuesForTime();
         quizLivesLabel.setText(Integer.toString(leben));
         quizTimerLabel.setText(Integer.toString(timeRemaining) + "s");
-        System.out.println("~DEBUGGING~ Leben nach setDifficulty: " + leben);
+
+        //System.out.println("~DEBUGGING~ Leben nach setDifficulty: " + leben);
     }
 
     @Override

@@ -13,23 +13,32 @@
                   <children>
                       <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                           <children>
-                              <ImageView fitHeight="26.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                   <image>
                                       <Image url="@../images/Lives_Heart_Pixel.png" />
                                   </image>
                               </ImageView>
                               <Label fx:id="quizLivesLabel" text="00" />
+                              <Label fx:id="streakLabel" text="0/0" visible="false" />
                           </children>
                       </VBox>
                       <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                           <children>
-                              <Label text="Points" />
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                  <image>
+                                      <Image url="@../images/points_star.png" />
+                                  </image>
+                              </ImageView>
                               <Label fx:id="quizPointsLabel" text="Points" />
                           </children>
                       </VBox>
                       <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                           <children>
-                              <Label text="Timer" />
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                  <image>
+                                      <Image url="@../images/timer_clock.png" />
+                                  </image>
+                              </ImageView>
                               <Label fx:id="quizTimerLabel" text="Timer" />
                           </children>
                       </VBox>

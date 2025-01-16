@@ -29,13 +29,13 @@ public class TriviaApiService {
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        // ~DEBUGGING~: Zeig mal HTTP-Code + JSON DEBUGGING
+        /*// ~DEBUGGING~: Zeig mal HTTP-Code + JSON DEBUGGING
         System.out.println("~DEBUGGING - API~"); //Debugging
         System.out.println("HTTP code: " + response.statusCode()); //Debugging
         System.out.println("Response body: " + response.body()); //Debugging
         System.out.println("=== RAW JSON ==="); //Debugging
         System.out.println(response.body()); //Debugging
-        System.out.println("===============\n"); //Debugging
+        System.out.println("===============\n"); //Debugging*/
 
 
         if (response.statusCode() == 200) {

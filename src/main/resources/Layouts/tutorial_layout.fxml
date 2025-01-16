@@ -20,7 +20,7 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                      <children>
-                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/KLKM_Logo.png" />
                            </image>
@@ -30,13 +30,21 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                      <children>
-                        <Label text="Points" />
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/points_star.png" />
+                           </image>
+                        </ImageView>
                         <Label fx:id="tutorialPunkte" text="Points" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                      <children>
-                        <Label text="Timer" />
+                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/hourglass.gif" />
+                           </image>
+                        </ImageView>
                         <Label fx:id="tutorialTimer" text="Timer" />
                      </children>
                   </VBox>
