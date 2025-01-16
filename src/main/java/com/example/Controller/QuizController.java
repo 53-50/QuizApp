@@ -35,12 +35,6 @@ public class QuizController implements QuizBase, ControllerBase {
     private int rightOnes;
 
 
-    //TODO
-    private String playerName; //namen übergabe
-    public void setPlayerName(String name) {
-        this.playerName = name;
-    } //Damit Spieler-Name übergeben wird
-
     // ~~~~~~ API ~~~~~~
     //TriviaQuestion Klasse erstellen um später dann aus der API einzelne Variablen rauszuholen
     TriviaQuestion recentQuestion;
@@ -70,6 +64,12 @@ public class QuizController implements QuizBase, ControllerBase {
     @FXML
     private Button answerBtn4;
 
+
+    //TODO
+    private String playerName; //namen übergabe
+    public void setPlayerName(String name) {
+        this.playerName = name;
+    } //Damit Spieler-Name übergeben wird
 
     public QuizController() throws IOException, InterruptedException {
         //leerer Konstruktor für API-FETCH - Wurde automatisch hinzugefügt -> Herausfinden wieso wichtig

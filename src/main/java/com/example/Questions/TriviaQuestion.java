@@ -1,10 +1,10 @@
 package com.example.Questions;
 
-import com.example.Interface.Question;
+import com.example.Interface.QuestionBase;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-public class TriviaQuestion implements Question {
+public class TriviaQuestion implements QuestionBase {
 
     protected String correctAnswer;
     protected List<String> incorrectAnswers;

@@ -1,12 +1,12 @@
 package com.example.Questions;
 
-import com.example.Interface.Question;
+import com.example.Interface.QuestionBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TutorialQuestions implements Question {
+public class TutorialQuestions implements QuestionBase {
 
     protected String correctAnswer;
     protected List<String> incorrectAnswers;

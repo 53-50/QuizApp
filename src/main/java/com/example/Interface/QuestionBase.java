@@ -2,7 +2,7 @@ package com.example.Interface;
 
 import java.util.List;
 
-public interface Question {
+public interface QuestionBase {
     // String getId();
     String getQuestionText();
     String getCorrectAnswer();

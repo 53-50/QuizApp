@@ -75,6 +75,10 @@ public class WinLoseController {
 
     public void displayPunkte() {
         int finalePunkte = controller.getPunkte();
+
+        if (controller.getLeben() > 0) {
+            finalePunkte += controller.getLeben() * 10;
+        }
         punkteLabel.setText("Punkte: " + finalePunkte);
     }
 
@@ -120,6 +124,11 @@ public class WinLoseController {
             if (fxmlPath.equals("/Layouts/tutorial_layout.fxml")) {
                 TutorialController tutorialController = loader.getController();
                 tutorialController.setPlayerName(playerName); // Name weitergeben
+            }
+
+            if (fxmlPath.equals("/Layouts/quiz_layout.fxml")) {
+                QuizController quizController = loader.getController();
+                quizController.setPlayerName(playerName); // Name weitergeben
             }
 
             // Aktuelle Stage holen und neue Szene setzen
