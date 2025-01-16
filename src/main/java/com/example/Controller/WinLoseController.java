@@ -52,7 +52,7 @@ public class WinLoseController {
         if (controller instanceof QuizController) {
             String difficulty = ((QuizController) controller).getDifficulty();
             if (difficulty == null || difficulty.isEmpty()) {
-                difficulty = "Unknown";
+                difficulty = "Error";
             }
             modus = "Quiz -> " + difficulty;
         } else if (controller instanceof TutorialController) { //wenn tutorial dann wird geschichte angezeigt und modus

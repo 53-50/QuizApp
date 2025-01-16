@@ -195,6 +195,7 @@ public class QuizController implements QuizBase, ControllerBase {
                 pause.play();
             } else {
                 // Direkt neue Frage vorbereiten
+                System.out.println("~DEBUGGING~ *LNQ* New Questione Else");
                 prepareForNextQuestion();
             }
         } else {
@@ -260,6 +261,7 @@ public class QuizController implements QuizBase, ControllerBase {
         //DEBUGGING
         System.out.println("~DEBUGGING~ *DCQ* -> questionCount=" + questionCount
         + ", timeRemaining=" + timeRemaining);
+
         if (leben != 0) {
 
             recentQuestion = TriviaApiService.fetchSingleQuestion(difficulty); // Fetch a new question based on the selected difficulty
