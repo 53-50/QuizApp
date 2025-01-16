@@ -8,7 +8,7 @@ public interface QuestionBase {
     String getCorrectAnswer();
     List<String> getIncorrectAnswers();
     // String getCategory();
-    String getDifficulty();
+    // String getDifficulty();
 
 }
 

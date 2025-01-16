@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10"
+<VBox alignment="CENTER" prefHeight="700.0" prefWidth="11000" spacing="10"
       xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.Controller.LernmodusController">
 

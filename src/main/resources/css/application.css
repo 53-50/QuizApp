@@ -2,22 +2,25 @@
 /* allgemein ist es eine möglichkeit das Design von der Spiellogik zu trennen */
 
 /* Hintergrundbild für die gesamte Szene */
+
+@font-face {
+    font-family: "Galindo";
+    src: url("/fonts/Galindo-Regular.ttf"); /* Relativer Pfad zur Schriftartdatei */
+}
+
 .root {
-    -fx-background-image: url("/images/background.png");
+    -fx-background-image: url("/images/menue_background.jpg");
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover;
-    -fx-background-position: center;
+    -fx-font-family: "Galindo";
+    -fx-alignment: center;
 }
 
-/* Styling für Schriftart */
-.first-font {
-    -fx-font-family: "Arial";
-    -fx-font-size: 14px;
-}
-
-.second-font {
-    -fx-font-family: "Comic Sans MS";
-    -fx-font-size: 14px;
+.rootQuiz {
+    -fx-background-image: url("/images/quiz_background.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-alignment: center;
 }
 
 /* Styling für den inneren VBox */

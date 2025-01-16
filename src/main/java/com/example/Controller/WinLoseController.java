@@ -17,7 +17,9 @@ import java.io.IOException;
 
 public class WinLoseController {
 
-    public Label modusLabel;
+    @FXML
+    private Label modusLabel;
+
     @FXML
     private Label punkteLabel;
 
@@ -45,22 +47,24 @@ public class WinLoseController {
     // damit der modus angezeigt werden kann
     private String modus;
 
+    private String difficulty;
+
     // controller setzten: tutorial oder quiz?
     public void setQuizController(ControllerBase controller) {
         this.controller = controller;
 
         if (controller instanceof QuizController) {
-            String difficulty = ((QuizController) controller).getDifficultyQC();
+            difficulty = ((QuizController) controller).getDifficultyQC();
             if (difficulty == null || difficulty.isEmpty()) {
                 difficulty = "Error";
             }
-            modus = "Quiz -> " + difficulty;
+            modus = "Quiz " + difficulty;
         } else if (controller instanceof TutorialController) { //wenn tutorial dann wird geschichte angezeigt und modus
-            geschichteLabel.setText("Wie wir nun erfahren haben, kam sie ein paar Jahre zu früh," +
-                    "verpasste den ersten Käse im All und fiel tragisch menschlichem Versagen zum Opfer." +
-                    "Lasst uns einen Moment innehalten, um diese unbekannte Maus zu ehren, die sich für" +
-                    "ihren Traum geopfert hat." +
-                    "THE END");
+            geschichteLabel.setText("As we now know, she arrived a few years too early, " +
+                            "missing the historic achievement of becoming the first cheese connoisseur in space. " +
+                            "Tragically, her dream was cut short by human error. Let us take a moment to honor " +
+                            "this unknown mouse, who gave her life in pursuit of her heroic aspirations. "+
+                            "THE END ");
             geschichteLabel.setVisible(true);
             modus = "Tutorial";
         } else if (controller instanceof LernmodusController){
@@ -70,38 +74,39 @@ public class WinLoseController {
     }
 
     public void displayModus() {
-        modusLabel.setText("Modus:" + modus);
+        modusLabel.setText("Mode:" + modus);
     }
 
     public void displayPunkte() {
-        int finalePunkte = controller.getPunkte();
+        int finalePunkte = controller.getPoints();
 
-        if (controller.getLeben() > 0) {
-            finalePunkte += controller.getLeben() * 10;
+        if (controller.getLives() > 0) {
+            finalePunkte += controller.getLives() * 5;
         }
-        punkteLabel.setText("Punkte: " + finalePunkte);
+        punkteLabel.setText("Points: " + finalePunkte);
+        System.out.println("~DEBUGGING~ *DP-WLC* punkte: " + finalePunkte);
     }
 
     public void displayRight() {
         int rightOnes = controller.getRightOnes();
-        rightOnesLabel.setText("Richtig beantwortet: " + rightOnes + "/" + controller.getQuestions());
+        rightOnesLabel.setText(rightOnes + "/" + controller.getQuestions());
     }
 
     public void displayLeben() {
-        int finaleLeben = controller.getLeben();
+        int finaleLeben = controller.getLives();
 
         if (finaleLeben < 0) {
-            lebenLabel.setText("Remaining Leben: Keine");
+            lebenLabel.setText("Remaining Lives: None");
         } else {
-            lebenLabel.setText("Remaining Leben: " + finaleLeben);
+            lebenLabel.setText("Remaining Lives: " + finaleLeben);
         }
     }
 
     public void displayWinOrLose() {
-        if (controller.getLeben() > 0) {
-            endeLabel.setText("Gewonnen");
+        if (controller.getLives() > 0) {
+            endeLabel.setText("You Won! Congratulations little Mouse!");
         } else {
-            endeLabel.setText("Verloren! Keine Leben mehr übrig :(");
+            endeLabel.setText("You died like the mouse! :(");
         }
     }
 
@@ -129,6 +134,7 @@ public class WinLoseController {
             if (fxmlPath.equals("/Layouts/quiz_layout.fxml")) {
                 QuizController quizController = loader.getController();
                 quizController.setPlayerName(playerName); // Name weitergeben
+                quizController.setDifficulty(difficulty);
             }
 
             // Aktuelle Stage holen und neue Szene setzen
@@ -167,7 +173,7 @@ public class WinLoseController {
         // Nur Werte vom Quiz Controller werden übernommen
         if (controller instanceof QuizController) {
             // Dann Highscore-Eintrag schreiben
-            int finalePunkte = controller.getPunkte();
+            int finalePunkte = controller.getPoints();
             // Difficulty abfragen
             String difficulty = ((QuizController) controller).getDifficultyQC();
 
@@ -181,7 +187,7 @@ public class WinLoseController {
     public void onHighscoreClick(ActionEvent event) {
         // Score ins Highscore-System übernehmen, nur wenn QuizController
         if (controller instanceof QuizController) {
-            int finalePunkte = controller.getPunkte();
+            int finalePunkte = controller.getPoints();
             String difficulty = ((QuizController) controller).getDifficultyQC();
             HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);
         }
