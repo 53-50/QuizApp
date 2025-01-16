@@ -38,11 +38,7 @@ public class QuizController implements QuizBase, ControllerBase {
     //TriviaQuestion Klasse erstellen um später dann aus der API einzelne Variablen rauszuholen
     TriviaQuestion recentQuestion;
     //Default Difficulty wird benötigt, damit API funktioniert -> auch wenn es dann geändert wird
-    private String difficultyQC = "hard"; // Default difficulty
-
-    //private String difficultyQC = (TriviaQuestion) getDifficultyQC();
-
-
+    private String difficultyQC = "easy"; // Default difficulty
 
     @FXML
     public Label quizLivesLabel;
