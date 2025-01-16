@@ -11,19 +11,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Arrays;
-import java.util.Map;
 
-
-import com.example.Questions.TriviaQuestion;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 public class TriviaApiService {
     private static final String BASE_URL = "https://the-trivia-api.com/v2/questions?limit=1";
@@ -41,12 +29,12 @@ public class TriviaApiService {
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        /* // Debug: Zeig mal HTTP-Code + JSON DEBUGGING
-        System.out.println("HTTP code: " + response.statusCode()); //Debugging
-        System.out.println("Response body: " + response.body()); //Debugging
-        System.out.println("=== RAW JSON ==="); //Debugging
+        /* // ~DEBUGGING~: Zeig mal HTTP-Code + JSON DEBUGGING
+        System.out.println("~DEBUGGING~HTTP code: " + response.statusCode()); //Debugging
+        System.out.println("~DEBUGGING~Response body: " + response.body()); //Debugging
+        System.out.println("~DEBUGGING~=== RAW JSON ==="); //Debugging
         System.out.println(response.body()); //Debugging
-        System.out.println("===============\n"); //Debugging
+        System.out.println(~DEBUGGING~"===============\n"); //Debugging
         */
 
         if (response.statusCode() == 200) {
@@ -58,8 +46,8 @@ public class TriviaApiService {
 
                 if (questions != null && questions.length > 0) {
                     //DEBUGGING
-                    //System.out.println("DEBUGGING Deserialized question ID: " + questions[0].getId()); //Debugging
-                   // System.out.println("DEBUGGING Deserialized question text: " + questions[0].getQuestionText()); //Debugging
+                    //System.out.println("~DEBUGGING~ Deserialized question ID: " + questions[0].getId()); //Debugging
+                   // System.out.println("~DEBUGGING~ Deserialized question text: " + questions[0].getQuestionText()); //Debugging
 
                     return questions[0];
                 } else {
@@ -75,38 +63,3 @@ public class TriviaApiService {
     }
 }
 
-
-/*
-
-public class TriviaApiService {
-    private static final String BASE_URL = "https://the-trivia-api.com/v2/questions?limit=1";
-    private static final HttpClient httpClient = HttpClient.newHttpClient();
-    private static final Gson gson = new Gson();
-
-    public static TriviaQuestion fetchSingleQuestion(String difficulty) throws IOException, InterruptedException {
-        String apiUrl = BASE_URL + "&difficulties=" + difficulty;
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .GET()
-                .build();
-
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() == 200) {
-            String json = response.body();
-            System.out.println("API Response: " + json); // Debugging
-
-            try {
-                TriviaQuestion[] questions = gson.fromJson(json, TriviaQuestion[].class);
-                if (questions.length == 0) throw new IOException("No questions found in API response");
-                return questions[0];
-            } catch (JsonSyntaxException e) {
-                throw new IOException("Error parsing JSON: " + e.getMessage());
-            }
-        } else {
-            throw new IOException("API call failed with HTTP code: " + response.statusCode());
-        }
-    }
-}
-*/

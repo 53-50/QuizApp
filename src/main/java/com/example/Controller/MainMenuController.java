@@ -154,7 +154,7 @@ public class MainMenuController {
                // quizController.resetQuiz(); // Reset the quiz for a new game --> Ist in QuizController, aber not used
 
                 // Start the quiz (load the first question)
-                quizController.loadNewQuestion(); // <-- Call it explicitly here
+                quizController.loadNewQuestion(true); // <-- Call it explicitly here
 
                 // Switch to the quiz scene
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

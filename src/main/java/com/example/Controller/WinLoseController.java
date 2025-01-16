@@ -49,8 +49,13 @@ public class WinLoseController {
     public void setQuizController(ControllerBase controller) {
         this.controller = controller;
 
-        //wenn tutorial dann wird geschichte angezeigt und modus
-        if (controller instanceof TutorialController) {
+        if (controller instanceof QuizController) {
+            String difficulty = ((QuizController) controller).getDifficulty();
+            if (difficulty == null || difficulty.isEmpty()) {
+                difficulty = "Unknown";
+            }
+            modus = "Quiz -> " + difficulty;
+        } else if (controller instanceof TutorialController) { //wenn tutorial dann wird geschichte angezeigt und modus
             geschichteLabel.setText("Wie wir nun erfahren haben, kam sie ein paar Jahre zu früh," +
                     "verpasste den ersten Käse im All und fiel tragisch menschlichem Versagen zum Opfer." +
                     "Lasst uns einen Moment innehalten, um diese unbekannte Maus zu ehren, die sich für" +
@@ -58,8 +63,8 @@ public class WinLoseController {
                     "THE END");
             geschichteLabel.setVisible(true);
             modus = "Tutorial";
-        } else if(controller instanceof QuizController) {
-            modus = "Quiz";
+        } else if (controller instanceof LernmodusController){
+            modus = "LearningModus";
         }
 
     }
@@ -128,10 +133,19 @@ public class WinLoseController {
 
     // spiel nochmal spielen
     public void onRetryClick(ActionEvent event) {
-        switchScene(event, "/Layouts/tutorial_layout.fxml");
+        if (controller instanceof TutorialController) {
+            switchScene(event, "/Layouts/tutorial_layout.fxml");
+        } else if (controller instanceof QuizController) {
+            switchScene(event, "/Layouts/quiz_layout.fxml");
+        } else if (controller instanceof LernmodusController) {
+            switchScene(event, "/Layouts/lernmodus_layout.fxml");
+        } else {
+            switchScene(event, "/Layouts/main_menu.fxml");
+            System.out.println("~DEBUGGING~ something went wrong");
+        }
     }
 
-    //Zum Hauptmenü
+        //Zum Hauptmenü
     public void onHomeClick(ActionEvent event) {
         switchScene(event, "/Layouts/main_menu.fxml");
 

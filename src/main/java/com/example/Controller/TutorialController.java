@@ -298,7 +298,7 @@ public class TutorialController implements QuizBase, ControllerBase {
     }
 
     private void markQuestionAsRight() {
-        punkte++;
+        punkte += 10;
         rightOnes++;
         QuizBase.super.markQuestionAsRight(getPunkte(), getRightOnes(), tutorialPunkte);
     }
@@ -311,7 +311,7 @@ public class TutorialController implements QuizBase, ControllerBase {
         questionsasked++; // Zähler für gestellte Fragen erhöhen
 
         if (leben > 0 && questionsasked <= questionsjson.size()) {
-            PauseTransition pause = new PauseTransition(Duration.seconds(3)); // 3 Sekunden Pause
+            PauseTransition pause = new PauseTransition(Duration.seconds(1.5)); // 3 Sekunden Pause
 
             pause.setOnFinished(event -> {
                 // Nach der Pause: neue Frage anzeigen und antwortbutton wieder ermöglichen

@@ -26,7 +26,7 @@ public interface QuizBase {
     void checkAnswer(String givenAnswer) throws IOException, InterruptedException;
 
     default void markQuestionAsRight(int points, int rightOnes, Label pointsLabel) {
-        // Logik zum Markieren der aktuellen Frage als falsch
+        // Logik zum Markieren der aktuellen Frage als richtig
         pointsLabel.setText(Integer.toString(points));
     }
 
