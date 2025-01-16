@@ -318,7 +318,7 @@ public class QuizController implements QuizBase, ControllerBase {
             // progressLabel.setText("~DEBUGGING~ *DCQ* Question " + questionCount + " of " + MAX_QUESTIONS); // Update the progress label
             //System.out.println("~DEBUGGING~ *DCQ* Loaded Question: " + recentQuestion.getQuestionText()); // Debugging
 
-                    questionLabel.setText(recentQuestion.getAPIQuestionData().getText());
+                    questionLabel.setText(recentQuestion.getAPIQuestionData().getText()); //Setter in TriviaQuestion
 
                          // Combine and shuffle answers
                          List<String> allAnswers = new ArrayList<>();

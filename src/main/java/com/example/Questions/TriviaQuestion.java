@@ -5,36 +5,52 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class TriviaQuestion implements QuestionBase {
+    private String correctAnswer; //Aus Interface
+    private List<String> incorrectAnswers; //Aus Interface
+    private String QuestionText; //Aus Interface
 
-    protected String correctAnswer;
-    protected List<String> incorrectAnswers;
-    protected String QuestionText;
-    //protected String difficulty;
 
     // Der Feldname muss 'question' sein, um mit dem JSON übereinzustimmen
-    @SerializedName("question")
+    @SerializedName("question") //Damit aus dem gson zum Json gelesen werden kann -> Fragen
     private APIQuestionData APIQuestionData;
 
-    /*
-    // Setter für 'APIQuestionData', wird von Gson aufgerufen
-    public void setAPIQuestionData(APIQuestionData APIQuestionData) {
-        this.APIQuestionData = APIQuestionData;
-        if (APIQuestionData != null) {
-            this.QuestionText = APIQuestionData.getText();
-            // Debug-Ausgabe
-            System.out.println("Setter ‘APIQuestionData’ called. QuestionText set to: " + this.QuestionText);
-        } else {
-            System.out.println("Setter ‘APIQuestionData’ called, but question is null.");
-        }
+    // Innere Klasse für das verschachtelte JSON-Objekt "question"
+    public static class APIQuestionData {
+        private String text;
+        public String getText() { return text; }
+        public void setText(String text) { this.text = text; }
     }
-*/
 
-    // Getter für 'APIQuestionData' (optional)
+
+    // Getter/Setter
+
     public APIQuestionData getAPIQuestionData() {
         return APIQuestionData;
     }
 
-    //TODO Setter generieren
+    public void setAPIQuestionData(TriviaQuestion.APIQuestionData APIQuestionData) {
+        this.APIQuestionData = APIQuestionData;
+    }
+
+
+    @Override
+    public String getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
+
+
+    @Override
+    public List<String> getIncorrectAnswers() {
+        return incorrectAnswers;
+    }
+
+    public void setIncorrectAnswers(List<String> incorrectAnswers) {
+        this.incorrectAnswers = incorrectAnswers;
+    }
 
 
     @Override
@@ -42,29 +58,13 @@ public class TriviaQuestion implements QuestionBase {
         return QuestionText;
     }
 
-    @Override
-    public String getCorrectAnswer() {
-        return correctAnswer;
-    }
-
-    @Override
-    public List<String> getIncorrectAnswers() {
-        return incorrectAnswers;
-    }
-
-    /*
-    @Override
-    public String getDifficulty() {
-        return difficulty;
-    }
-*/
-
-    // Innere Klasse für das verschachtelte JSON-Objekt "question"
-    public static class APIQuestionData {
-        private String text;
-
-        public String getText() { return text; }
-        public void setText(String text) { this.text = text; }
+    public void setQuestionText(String questionText) {
+        QuestionText = questionText;
     }
 }
+
+
+
+
+
 

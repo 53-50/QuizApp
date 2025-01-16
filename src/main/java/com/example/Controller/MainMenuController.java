@@ -144,8 +144,8 @@ public class MainMenuController {
                 quizController.setPlayerName(currentname);
                 quizController.setDifficulty(getSelectedDifficultyMMC()); //Doppelt, why??
 
-                selectedDifficultyMMC = getSelectedDifficultyMMC();
-                quizController.setDifficulty(selectedDifficultyMMC); // Pass the selected difficulty
+               // selectedDifficultyMMC = getSelectedDifficultyMMC();
+                //quizController.setDifficulty(selectedDifficultyMMC); // Pass the selected difficulty
 
                 // Start the quiz (load the first question)
                 quizController.loadNewQuestion(true); // <-- Call it explicitly here
