@@ -50,9 +50,9 @@ public class WinLoseController {
         this.controller = controller;
 
         if (controller instanceof QuizController) {
-            String difficulty = ((QuizController) controller).getDifficulty();
+            String difficulty = ((QuizController) controller).getDifficultyQC();
             if (difficulty == null || difficulty.isEmpty()) {
-                difficulty = "Unknown";
+                difficulty = "Error";
             }
             modus = "Quiz -> " + difficulty;
         } else if (controller instanceof TutorialController) { //wenn tutorial dann wird geschichte angezeigt und modus
@@ -169,7 +169,7 @@ public class WinLoseController {
             // Dann Highscore-Eintrag schreiben
             int finalePunkte = controller.getPunkte();
             // Difficulty abfragen
-            String difficulty = ((QuizController) controller).getDifficulty();
+            String difficulty = ((QuizController) controller).getDifficultyQC();
 
 
             HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);
@@ -182,7 +182,7 @@ public class WinLoseController {
         // Score ins Highscore-System übernehmen, nur wenn QuizController
         if (controller instanceof QuizController) {
             int finalePunkte = controller.getPunkte();
-            String difficulty = ((QuizController) controller).getDifficulty();
+            String difficulty = ((QuizController) controller).getDifficultyQC();
             HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);
         }
 
