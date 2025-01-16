@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import java.net.URL?>
-<AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.TutorialController" styleClass="rootQuiz" >
+<AnchorPane prefHeight="700.0" prefWidth="1100.0" styleClass="rootQuiz" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.TutorialController">
 
    <!-- reinladen vom CSS File -->
    <stylesheets>
@@ -18,8 +14,35 @@
    </stylesheets>
 
    <children>
-      <VBox alignment="CENTER" fillWidth="false" prefHeight="500.0" prefWidth="800.0">
+      <VBox alignment="CENTER" fillWidth="false" prefHeight="700.0" prefWidth="1100.0">
          <children>
+            <HBox alignment="CENTER" prefHeight="80.0" prefWidth="800.0" spacing="150.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
+                     <children>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/KLKM_Logo.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="tutorialLeben" text="00" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
+                     <children>
+                        <Label text="Points" />
+                        <Label fx:id="tutorialPunkte" text="Points" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
+                     <children>
+                        <Label text="Timer" />
+                        <Label fx:id="tutorialTimer" text="Timer" />
+                     </children>
+                  </VBox>
+                  <Button mnemonicParsing="false" onAction="#onTutorialExit" text="Exit" />
+               </children>
+            </HBox>
             <Label fx:id="fragenanzahl" text="0/0" />
             <Label fx:id="tutorialfrage" text="Question">
                <VBox.margin>
@@ -51,32 +74,5 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </VBox>
-      <HBox alignment="CENTER" prefHeight="80.0" prefWidth="800.0" spacing="150.0">
-         <children>
-            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
-               <children>
-                  <ImageView pickOnBounds="true" preserveRatio="true" fitHeight="50.0" fitWidth="50.0">
-                     <image>
-                        <Image url="@../images/KLKM_Logo.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="tutorialLeben" text="00" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
-               <children>
-                  <Label text="Points" />
-                  <Label fx:id="tutorialPunkte" text="Points" />
-               </children>
-            </VBox>
-            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
-               <children>
-                  <Label text="Timer" />
-                  <Label fx:id="tutorialTimer" text="Timer" />
-               </children>
-            </VBox>
-            <Button mnemonicParsing="false" onAction="#onTutorialExit" text="Exit" />
-         </children>
-      </HBox>
    </children>
 </AnchorPane>
