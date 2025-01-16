@@ -193,9 +193,11 @@ public class MainMenuController {
     @FXML
     private void showCsvUploadDialog() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("CSV-Datei hochladen/Template herunterladen");
+        alert.setTitle("Lernmodus");
         alert.setHeaderText(null);
-        alert.setContentText("Bitte .csv file hochladen oder ein Template herunterladen falls du noch keines hast.");
+        alert.setContentText("Willkommen zum Lernmodus !\n\nBitte lade zuerst ein Template herunter, falls du noch keines " +
+                "hast und trage deine Fragen in der Spalte <Fragen> und Antworten in der Spalte <Antworten> ein.\n\nAnschließend " +
+                "lade das ausgefüllte Template hoch. Das Spiel startet automatisch nach dem hochladen\n\nViel Spaß beim lernen :)");
 
         try {
             ImageView customIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/KLKM_Logo.png")));
@@ -268,6 +270,7 @@ public class MainMenuController {
                 showAlert("Fehler", "Das Template konnte nicht heruntergeladen werden.");
             }
         }
+        showCsvUploadDialog();
     }
 
     private void startLernmodus() {
