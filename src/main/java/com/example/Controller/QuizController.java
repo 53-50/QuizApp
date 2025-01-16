@@ -2,7 +2,6 @@ package com.example.Controller;
 
 import com.example.Interface.ControllerBase;
 import com.example.Interface.QuizBase;
-import com.example.Questions.TutorialQuestions;
 import com.example.Services.TriviaApiService;
 import com.example.Questions.TriviaQuestion;
 import javafx.animation.KeyFrame;
@@ -45,7 +44,7 @@ public class QuizController implements QuizBase, ControllerBase {
     //TriviaQuestion Klasse erstellen um später dann aus der API einzelne Variablen rauszuholen
     TriviaQuestion recentQuestion;
     //Default Difficulty wird benötigt, damit API funktioniert -> auch wenn es dann geändert wird
-    private String difficulty = "easy"; // Default difficulty
+    private String difficultyQC = "easy"; // Default difficulty
 
     @FXML
     public Label quizLivesLabel;
@@ -264,7 +263,7 @@ public class QuizController implements QuizBase, ControllerBase {
 
         if (leben != 0) {
 
-            recentQuestion = TriviaApiService.fetchSingleQuestion(difficulty); // Fetch a new question based on the selected difficulty
+            recentQuestion = TriviaApiService.fetchSingleQuestion(difficultyQC); // Fetch a new question based on the selected difficulty
 
             // progressLabel.setText("~DEBUGGING~ *DCQ* Question " + questionCount + " of " + MAX_QUESTIONS); // Update the progress label
             System.out.println("~DEBUGGING~ *DCQ* Loaded Question: " + recentQuestion.getQuestionText()); // Debugging
@@ -360,8 +359,8 @@ public class QuizController implements QuizBase, ControllerBase {
 
     // vom interface damit der exit button da ist
 
-    public void setDifficulty(String userdifficulty) { //Brauchen wir
-        this.difficulty = userdifficulty; // Set the difficulty based on user selection
+    public void setDifficulty(String selectedDifficultyQC) { //Brauchen wir
+        this.difficultyQC = selectedDifficultyQC; // Set the difficulty based on user selection
     }
 
     public void setAnswerButtonColors() {
@@ -384,8 +383,8 @@ public class QuizController implements QuizBase, ControllerBase {
     }
 
     //Schwierigkeitsgrad abfragen
-    public String getDifficulty() {
-        return difficulty;
+    public String getDifficultyQC() {
+        return difficultyQC;
     }
 
     /*

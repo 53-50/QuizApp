@@ -113,7 +113,8 @@ public class MainMenuController {
         });
     }
 
-    public String getSelectedDifficulty() {
+    public String getSelectedDifficultyMMC() {
+        //User wählt schwierigkeit aus, nach Klick auf "Quiz-Play" wird difficulty an QuizController übergeben
         // Check which radio button is selected
         if (difficultyToggleGroup.getSelectedToggle() == rbEasy) {
             return "easy";
@@ -128,15 +129,10 @@ public class MainMenuController {
 
     @FXML
     private void onStartQuizClick(ActionEvent event) {
-        String selectedDifficulty = getSelectedDifficulty();
+        //User wählt schwierigkeit aus, nach Klick auf "Quiz-Play" wird difficulty an QuizController übergeben
+        String selectedDifficultyMMC = getSelectedDifficultyMMC();
 
-        if (selectedDifficulty.equals("learn")) {
-            // Wenn Lernmodus ausgewählt ist, lade die Lernmodus-Szene
-            /*loadLearnModeScene(event);*/
-        } else if (selectedDifficulty.equals("easy") || selectedDifficulty.equals("medium") || selectedDifficulty.equals("hard")){
-            // Andernfalls starte den API-basierten Quiz-Modus
-            // loadQuizScene(event, selectedDifficulty);
-
+            if (selectedDifficultyMMC.equals("easy") || selectedDifficultyMMC.equals("medium") || selectedDifficultyMMC.equals("hard")){
             try {
                 // Load the Quiz layout
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/quiz_layout.fxml"));
@@ -146,12 +142,10 @@ public class MainMenuController {
                 QuizController quizController = loader.getController();
                 // damit der playername auch beim quizspielen übergeben wird
                 quizController.setPlayerName(currentname);
-                quizController.setDifficulty(getSelectedDifficulty());
+                quizController.setDifficulty(getSelectedDifficultyMMC()); //Doppelt, why??
 
-                selectedDifficulty = getSelectedDifficulty();
-                quizController.setDifficulty(selectedDifficulty); // Pass the selected difficulty
-
-               // quizController.resetQuiz(); // Reset the quiz for a new game --> Ist in QuizController, aber not used
+                selectedDifficultyMMC = getSelectedDifficultyMMC();
+                quizController.setDifficulty(selectedDifficultyMMC); // Pass the selected difficulty
 
                 // Start the quiz (load the first question)
                 quizController.loadNewQuestion(true); // <-- Call it explicitly here
@@ -304,6 +298,7 @@ public class MainMenuController {
         stage.close();
     }
 
+    /*
     private void loadQuizScene(ActionEvent event, String difficulty) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/quiz_layout.fxml"));
@@ -325,6 +320,7 @@ public class MainMenuController {
             e.printStackTrace();
         }
     }
+*/
 
     // Namen Eingabe - Wird mal nur gespeichert in der Variable und dann bei Enter in der Console ausgegeben
     @FXML
