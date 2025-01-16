@@ -206,7 +206,6 @@ public class TutorialController implements QuizBase, ControllerBase {
 
     //was passiert wenn zeit vorbei
     private void handleTimeOut() {
-        System.out.println("Zeit abgelaufen! Frage wird als falsch gewertet.");
         // Frage als falsch werten und zur nächsten wechseln
         markQuestionAsWrong();
         showFeedback("Zeit abgelaufen! Wegen dir stirbt die Maus :(", false);

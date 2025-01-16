@@ -23,14 +23,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public interface QuizBase {
 
-    default void markQuestionAsRight(int punkte, int rightOnes, Label punktetext) {
+    void checkAnswer(String givenAnswer) throws IOException, InterruptedException;
+
+    default void markQuestionAsRight(int points, int rightOnes, Label pointsLabel) {
         // Logik zum Markieren der aktuellen Frage als falsch
-        punktetext.setText(Integer.toString(punkte));
+        pointsLabel.setText(Integer.toString(points));
     }
 
-    default void markQuestionAsWrong(int leben, Label lebentext) {
+    default void markQuestionAsWrong(int lives, Label livesLabel) {
         // Logik zum Markieren der aktuellen Frage als falsch
-        lebentext.setText(Integer.toString(leben));
+        livesLabel.setText(Integer.toString(lives));
     }
 
     // richtig und falsch buttons anzeigen

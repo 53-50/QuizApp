@@ -11,6 +11,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.Map;
 
 
 import com.example.Questions.TriviaQuestion;
@@ -28,9 +30,9 @@ public class TriviaApiService {
     private static final HttpClient httpClient = HttpClient.newHttpClient();
     private static final Gson gson = new Gson();
 
-    public static TriviaQuestion fetchSingleQuestion(String difficulty) throws IOException, InterruptedException {
+    public static TriviaQuestion fetchSingleQuestion(String APIdifficulty) throws IOException, InterruptedException {
         // difficulty-Parameter anhängen
-        String apiUrl = BASE_URL + "&difficulties=" + difficulty;
+        String apiUrl = BASE_URL + "&difficulties=" + APIdifficulty;
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiUrl))
@@ -39,13 +41,13 @@ public class TriviaApiService {
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-        System.out.println("=== RAW JSON ===");
-        System.out.println(response.body());
-        System.out.println("===============\n");
-
-        // Debug: Zeig mal HTTP-Code + JSON
-        System.out.println("HTTP code: " + response.statusCode());
-        System.out.println("Response body: " + response.body());
+        /* // Debug: Zeig mal HTTP-Code + JSON DEBUGGING
+        System.out.println("HTTP code: " + response.statusCode()); //Debugging
+        System.out.println("Response body: " + response.body()); //Debugging
+        System.out.println("=== RAW JSON ==="); //Debugging
+        System.out.println(response.body()); //Debugging
+        System.out.println("===============\n"); //Debugging
+        */
 
         if (response.statusCode() == 200) {
             String json = response.body();
@@ -55,9 +57,9 @@ public class TriviaApiService {
                 TriviaQuestion[] questions = gson.fromJson(json, TriviaQuestion[].class);
 
                 if (questions != null && questions.length > 0) {
-
-                    //System.out.println("Deserialized question ID: " + questions[0].getId()); //Debugging
-                    System.out.println("Deserialized question text: " + questions[0].getQuestionText()); //Debugging
+                    //DEBUGGING
+                    //System.out.println("DEBUGGING Deserialized question ID: " + questions[0].getId()); //Debugging
+                   // System.out.println("DEBUGGING Deserialized question text: " + questions[0].getQuestionText()); //Debugging
 
                     return questions[0];
                 } else {

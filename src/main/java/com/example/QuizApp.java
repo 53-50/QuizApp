@@ -31,8 +31,7 @@ public class QuizApp extends Application {
         primaryStage.getIcons().add(new Image("/images/KLKM_Logo.png")) ;
 
         // Breite der Stage fix festlegen am Beginn
-        primaryStage.setWidth(800);
-        primaryStage.setHeight(500);
+        primaryStage.setMaximized(true);
 
         // Zum Debuggen vielleicht hilfreich weil Infos angezeigt wegen Versionen
         // System.out.println(System.getProperties());

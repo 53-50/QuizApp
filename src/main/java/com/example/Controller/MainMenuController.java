@@ -113,7 +113,7 @@ public class MainMenuController {
         });
     }
 
-    private String getSelectedDifficulty() {
+    public String getSelectedDifficulty() {
         // Check which radio button is selected
         if (difficultyToggleGroup.getSelectedToggle() == rbEasy) {
             return "easy";
@@ -146,11 +146,12 @@ public class MainMenuController {
                 QuizController quizController = loader.getController();
                 // damit der playername auch beim quizspielen übergeben wird
                 quizController.setPlayerName(currentname);
+                quizController.setDifficulty(getSelectedDifficulty());
 
                 selectedDifficulty = getSelectedDifficulty();
                 quizController.setDifficulty(selectedDifficulty); // Pass the selected difficulty
 
-                quizController.resetQuiz(); // Reset the quiz for a new game
+               // quizController.resetQuiz(); // Reset the quiz for a new game --> Ist in QuizController, aber not used
 
                 // Start the quiz (load the first question)
                 quizController.loadNewQuestion(); // <-- Call it explicitly here

@@ -44,7 +44,6 @@
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
         </VBox>
-
         <HBox alignment="CENTER" prefHeight="80.0" prefWidth="800.0" spacing="150.0">
             <children>
                 <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
@@ -54,16 +53,16 @@
                                 <Image url="@../images/KLKM_Logo.png" />
                             </image>
                         </ImageView>
-                        <Label fx:id="quizLeben" text="00" />
+                        <Label fx:id="quizLivesLabel" text="00" />
                     </children>
                 </VBox>
                 <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                     <children>
                         <Label text="Punkte" />
-                        <Label fx:id="quizPunkte" text="Punkte" />
+                        <Label fx:id="quizPointsLabel" text="Punkte" />
                     </children>
                 </VBox>
-                <Label fx:id="quizTimer" text="Timer" />
+                <Label fx:id="quizTimerLabel" text="Timer" />
                 <Button mnemonicParsing="false" onAction="#onExit" text="Schließen" />
             </children>
         </HBox>
