@@ -20,12 +20,22 @@ import java.util.*;
 
 public class QuizController implements QuizBase, ControllerBase {
 
-    private int questionCount = 0; // Tracks how many questions have been asked
+    private int questionCount = 1; // Tracks how many questions have been asked
     private static final int MAX_QUESTIONS = 10; // The total number of questions for the quiz
     private String difficulty = "easy"; // Default difficulty
     private int correctAnswerHigh = 0;//Variable to save correct Answers for Highscore-list
     private int quizLives = 2;
     private int quizPoints;
+    //der Timer für onExit
+    private Timeline timer;
+
+    //Zeit des Timers
+    private int timeRemaining = 15;
+
+    //namen übergabe
+    private String playerName;
+
+    TriviaQuestion recentQuestion;
 
     @FXML
     public Label quizLivesLabel;
@@ -49,15 +59,6 @@ public class QuizController implements QuizBase, ControllerBase {
     @FXML
     private Button answerBtn4;
 
-    //der Timer für onExit
-    private Timeline timer;
-
-    private int timeRemaining = 15;
-
-    //namen übergabe
-    private String playerName;
-
-    TriviaQuestion recentQuestion;
 
     public QuizController() throws IOException, InterruptedException { //leerer Konstruktor für API-FETCH
     }
@@ -67,7 +68,7 @@ public class QuizController implements QuizBase, ControllerBase {
     } //Damit Name übergeben wird
 
     //TODO
-    public void setDifficulty(String userdifficulty) { //Brauchen wir - TODO
+    public void setDifficulty(String userdifficulty) { //Brauchen wir
         this.difficulty = userdifficulty; // Set the difficulty based on user selection
     }
 
@@ -95,38 +96,38 @@ public class QuizController implements QuizBase, ControllerBase {
 
         questionCount++; //Increment question count
 
-        if (questionCount >= MAX_QUESTIONS) {
-            progressLabel.setText("Quiz complete!");
-            showEndScreen();
-        } else {
+        if (quizLives > 0 || questionCount >= MAX_QUESTIONS) {
+
            PauseTransition pause = new PauseTransition(Duration.seconds(3));
-
             pause.setOnFinished(event -> {
-                // Nach der Pause: neue Frage anzeigen und antwortbutton wieder ermöglichen
-                answerBtn1.setDisable(false);
-                answerBtn2.setDisable(false);
-                answerBtn3.setDisable(false);
-                answerBtn4.setDisable(false);
-                //feedback wieder wegmachen
-                feedbackLabel.setVisible(false);
-                //fragenanzahl aktualisieren
-                progressLabel.setText(questionCount + "/" + MAX_QUESTIONS);
 
-                resetAnswerButtonColors(); //farben der buttons zurücksetzen
-                resetTimer(); // Timer zurücksetzen
-                try {
-                    displayCurrentQuestion(); // Nächste Frage anzeigen
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                    // Nach der Pause: neue Frage anzeigen und antwortbutton wieder ermöglichen
+                    answerBtn1.setDisable(false);
+                    answerBtn2.setDisable(false);
+                    answerBtn3.setDisable(false);
+                    answerBtn4.setDisable(false);
 
+                    //feedback wieder wegmachen
+                    feedbackLabel.setVisible(false);
+                    //fragenanzahl aktualisieren
+                    progressLabel.setText(questionCount + "/" + MAX_QUESTIONS);
+
+                    resetAnswerButtonColors(); //farben der buttons zurücksetzen
+                    resetTimer(); // Timer zurücksetzen
+                    try {
+                        displayCurrentQuestion(); // Nächste Frage anzeigen
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
             });
-
             pause.play();
+            } else {
+            showEndScreen();
         }
-    }
+        }
+
 
     private void markQuestionAsWrong() {
         quizLives--;
@@ -171,20 +172,36 @@ public class QuizController implements QuizBase, ControllerBase {
 
     //was passiert wenn zeit vorbei
     private void handleTimeOut() throws IOException {
-        // Frage als falsch werten und zur nächsten wechseln
-        markQuestionAsWrong();
-        showFeedback("Time is up!", false);
+        // Stoppe den Timer
+        if (timer != null) {
+            timer.stop();
+            System.out.println("DEBUG: Timer gestoppt in handleTimeOut()");
+        }
 
-        //deaktivier die Buttons damit nichts weiter gedrückt werden kann
-        answerBtn1.setDisable(true);
-        answerBtn2.setDisable(true);
-        answerBtn3.setDisable(true);
-        answerBtn4.setDisable(true);
+                    // Frage als falsch werten und zur nächsten wechseln
+            markQuestionAsWrong();
+            showFeedback("Time is up!", false);
 
-        // Alle Buttons durchlaufen und die Farben ändern je nach richtig oder falsch
-        setAnswerButtonColors();
+            //deaktivier die Buttons damit nichts weiter gedrückt werden kann
+            answerBtn1.setDisable(true);
+            answerBtn2.setDisable(true);
+            answerBtn3.setDisable(true);
+            answerBtn4.setDisable(true);
 
-        loadNewQuestion();
+            // Alle Buttons durchlaufen und die Farben ändern je nach richtig oder falsch
+            setAnswerButtonColors();
+
+        // Zeige das Feedback für 3 Sekunden und lade dann die nächste Frage
+        PauseTransition feedbackPause = new PauseTransition(Duration.seconds(3));
+        feedbackPause.setOnFinished(event -> {
+            try {
+                loadNewQuestion();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        feedbackPause.play();
+
     }
 
 
@@ -294,7 +311,18 @@ public class QuizController implements QuizBase, ControllerBase {
 
 
     public void setAnswerButtonColors() {
-        // logik für richtige button
+        // Über alle Antwort-Buttons iterieren und die Farben ändern
+        Button[] answerButtons = {answerBtn1, answerBtn2, answerBtn3, answerBtn4};
+
+        for (Button button : answerButtons) {
+            String answer = button.getText();
+
+            if (answer.equalsIgnoreCase(recentQuestion.getCorrectAnswer())) {
+                button.setStyle("-fx-text-fill: green;");  // Richtige Antwort grün
+            } else {
+                button.setStyle("-fx-text-fill: red;");  // Falsche Antwort rot
+            }
+        }
     }
 
     public void resetAnswerButtonColors() {
@@ -310,6 +338,13 @@ public class QuizController implements QuizBase, ControllerBase {
 
     @FXML
     public void onAnswerClick(ActionEvent actionEvent) throws IOException, InterruptedException {
+
+        // Stoppe den Timer
+        if (timer != null) {
+            timer.stop();
+            System.out.println("DEBUG: Timer gestoppt bei Antwortauswahl");
+        }
+
         Button clickedButton = (Button) actionEvent.getSource();
         String selectedAnswer = clickedButton.getText();
 
@@ -324,51 +359,17 @@ public class QuizController implements QuizBase, ControllerBase {
         // Alle Buttons durchlaufen und die Farben ändern je nach richtig oder falsch
         setAnswerButtonColors();
 
-        // Frage als beantwortet markieren und zur nächsten Frage wechseln
-        loadNewQuestion();
-
-
-
-        //boolean isCorrect = (boolean) clickedButton.getUserData();
-
-        /*if (isCorrect) {
-            feedbackLabel.setText("Correct! Well done.");
-            feedbackLabel.setStyle("-fx-text-fill: green;"); // Set feedback text color to green
-            correctAnswer++;
-        } else {
-            feedbackLabel.setText("Wrong! Try the next one.");
-            feedbackLabel.setStyle("-fx-text-fill: red;"); // Set feedback text color to red
-        }
-
-        // Use Timeline to delay loading the next question
-        Timeline timeline = new Timeline(new javafx.animation.KeyFrame(
-                javafx.util.Duration.seconds(0.5), // Delay for 0.5 s
-                event -> {
-                    try {
-                        // loadNewQuestion(); // Load the next question
-                        displayCurrentQuestion();
-                        feedbackLabel.setText(""); // Clear the feedback label
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-        ));
-        timeline.setCycleCount(1); // Execute the KeyFrame only once
-        timeline.play(); // Start the timeline
-        */
+        // Zeige das Feedback für 2 Sekunden und lade dann die nächste Frage
+        PauseTransition feedbackPause = new PauseTransition(Duration.seconds(1)); //Zeigt antwort für 1 Sekunde
+        feedbackPause.setOnFinished(event -> {
+            try {
+                loadNewQuestion();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        feedbackPause.play();
     }
 
-    /*
-
-
-    public void resetQuiz() {
-        questionCount = 0;
-        progressLabel.setText("Question 1 of " + MAX_QUESTIONS); // Reset the label
-    }
-
-
-     */
 }
 
