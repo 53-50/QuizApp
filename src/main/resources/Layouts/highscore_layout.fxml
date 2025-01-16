@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10"
+<VBox alignment="CENTER" prefHeight="700" prefWidth="1100" spacing="10"
       xmlns="http://javafx.com/javafx/17.0.08"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.Controller.HighscoreController">

@@ -1,38 +1,38 @@
 [
   {
-    "QuestionText": "Wo begann die Reise dieser mutigen Maus?",
-    "correctAnswer": "New Mexico, USA (die Heimat von Käse-Legenden)",
-    "incorrectAnswers": ["Disneyland Paris, Frankreich (nein, es war kein Urlaub)",
-      "Moskau, Russland (schon Lenin mochte Mäuse)", "Burgenland, Österreich (mit einem Glas Wein)"]
+    "QuestionText": "Where did this brave mouse's journey begin?",
+    "correctAnswer": "New Mexico, USA (the home of cheese legends)",
+    "incorrectAnswers": ["Disneyland Paris, France (no, it wasn't a holiday)",
+      "Moscow, Russia (even Lenin liked mice)", "Burgenland, Austria (with a glass of wine)"]
   },
   {
-    "QuestionText": "Wann hat die erste Maus die galaktische Käsestraße betreten?",
-    "correctAnswer": "31.08.1950 (die Maus wollte das Universum erobern, genauso wie die Düsenflieger damals den Atlantik)",
-    "incorrectAnswers": ["22.07.1951 (die Maus wollte ihre Reise so schnell machen wie das erste Atom-U-Boot)",
-      "14.07.1949 (die Maus war ein echter Pionier – der Mond kam später)", "200 v. Chr. (Archimedes hatte damals schon crazy Ideen!)"]
+    "QuestionText": "When did the first mouse set foot on the galactic cheese road?",
+    "correctAnswer": "31.08.1950 (the mouse wanted to conquer the universe, just like the jet planes wanted to conquer the Atlantic)",
+    "incorrectAnswers": ["22.07.1951 (the mouse wanted to make its journey as fast as the first nuclear submarine)",
+      "14.07.1949 (the mouse was a real pioneer - the moon came later)", "200 BC (Archimedes already had crazy ideas back then!)"]
   },
   {
-    "QuestionText": "Wie hieß die tapfere Maus?",
-    "correctAnswer": "Unbekannt (Held*innen brauchen keinen Namen)",
-    "incorrectAnswers": ["Tom (die Katze hat den Flug verpasst)",
-      "Jerry (der Käse-Liebhaber aus der Nachbarschaft)", "Mickey (Disney hat keine Rechte daran)"]
+    "QuestionText": "What was the name of the brave mouse?",
+    "correctAnswer": "Unknown (heroines don't need a name)",
+    "incorrectAnswers": ["Tom (the cat missed the flight)",
+      "Jerry (the cheese lover from the neighbourhood)", "Mickey (Disney has no rights to it)"]
   },
   {
-    "QuestionText": "Welcher Käse hat es als erster ins Weltall geschafft?",
-    "correctAnswer": "Le Brouère (der Käse, der den Eiffelturm neidisch machte)",
-    "incorrectAnswers": ["Comté (dachte, es gibt Fondue im Orbit)",
-      "Emmentaler (der mit den Löchern für den Luftwiderstand)", "Noch keiner (die Käse-Lobby arbeitet daran!)"]
+    "QuestionText": "Which cheese was the first to make it into space?",
+    "correctAnswer": "Le Brouère (the cheese that made the Eiffel Tower jealous)",
+    "incorrectAnswers": ["Comté (thought there was fondue in orbit)",
+      "Emmentaler (the one with the holes for air resistance", "None yet (the cheese lobby is working on it!)"]
   },
   {
-    "QuestionText": "Wann hat es der Käse endlich ins Weltall geschafft?",
-    "correctAnswer": "07.02.2010 (dabei errang der Käse seinen „Weltmeistertitel“)",
-    "incorrectAnswers": ["31.08.1950 (da wollte die Maus ihn mitschmuggeln)",
-      "29.02.1951 (der Käse wartete auf ein Schaltjahr-Portal)", "06.06.2006 (das Datum klang einfach mystisch genug)"]
+    "QuestionText": "When did the cheese finally make it into space?",
+    "correctAnswer": "07.02.2010 (when the cheese won its ”world champion title’)",
+    "incorrectAnswers": ["31.08.1950 (that's when the mouse tried to smuggle it in)",
+      "29.02.1951 (the cheese was waiting for a leap year portal)", "06.06.2006 (the date just sounded mystical enough)"]
   },
   {
-    "QuestionText": "Woran scheiterte der Traum dieser heldenhaften Maus?",
-    "correctAnswer": "Fallschirmsystem versagte (Gravity hat gewonnen)",
-    "incorrectAnswers": ["Reaktion auf die Narkose (die Käse-Träumereien waren zu intensiv)",
-      "Altersschwäche (die galaktischen Jahre zählen halt doppelt)", "Käseentzug (eine wahre Tragödie für jede Maus)"]
+    "QuestionText": "Why did this heroic mouse's dream fail?",
+    "correctAnswer": "Parachute system failed (Gravity won)",
+    "incorrectAnswers": ["Reaction to the anaesthetic (the cheesy reverie was too intense)",
+      "Old age (the galactic years count double)", "Cheese deprivation (a true tragedy for any mouse)"]
   }
 ]

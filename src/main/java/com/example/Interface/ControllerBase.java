@@ -7,11 +7,11 @@ package com.example.Interface;
 
 public interface ControllerBase {
 
-    default int getPunkte() {
+    default int getPoints() {
         return 0;
     }
 
-    default int getLeben() {
+    default int getLives() {
         return 0;
     }
 

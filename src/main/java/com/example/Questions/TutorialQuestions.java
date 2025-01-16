@@ -11,7 +11,6 @@ public class TutorialQuestions implements QuestionBase {
     protected String correctAnswer;
     protected List<String> incorrectAnswers;
     protected String QuestionText;
-    protected String difficulty;
 
     public TutorialQuestions(String QuestionText, String correctAnswer, List<String> incorrectAnswers) {
         this.QuestionText = QuestionText;
@@ -21,19 +20,16 @@ public class TutorialQuestions implements QuestionBase {
 
     // Getter und Setter
 
-
+    @Override
     public String getQuestionText() {
         return QuestionText;
-    }
-
-    public String getDifficulty() {
-        return difficulty;
     }
 
     public void setQuestion(String question) {
         this.QuestionText = QuestionText;
     }
 
+    @Override
     public String getCorrectAnswer() {
         return correctAnswer;
     }
@@ -42,6 +38,7 @@ public class TutorialQuestions implements QuestionBase {
         this.correctAnswer = correctAnswer;
     }
 
+    @Override
     public List<String> getIncorrectAnswers() {
         return incorrectAnswers;
     }

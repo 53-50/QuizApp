@@ -132,7 +132,7 @@ public class MainMenuController {
         //User wählt schwierigkeit aus, nach Klick auf "Quiz-Play" wird difficulty an QuizController übergeben
         String selectedDifficultyMMC = getSelectedDifficultyMMC();
 
-            if (selectedDifficultyMMC.equals("easy") || selectedDifficultyMMC.equals("medium") || selectedDifficultyMMC.equals("hard")){
+        if (selectedDifficultyMMC.equals("easy") || selectedDifficultyMMC.equals("medium") || selectedDifficultyMMC.equals("hard")){
             try {
                 // Load the Quiz layout
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/quiz_layout.fxml"));
@@ -158,7 +158,6 @@ public class MainMenuController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -395,6 +394,7 @@ public class MainMenuController {
         alert.showAndWait();
     }
 
+    /*
     // schriftartenwechsel gilt nur für Startseite
     public void switchFirstFont(ActionEvent actionEvent) {
         root.getStyleClass().removeAll("second-font");
@@ -410,4 +410,5 @@ public class MainMenuController {
         firstFont.setDisable(false);
         secondFont.setDisable(true);
     }
+     */
 }

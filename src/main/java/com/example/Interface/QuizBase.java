@@ -1,10 +1,8 @@
 package com.example.Interface;
 
 import com.example.Controller.PopupController;
-import com.example.Controller.QuizController;
 import com.example.Controller.WinLoseController;
 
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -16,14 +14,28 @@ import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public interface QuizBase {
 
-    void checkAnswer(String givenAnswer) throws IOException, InterruptedException;
+    void setPlayerName(String name);
+
+    void initialize() throws IOException;
+
+    void startTimer();
+
+    void resetTimer();
+
+    void handleTimeOut() throws IOException;
+
+    void displayCurrentQuestion() throws IOException, InterruptedException;
+
+    void handleAnswerButtonClick(ActionEvent mainEvent) throws IOException, InterruptedException;
+
+    void showFeedback(String feedback, boolean isCorrect);
+
+    void checkAnswer(String givenAnswer);
 
     default void markQuestionAsRight(int points, int rightOnes, Label pointsLabel) {
         // Logik zum Markieren der aktuellen Frage als richtig
@@ -56,7 +68,7 @@ public interface QuizBase {
             Parent root = loader.load();
 
             PopupController popupController = loader.getController();
-            popupController.setPopupMessage("Bist du sicher?");
+            popupController.setPopupMessage("Are you really sure?");
 
             // Nachricht setzen
             popupController.exitButton.setVisible(true);

@@ -1,15 +1,24 @@
 /* application.css */
 /* allgemein ist es eine möglichkeit das Design von der Spiellogik zu trennen */
 
+@font-face {
+    font-family: "Galindo";
+    src: url("/fonts/Galindo-Regular.ttf"); /* Relativer Pfad zur Schriftartdatei */
+}
+
+.root {
+    -fx-font-family: "Galindo"; /* Verwende die Schriftart */
+    -fx-font-size: 16px; /* Optional: Schriftgröße */
+}
+
 .vbox {
-    -fx-background-color: rgba(0,0,0,0.7);
-    -fx-background-image: url("/images/background.png");
+    -fx-background-color: rgb(51,46,55);
     -fx-background-radius: 10;
     -fx-padding: 20;
 }
 
 .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #3d8bb6;
 }
 
 .button {

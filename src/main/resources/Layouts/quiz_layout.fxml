@@ -9,7 +9,7 @@
 
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.QuizController">
+<AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.QuizController">
     <children>
         <VBox alignment="CENTER" fillWidth="false" prefHeight="500.0" prefWidth="800.0">
             <children>
@@ -23,14 +23,14 @@
                     <children>
                         <HBox alignment="CENTER" prefHeight="200.0" prefWidth="600.0" spacing="30.0">
                             <children>
-                                <Button fx:id="answerBtn1" mnemonicParsing="false" onAction="#onAnswerClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 1" textAlignment="CENTER" wrapText="true" />
-                                <Button fx:id="answerBtn2" mnemonicParsing="false" onAction="#onAnswerClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 2" textAlignment="CENTER" wrapText="true" />
+                                <Button fx:id="answerBtn1" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 1" textAlignment="CENTER" wrapText="true" />
+                                <Button fx:id="answerBtn2" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 2" textAlignment="CENTER" wrapText="true" />
                             </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="200.0" prefWidth="600.0" spacing="30.0">
                             <children>
-                                <Button fx:id="answerBtn3" mnemonicParsing="false" onAction="#onAnswerClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 3" textAlignment="CENTER" wrapText="true" />
-                                <Button fx:id="answerBtn4" mnemonicParsing="false" onAction="#onAnswerClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 4" textAlignment="CENTER" wrapText="true" />
+                                <Button fx:id="answerBtn3" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 3" textAlignment="CENTER" wrapText="true" />
+                                <Button fx:id="answerBtn4" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 4" textAlignment="CENTER" wrapText="true" />
                             </children>
                         </HBox>
                     </children>
@@ -50,7 +50,7 @@
                     <children>
                         <ImageView pickOnBounds="true" preserveRatio="true" fitHeight="50.0" fitWidth="50.0">
                             <image>
-                                <Image url="@../images/KLKM_Logo.png" />
+                                <Image url="@../images/Lives_Heart_Pixel.png" />
                             </image>
                         </ImageView>
                         <Label fx:id="quizLivesLabel" text="00" />
@@ -58,12 +58,17 @@
                 </VBox>
                 <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                     <children>
-                        <Label text="Punkte" />
-                        <Label fx:id="quizPointsLabel" text="Punkte" />
+                        <Label text="Points" />
+                        <Label fx:id="quizPointsLabel" text="Points" />
                     </children>
                 </VBox>
-                <Label fx:id="quizTimerLabel" text="Timer" />
-                <Button mnemonicParsing="false" onAction="#onExit" text="Schließen" />
+                <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
+                    <children>
+                        <Label text="Timer" />
+                        <Label fx:id="quizTimerLabel" text="Timer" />
+                    </children>
+                </VBox>
+                <Button mnemonicParsing="false" onAction="#onExit" text="Exit" />
             </children>
         </HBox>
 

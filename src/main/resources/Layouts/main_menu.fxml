@@ -21,52 +21,45 @@
     </stylesheets>
    <children>
    
-       <VBox fx:id="mainVBox" alignment="CENTER" prefHeight="500.0" prefWidth="800.0" spacing="10">
+       <VBox fx:id="mainVBox" alignment="CENTER" prefHeight="700.0" prefWidth="1100.0" spacing="10">
       <children>
       
               <!-- Inner VBox for the content -->
               <VBox fx:id="innerVBox" alignment="CENTER" spacing="20" styleClass="vbox-inner">
          <children>
 
-                     <Label fx:id="welcomeLabel" styleClass="label-welcome" text="Willkommen zum Quiz!" />
+                     <Label fx:id="welcomeLabel" styleClass="label-welcome" text="Welcome! Join our mice in space!" />
 
                      <!-- Namen Eingabe ermöglichen -->
                   <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                      <children>
-                        <TextField fx:id="inputTextField" prefHeight="50.0" prefWidth="400.0" promptText="Gib bitte deinen Namen ein" styleClass="required-field" />
+                        <TextField fx:id="inputTextField" prefHeight="50.0" prefWidth="400.0" promptText="Please enter your name..." styleClass="required-field" />
                         <Button fx:id="inputTextFieldButton" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="20.0" prefWidth="200.0" text="Enter"/>
                          <!-- damit die eingabe vom namen gesperrt und freigegeben werden kann -->
                          <Button fx:id="unlockInputTextFieldButton" mnemonicParsing="false" onAction="#onButtonClickUnlock" prefHeight="20.0" prefWidth="200.0" text="Erase" disable="true"/>
-                         <Label fx:id="errorLabel" styleClass="error-message" text="Namen eingabe erforderlich!" visible="false" />
+                         <Label fx:id="errorLabel" styleClass="error-message" text="Please enter a name!" visible="false" />
                      </children>
                   </HBox>
 
                      <!-- HBox for arranging RadioButtons horizontally -->
                      <HBox fx:id="difficultyRadioButtons" alignment="CENTER" spacing="10" styleClass="hbox-radio">
             <children>
-                            <RadioButton fx:id="rbEasy" text="Leicht">
+                            <RadioButton fx:id="rbEasy" text="Easy">
                            <toggleGroup>
                               <ToggleGroup fx:id="difficultyToggleGroup" />
                            </toggleGroup>
                         </RadioButton>
-                            <RadioButton fx:id="rbMedium" text="Mittel" toggleGroup="$difficultyToggleGroup" />
-                            <RadioButton fx:id="rbHard" text="Schwer" toggleGroup="$difficultyToggleGroup" />
+                            <RadioButton fx:id="rbMedium" text="Medium" toggleGroup="$difficultyToggleGroup" />
+                            <RadioButton fx:id="rbHard" text="Hard" toggleGroup="$difficultyToggleGroup" />
             </children>
                      </HBox>
 
                      <!-- Action Buttons -->
-                     <Button fx:id="spielStarten" onAction="#onStartQuizClick" styleClass="button" text="Spiel starten" />
-                  <Button fx:id="lernmodusButton" mnemonicParsing="false" onAction="#showCsvUploadDialog" prefHeight="45.0" prefWidth="113.0" text="Lernmodus" />
-                     <Button onAction="#onExitClick" styleClass="button" text="Beenden" />
-                     <Button fx:id="tutorialSpielen" onAction="#onTutorialModeClick" styleClass="button" text="Tutorial beginnen" />
+                     <Button fx:id="spielStarten" onAction="#onStartQuizClick" styleClass="button" text="Start Quiz" />
+                  <Button fx:id="lernmodusButton" mnemonicParsing="false" onAction="#showCsvUploadDialog" prefHeight="45.0" prefWidth="113.0" text="Learning Mode" />
+                     <Button onAction="#onExitClick" styleClass="button" text="Quit" />
+                     <Button fx:id="tutorialSpielen" onAction="#onTutorialModeClick" styleClass="button" text="Start Storymode" />
          </children>
-
-                  <HBox>
-                      <children>
-                          <Button fx:id="firstFont" onAction="#switchFirstFont" styleClass="button" text="First Font" disable="true"/>
-                          <Button fx:id="secondFont" onAction="#switchSecondFont" styleClass="button" text="Second Font" />
-                      </children>
-                  </HBox>
 
               </VBox>
       </children>

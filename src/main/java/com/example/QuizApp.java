@@ -25,13 +25,16 @@ public class QuizApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         // Hauptmenü-FXML laden => definiert Layout und die Benutzeroberfläche des Menüs.
         Parent mainMenuRoot = FXMLLoader.load(getClass().getResource("/Layouts/main_menu.fxml"));
-        Scene mainMenuScene = new Scene(mainMenuRoot, 500, 800);
+        Scene mainMenuScene = new Scene(mainMenuRoot, 1100, 700);
         //zuweisen des css files zu der scene
         mainMenuScene.getStylesheets().add("/css/application.css");
         primaryStage.getIcons().add(new Image("/images/KLKM_Logo.png")) ;
 
         // Breite der Stage fix festlegen am Beginn
-        primaryStage.setMaximized(true);
+        // primaryStage.setMaximized(true);
+
+        //primaryStage.setMaxHeight(500);
+        //primaryStage.setMaxWidth(500);
 
         // Zum Debuggen vielleicht hilfreich weil Infos angezeigt wegen Versionen
         // System.out.println(System.getProperties());
