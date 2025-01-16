@@ -13,7 +13,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -63,8 +62,8 @@ public class TutorialController implements QuizBase, ControllerBase {
     private int timeRemaining = 15;
 
     // festlegen der Rahmenbedingungen
-    private int punkte;
-    private int leben = 3;
+    private int points;
+    private int lives = 3;
     final private int questions = 6;
     private int rightOnes = 0;
     private int questionsasked = 1;
@@ -101,8 +100,8 @@ public class TutorialController implements QuizBase, ControllerBase {
         }
 
         // Rahmenbedingungen setzen
-        tutorialPunkte.setText(Integer.toString(punkte));
-        tutorialLeben.setText(Integer.toString(leben));
+        tutorialPunkte.setText(Integer.toString(points));
+        tutorialLeben.setText(Integer.toString(lives));
         fragenanzahl.setText(Integer.toString(questionsasked) + "/" + Integer.toString(questions));
 
         //Queue Liste erstellen für Tutorial Pop-Ups
@@ -300,12 +299,12 @@ public class TutorialController implements QuizBase, ControllerBase {
     }
 
     private void markQuestionAsWrong() {
-        leben--;
+        lives--;
         QuizBase.super.markQuestionAsWrong(getLives(), tutorialLeben);
     }
 
     private void markQuestionAsRight() {
-        punkte += 10;
+        points += 10;
         rightOnes++;
         QuizBase.super.markQuestionAsRight(getPoints(), getRightOnes(), tutorialPunkte);
     }
@@ -317,7 +316,7 @@ public class TutorialController implements QuizBase, ControllerBase {
 
         questionsasked++; // Zähler für gestellte Fragen erhöhen
 
-        if (leben > 0 && questionsasked <= questionsjson.size()) {
+        if (lives > 0 && questionsasked <= questionsjson.size()) {
             PauseTransition pause = new PauseTransition(Duration.seconds(1.5)); // 3 Sekunden Pause
 
             pause.setOnFinished(event -> {
@@ -391,12 +390,12 @@ public class TutorialController implements QuizBase, ControllerBase {
     //GETTER
     @Override
     public int getPoints() {
-        return punkte;
+        return points;
     }
 
     @Override
     public int getLives() {
-        return leben;
+        return lives;
     }
 
     @Override

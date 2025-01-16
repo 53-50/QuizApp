@@ -16,13 +16,13 @@
    <children>
       <VBox alignment="CENTER" fillWidth="false" prefHeight="700.0" prefWidth="1100.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="80.0" prefWidth="800.0" spacing="150.0">
+            <HBox alignment="CENTER" prefHeight="65.0" prefWidth="800.0" spacing="150.0">
                <children>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                      <children>
-                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/KLKM_Logo.png" />
+                              <Image url="@../images/Lives_Heart_Pixel.png" />
                            </image>
                         </ImageView>
                         <Label fx:id="tutorialLeben" text="00" />
@@ -30,7 +30,7 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                      <children>
-                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/points_star.png" />
                            </image>
@@ -40,9 +40,9 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                      <children>
-                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/hourglass.gif" />
+                              <Image url="@../images/timer_clock.png" />
                            </image>
                         </ImageView>
                         <Label fx:id="tutorialTimer" text="Timer" />
@@ -51,8 +51,8 @@
                   <Button mnemonicParsing="false" onAction="#onTutorialExit" text="Exit" />
                </children>
             </HBox>
-            <Label fx:id="fragenanzahl" text="0/0" />
-            <Label fx:id="tutorialfrage" text="Question">
+            <Label fx:id="fragenanzahl" prefHeight="30.0" prefWidth="18.0" text="0/0" />
+            <Label fx:id="tutorialfrage" prefHeight="30.0" prefWidth="48.0" text="Question">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

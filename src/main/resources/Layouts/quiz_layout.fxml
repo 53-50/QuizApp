@@ -13,18 +13,17 @@
                   <children>
                       <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                           <children>
-                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                   <image>
                                       <Image url="@../images/Lives_Heart_Pixel.png" />
                                   </image>
                               </ImageView>
                               <Label fx:id="quizLivesLabel" text="00" />
-                              <Label fx:id="streakLabel" text="0/0" visible="false" />
                           </children>
                       </VBox>
                       <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                           <children>
-                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                   <image>
                                       <Image url="@../images/points_star.png" />
                                   </image>
@@ -34,7 +33,7 @@
                       </VBox>
                       <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
                           <children>
-                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                   <image>
                                       <Image url="@../images/timer_clock.png" />
                                   </image>
@@ -45,8 +44,9 @@
                       <Button mnemonicParsing="false" onAction="#onExit" text="Exit" />
                   </children>
               </HBox>
-                <Label fx:id="progressLabel" text="Question 1 of 10" />
-                <Label fx:id="questionLabel" text="What's your question?">
+                  <Label fx:id="streakLabel" alignment="CENTER" prefHeight="25.0" prefWidth="421.0" text="0/0" visible="false" />
+                <Label fx:id="progressLabel" alignment="CENTER" prefHeight="26.0" prefWidth="404.0" text="Question 1 of 10" />
+                <Label fx:id="questionLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="56.0" prefWidth="685.0" text="What's your question?" textAlignment="CENTER">
                     <VBox.margin>
                         <Insets />
                     </VBox.margin>
