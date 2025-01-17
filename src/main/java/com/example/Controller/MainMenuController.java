@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
@@ -21,16 +20,6 @@ import javafx.scene.image.ImageView;
 import java.io.*;
 
 public class MainMenuController {
-
-    public RadioButton rbTutorial;
-
-    // benötigt für Schriftart umschalten
-    @FXML
-    private Button firstFont;
-    @FXML
-    private Button secondFont;
-    @FXML
-    private VBox root;
 
     @FXML
     private RadioButton rbEasy;
@@ -55,17 +44,17 @@ public class MainMenuController {
     private Label errorLabel;
 
     @FXML
-    private Button spielStarten;
+    private Button playGame;
 
     @FXML
-    private Button tutorialSpielen;
+    private Button playTutorial;
 
     public String currentname;
 
     private File uploadedCsvFile;
 
     @FXML
-    private Button lernmodusButton;
+    private Button learnmodeButton;
 
 
 
@@ -76,8 +65,8 @@ public class MainMenuController {
         //damit das Eingabefeld nicht gleich fokussiert ist und man den Prompttext lesen kann
         inputTextField.setFocusTraversable(false);
 
-        tutorialSpielen.setDisable(true);
-        spielStarten.setDisable(true);
+        playTutorial.setDisable(true);
+        playGame.setDisable(true);
 
         difficultyToggleGroup = new ToggleGroup();
 
@@ -226,7 +215,7 @@ public class MainMenuController {
     private void uploadCsvFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Dateien", "*.csv"));
-        Stage stage = (Stage) lernmodusButton.getScene().getWindow();
+        Stage stage = (Stage) learnmodeButton.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
@@ -281,7 +270,7 @@ public class MainMenuController {
                 LernmodusController lernmodusController = loader.getController();
                 lernmodusController.loadQuestionsFromCsv(uploadedCsvFile);
 
-                Stage stage = (Stage) lernmodusButton.getScene().getWindow();
+                Stage stage = (Stage) learnmodeButton.getScene().getWindow();
                 stage.setScene(new Scene(lernmodusRoot));
                 stage.show();
             } catch (IOException e) {
@@ -338,8 +327,8 @@ public class MainMenuController {
             String name = inputTextField.getText();
             currentname = name;
             System.out.println(currentname);
-            tutorialSpielen.setDisable(false);
-            spielStarten.setDisable(false);
+            playTutorial.setDisable(false);
+            playGame.setDisable(false);
             inputTextField.setDisable(true);
 
             unlockInputTextFieldButton.setDisable(false);
@@ -356,8 +345,8 @@ public class MainMenuController {
         inputTextFieldButton.setDisable(false);
         inputTextField.clear();
         currentname = null;
-        tutorialSpielen.setDisable(true);
-        spielStarten.setDisable(true);
+        playTutorial.setDisable(true);
+        playGame.setDisable(true);
 
     }
 

@@ -18,26 +18,26 @@ import java.io.IOException;
 public class WinLoseController {
 
     @FXML
-    private Label modusLabel;
+    private Label modeLabel;
 
     @FXML
-    private Label punkteLabel;
+    private Label pointsLabel;
 
     @FXML
-    private Label lebenLabel;
+    private Label livesLabel;
 
     @FXML
-    private Label endeLabel;
+    private Label endLabel;
 
     @FXML
     private Label rightOnesLabel;
 
     @FXML
-    private Text geschichteLabel;
+    private Text storyTextLabel;
 
     // namen
     @FXML
-    private Label namenLabel;
+    private Label nameLabel;
 
     private String playerName;
 
@@ -45,7 +45,7 @@ public class WinLoseController {
     private ControllerBase controller;
 
     // damit der modus angezeigt werden kann
-    private String modus;
+    private String mode;
 
     private String difficulty;
 
@@ -58,33 +58,33 @@ public class WinLoseController {
             if (difficulty == null || difficulty.isEmpty()) {
                 difficulty = "Error";
             }
-            modus = "Quiz " + difficulty;
+            mode = "Quiz " + difficulty;
         } else if (controller instanceof TutorialController) { //wenn tutorial dann wird geschichte angezeigt und modus
-            geschichteLabel.setText("As we now know, she arrived a few years too early, " +
+            storyTextLabel.setText("As we now know, she arrived a few years too early, " +
                             "missing the historic achievement of becoming the first cheese connoisseur in space. " +
                             "Tragically, her dream was cut short by human error. Let us take a moment to honor " +
                             "this unknown mouse, who gave her life in pursuit of her heroic aspirations. "+
                             "THE END ");
-            geschichteLabel.setVisible(true);
-            modus = "Tutorial";
+            storyTextLabel.setVisible(true);
+            mode = "Tutorial";
         } else if (controller instanceof LernmodusController){
-            modus = "LearningModus";
+            mode = "Learning";
         }
 
     }
 
     public void displayModus() {
-        modusLabel.setText("Mode:" + modus);
+        modeLabel.setText("Mode:" + mode);
     }
 
     public void displayPunkte() {
-        int finalePunkte = controller.getPoints();
+        int finalPoints = controller.getPoints();
 
         if (controller.getLives() > 0) {
-            finalePunkte += controller.getLives() * 5;
+            finalPoints += controller.getLives() * 5;
         }
-        punkteLabel.setText("Points: " + finalePunkte);
-        System.out.println("~DEBUGGING~ *DP-WLC* punkte: " + finalePunkte);
+        pointsLabel.setText("Points: " + finalPoints);
+        System.out.println("~DEBUGGING~ *DP-WLC* punkte: " + finalPoints);
     }
 
     public void displayRight() {
@@ -93,20 +93,20 @@ public class WinLoseController {
     }
 
     public void displayLeben() {
-        int finaleLeben = controller.getLives();
+        int finalLives = controller.getLives();
 
-        if (finaleLeben < 0) {
-            lebenLabel.setText("Remaining Lives: None");
+        if (finalLives < 0) {
+            livesLabel.setText("Remaining Lives: None");
         } else {
-            lebenLabel.setText("Remaining Lives: " + finaleLeben);
+            livesLabel.setText("Remaining Lives: " + finalLives);
         }
     }
 
     public void displayWinOrLose() {
         if (controller.getLives() > 0) {
-            endeLabel.setText("You Won! Congratulations little Mouse!");
+            endLabel.setText("You Won! Congratulations little Mouse!");
         } else {
-            endeLabel.setText("You died like the mouse! :(");
+            endLabel.setText("You died like the mouse! :(");
         }
     }
 
@@ -116,7 +116,7 @@ public class WinLoseController {
 
     public void displayNamenLabel() {
         String name = playerName;
-        namenLabel.setText("Name: " + playerName);
+        nameLabel.setText("Name: " + playerName);
     }
 
     // allgemeiner scene switch
@@ -173,12 +173,13 @@ public class WinLoseController {
         // Nur Werte vom Quiz Controller werden übernommen
         if (controller instanceof QuizController) {
             // Dann Highscore-Eintrag schreiben
-            int finalePunkte = controller.getPoints();
+            //TODO as soon as it works to give points to highscoreController - extra points if remaining lives calculated?
+            int finalPoints = controller.getPoints();
             // Difficulty abfragen
             String difficulty = ((QuizController) controller).getDifficultyQC();
 
 
-            HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);
+            HighscoreManager.getInstance().addScore(playerName, finalPoints, difficulty);
         }
     }
 
@@ -187,9 +188,9 @@ public class WinLoseController {
     public void onHighscoreClick(ActionEvent event) {
         // Score ins Highscore-System übernehmen, nur wenn QuizController
         if (controller instanceof QuizController) {
-            int finalePunkte = controller.getPoints();
+            int finalPoints = controller.getPoints();
             String difficulty = ((QuizController) controller).getDifficultyQC();
-            HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);
+            HighscoreManager.getInstance().addScore(playerName, finalPoints, difficulty);
         }
 
         // Wechsel in die Highscore-Szene

@@ -27,34 +27,34 @@ import javafx.animation.PauseTransition;
 public class TutorialController implements QuizBase, ControllerBase {
 
     @FXML
-    private Label tutorialLeben;
+    private Label tutLivesLabel;
 
     @FXML
-    private Label tutorialPunkte;
+    private Label tutPointsLabel;
 
     @FXML
-    private Label tutorialTimer;
+    private Label tutTimerLabel;
 
     @FXML
-    private Button tutorialantwort1;
+    private Button tutAnswer1;
 
     @FXML
-    private Button tutorialantwort2;
+    private Button tutAnswer2;
 
     @FXML
-    private Button tutorialantwort3;
+    private Button tutAnswer3;
 
     @FXML
-    private Button tutorialantwort4;
+    private Button tutAnswer4;
 
     @FXML
-    private Label tutorialfrage;
+    private Label tutQuestionLabel;
 
     @FXML
-    private Label fragenanzahl;
+    private Label tutQuestionNumberLabel;
 
     @FXML
-    private Label tutorialFeedback;
+    private Label tutFeedbackLabel;
 
     //der Timer
     private Timeline timer;
@@ -66,12 +66,11 @@ public class TutorialController implements QuizBase, ControllerBase {
     private int lives = 3;
     final private int questions = 6;
     private int rightOnes = 0;
-    private int questionsasked = 1;
+    private int questionsAsked = 1;
 
     //jsonfile reinladen
-    private List<TutorialQuestions> questionsjson;
+    private List<TutorialQuestions> questionsJson;
     private int currentQuestionIndex = 0; //brauchen wir damit die fragen nacheinander ausgelesen werden
-    private String jsonFilePath = "src/main/resources/questions/questions.json";
 
     //popups
     private Queue<String> popupMessages;  // Warteschlange für Pop-up-Nachrichten
@@ -87,22 +86,23 @@ public class TutorialController implements QuizBase, ControllerBase {
     @Override
     public void initialize() {
         // Fragen aus der JSON-Datei laden
+        final String jsonFilePath = "src/main/resources/questions/questions.json";
         loadQuestions(jsonFilePath);
 
         // Timer initialisieren
         startTimer();
 
         // Falls Fragen geladen wurden, die erste Frage anzeigen
-        if (questionsjson != null && !questionsjson.isEmpty()) {
+        if (questionsJson != null && !questionsJson.isEmpty()) {
             displayCurrentQuestion();
         } else {
             System.out.println("No questions found!");
         }
 
         // Rahmenbedingungen setzen
-        tutorialPunkte.setText(Integer.toString(points));
-        tutorialLeben.setText(Integer.toString(lives));
-        fragenanzahl.setText(Integer.toString(questionsasked) + "/" + Integer.toString(questions));
+        tutPointsLabel.setText(Integer.toString(points));
+        tutLivesLabel.setText(Integer.toString(lives));
+        tutQuestionNumberLabel.setText(Integer.toString(questionsAsked) + "/" + Integer.toString(questions));
 
         //Queue Liste erstellen für Tutorial Pop-Ups
         popupMessages = new LinkedList<>();
@@ -187,12 +187,12 @@ public class TutorialController implements QuizBase, ControllerBase {
     @Override
     public void startTimer() {
         // Initiale Anzeige der Zeit
-        tutorialTimer.setText(timeRemaining + "s");
+        tutTimerLabel.setText(timeRemaining + "s");
 
         // Timeline für den Countdown was pro Sekunde passiert
         timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             timeRemaining--;
-            tutorialTimer.setText(timeRemaining + "s");
+            tutTimerLabel.setText(timeRemaining + "s");
 
             if (timeRemaining <= 0) {
                 timer.stop(); // Timer stoppen
@@ -212,10 +212,10 @@ public class TutorialController implements QuizBase, ControllerBase {
         showFeedback("Time is up! The mouse dies because of you :(", false);
 
         //deaktivier die Buttons damit nichts weiter gedrückt werden kann
-        tutorialantwort1.setDisable(true);
-        tutorialantwort2.setDisable(true);
-        tutorialantwort3.setDisable(true);
-        tutorialantwort4.setDisable(true);
+        tutAnswer1.setDisable(true);
+        tutAnswer2.setDisable(true);
+        tutAnswer3.setDisable(true);
+        tutAnswer4.setDisable(true);
 
         // Alle Buttons durchlaufen und die Farben ändern je nach richtig oder falsch
         setAnswerButtonColors();
@@ -225,8 +225,8 @@ public class TutorialController implements QuizBase, ControllerBase {
 
     // die Fragen werden geladen dafür wird der QuestionLoader verwendet
     public void loadQuestions(String jsonFilePath) {
-        questionsjson = QuestionLoader.loadQuestionsFromJson(jsonFilePath);
-        if (questionsjson == null || questionsjson.isEmpty()) { //Fehlermeldung
+        questionsJson = QuestionLoader.loadQuestionsFromJson(jsonFilePath);
+        if (questionsJson == null || questionsJson.isEmpty()) { //Fehlermeldung
             System.out.println("Error loading the questions.");
         }
     }
@@ -235,19 +235,19 @@ public class TutorialController implements QuizBase, ControllerBase {
     // damit die frage welche dran ist mit den dazugehörigen antworten angezeigt wird
     public void displayCurrentQuestion() {
         // nachgeschaut ob noch fragen da sind
-        if (currentQuestionIndex < questionsjson.size()) {
+        if (currentQuestionIndex < questionsJson.size()) {
             //aktuelle frage wird sich geholt
-            TutorialQuestions currentQuestion = questionsjson.get(currentQuestionIndex);
+            TutorialQuestions currentQuestion = questionsJson.get(currentQuestionIndex);
 
             // Frage anzeigen
-            tutorialfrage.setText(currentQuestion.getQuestionText());
+            tutQuestionLabel.setText(currentQuestion.getQuestionText());
 
             // Antwortmöglichkeiten wurden randomized in TutorialQuestions hier nur Buttons zugewiesen
             List<String> allAnswers = currentQuestion.getAllAnswers();
-            tutorialantwort1.setText(allAnswers.get(0));
-            tutorialantwort2.setText(allAnswers.get(1));
-            tutorialantwort3.setText(allAnswers.get(2));
-            tutorialantwort4.setText(allAnswers.get(3));
+            tutAnswer1.setText(allAnswers.get(0));
+            tutAnswer2.setText(allAnswers.get(1));
+            tutAnswer3.setText(allAnswers.get(2));
+            tutAnswer4.setText(allAnswers.get(3));
         } else {
             timer.pause();
             showEndScreen(); // Falls keine weiteren Fragen vorhanden sind zeig das Ende
@@ -262,10 +262,10 @@ public class TutorialController implements QuizBase, ControllerBase {
         String selectedAnswer = clickedButton.getText(); //hol dir den Text vom Button
 
         //deaktivier die Buttons damit nichts weiter gedrückt werden kann
-        tutorialantwort1.setDisable(true);
-        tutorialantwort2.setDisable(true);
-        tutorialantwort3.setDisable(true);
-        tutorialantwort4.setDisable(true);
+        tutAnswer1.setDisable(true);
+        tutAnswer2.setDisable(true);
+        tutAnswer3.setDisable(true);
+        tutAnswer4.setDisable(true);
 
         // Überprüfen, ob die Antwort korrekt ist
         checkAnswer(selectedAnswer);
@@ -280,15 +280,15 @@ public class TutorialController implements QuizBase, ControllerBase {
     // anzeigen ob richtig oder falsch
     @Override
     public void showFeedback(String feedback, boolean isCorrect) {
-        tutorialFeedback.setText(feedback);
-        tutorialFeedback.setStyle(isCorrect ? "-fx-text-fill: green;" : "-fx-text-fill: red;");
-        tutorialFeedback.setVisible(true);  // Feedback anzeigen
+        tutFeedbackLabel.setText(feedback);
+        tutFeedbackLabel.setStyle(isCorrect ? "-fx-text-fill: green;" : "-fx-text-fill: red;");
+        tutFeedbackLabel.setVisible(true);  // Feedback anzeigen
     }
 
     // kontrollieren ob die givenAnswer stimmt oder nicht
     @Override
     public void checkAnswer(String givenAnswer) {
-        TutorialQuestions currentQuestion = questionsjson.get(currentQuestionIndex);
+        TutorialQuestions currentQuestion = questionsJson.get(currentQuestionIndex);
         if (currentQuestion.getCorrectAnswer().equalsIgnoreCase(givenAnswer)) {
             markQuestionAsRight();
             showFeedback("That's right! You're taking off like a rocket :)", true);
@@ -300,13 +300,13 @@ public class TutorialController implements QuizBase, ControllerBase {
 
     private void markQuestionAsWrong() {
         lives--;
-        QuizBase.super.markQuestionAsWrong(getLives(), tutorialLeben);
+        QuizBase.super.markQuestionAsWrong(getLives(), tutLivesLabel);
     }
 
     private void markQuestionAsRight() {
         points += 10;
         rightOnes++;
-        QuizBase.super.markQuestionAsRight(getPoints(), getRightOnes(), tutorialPunkte);
+        QuizBase.super.markQuestionAsRight(getPoints(), getRightOnes(), tutPointsLabel);
     }
 
     public void loadNewQuestion() {
@@ -314,23 +314,23 @@ public class TutorialController implements QuizBase, ControllerBase {
 
         timer.pause();
 
-        questionsasked++; // Zähler für gestellte Fragen erhöhen
+        questionsAsked++; // Zähler für gestellte Fragen erhöhen
 
-        if (lives > 0 && questionsasked <= questionsjson.size()) {
+        if (lives > 0 && questionsAsked <= questionsJson.size()) {
             PauseTransition pause = new PauseTransition(Duration.seconds(1.5)); // 3 Sekunden Pause
 
             pause.setOnFinished(event -> {
                 // Nach der Pause: neue Frage anzeigen und antwortbutton wieder ermöglichen
-                tutorialantwort1.setDisable(false);
-                tutorialantwort2.setDisable(false);
-                tutorialantwort3.setDisable(false);
-                tutorialantwort4.setDisable(false);
+                tutAnswer1.setDisable(false);
+                tutAnswer2.setDisable(false);
+                tutAnswer3.setDisable(false);
+                tutAnswer4.setDisable(false);
                 //index erhöhen
                 currentQuestionIndex++;
                 //feedback wieder wegmachen
-                tutorialFeedback.setVisible(false);
+                tutFeedbackLabel.setVisible(false);
                 //fragenanzahl aktualisieren
-                fragenanzahl.setText(Integer.toString(questionsasked) + "/" + Integer.toString(questions));
+                tutQuestionNumberLabel.setText(Integer.toString(questionsAsked) + "/" + Integer.toString(questions));
 
                 resetAnswerButtonColors(); //farben der buttons zurücksetzen
                 resetTimer(); // Timer zurücksetzen
@@ -352,12 +352,12 @@ public class TutorialController implements QuizBase, ControllerBase {
     @Override
     public void setAnswerButtonColors() {
         // Über alle Antwort-Buttons iterieren und die Farben ändern
-        Button[] answerButtons = {tutorialantwort1, tutorialantwort2, tutorialantwort3, tutorialantwort4};
+        Button[] answerButtons = {tutAnswer1, tutAnswer2, tutAnswer3, tutAnswer4};
 
         for (Button button : answerButtons) {
             String answer = button.getText();
 
-            TutorialQuestions currentQuestion = questionsjson.get(currentQuestionIndex);
+            TutorialQuestions currentQuestion = questionsJson.get(currentQuestionIndex);
             if (answer.equalsIgnoreCase(currentQuestion.getCorrectAnswer())) {
                 button.setStyle("-fx-text-fill: green;");  // Richtige Antwort grün
             } else {
@@ -367,7 +367,7 @@ public class TutorialController implements QuizBase, ControllerBase {
     }
 
     private void resetAnswerButtonColors() {
-        QuizBase.super.resetAnswerButtonColors(tutorialantwort1, tutorialantwort2 ,tutorialantwort3, tutorialantwort4);
+        QuizBase.super.resetAnswerButtonColors(tutAnswer1, tutAnswer2, tutAnswer3, tutAnswer4);
     }
 
     @Override
@@ -411,7 +411,7 @@ public class TutorialController implements QuizBase, ControllerBase {
     //endscreen anzeigen
     private void showEndScreen() {
         // brauchen wir für show endscreen
-        Stage stage = (Stage) tutorialfrage.getScene().getWindow();
+        Stage stage = (Stage) tutQuestionLabel.getScene().getWindow();
         QuizBase.super.showEndScreen(stage, playerName, this); // Ruft die default-Methode aus dem Interface auf
     }
 

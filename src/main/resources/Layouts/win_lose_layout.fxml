@@ -16,20 +16,20 @@
     </stylesheets>
 
     <VBox alignment="CENTER">
-        <Label fx:id="endeLabel" styleClass="label-winorlose" text="Win/Lose" />
-      <Text fx:id="geschichteLabel" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="350.0" visible="false">
+        <Label fx:id="endLabel" styleClass="label-winorlose" text="Win/Lose" />
+      <Text fx:id="storyTextLabel" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="350.0" visible="false">
          <VBox.margin>
             <Insets bottom="10.0" top="10.0" />
          </VBox.margin>
       </Text>
 
         <HBox alignment="CENTER" spacing="20.0">
-            <Label fx:id="namenLabel" styleClass="label-statistik" text="Name" />
-            <Label fx:id="punkteLabel" styleClass="label-statistik" text="Punkte" />
-            <Label fx:id="modusLabel" styleClass="label-statistik" text="Modus" />
+            <Label fx:id="nameLabel" styleClass="label-statistik" text="Name" />
+            <Label fx:id="pointsLabel" styleClass="label-statistik" text="Punkte" />
+            <Label fx:id="modeLabel" styleClass="label-statistik" text="Modus" />
         </HBox>
 
-        <Label fx:id="lebenLabel" styleClass="label-statistik" text="Leben" />
+        <Label fx:id="livesLabel" styleClass="label-statistik" text="Leben" />
 
         <Label fx:id="rightOnesLabel" styleClass="label-statistik" text="0/0" />
     </VBox>

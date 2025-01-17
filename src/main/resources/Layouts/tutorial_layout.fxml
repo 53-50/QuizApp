@@ -25,7 +25,7 @@
                               <Image url="@../images/Lives_Heart_Pixel.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="tutorialLeben" text="00" />
+                        <Label fx:id="tutLivesLabel" text="00" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
@@ -35,7 +35,7 @@
                               <Image url="@../images/points_star.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="tutorialPunkte" text="Points" />
+                        <Label fx:id="tutPointsLabel" text="Points" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
@@ -45,14 +45,14 @@
                               <Image url="@../images/timer_clock.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="tutorialTimer" text="Timer" />
+                        <Label fx:id="tutTimerLabel" text="Timer" />
                      </children>
                   </VBox>
                   <Button mnemonicParsing="false" onAction="#onTutorialExit" text="Exit" />
                </children>
             </HBox>
-            <Label fx:id="fragenanzahl" prefHeight="30.0" prefWidth="18.0" text="0/0" />
-            <Label fx:id="tutorialfrage" prefHeight="30.0" prefWidth="48.0" text="Question">
+            <Label fx:id="tutQuestionNumberLabel" prefHeight="30.0" prefWidth="18.0" text="0/0" />
+            <Label fx:id="tutQuestionLabel" prefHeight="30.0" prefWidth="48.0" text="Question">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -61,14 +61,14 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="200.0" prefWidth="600.0" spacing="30.0">
                      <children>
-                        <Button fx:id="tutorialantwort1" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 1" textAlignment="CENTER" wrapText="true" />
-                        <Button fx:id="tutorialantwort2" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 2" textAlignment="CENTER" wrapText="true" />
+                        <Button fx:id="tutAnswer1" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 1" textAlignment="CENTER" wrapText="true" />
+                        <Button fx:id="tutAnswer2" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 2" textAlignment="CENTER" wrapText="true" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="200.0" prefWidth="600.0" spacing="30.0">
                      <children>
-                        <Button fx:id="tutorialantwort3" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 3" textAlignment="CENTER" wrapText="true" />
-                        <Button fx:id="tutorialantwort4" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 4" textAlignment="CENTER" wrapText="true" />
+                        <Button fx:id="tutAnswer3" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 3" textAlignment="CENTER" wrapText="true" />
+                        <Button fx:id="tutAnswer4" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 4" textAlignment="CENTER" wrapText="true" />
                      </children>
                   </HBox>
                </children>
@@ -76,7 +76,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </VBox>
-            <Label fx:id="tutorialFeedback" alignment="CENTER" prefWidth="500.0" text="Comment" visible="false" />
+            <Label fx:id="tutFeedbackLabel" alignment="CENTER" prefWidth="500.0" text="Comment" visible="false" />
          </children>
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

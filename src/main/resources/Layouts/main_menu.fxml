@@ -55,10 +55,10 @@
                      </HBox>
 
                      <!-- Action Buttons -->
-                     <Button fx:id="spielStarten" onAction="#onStartQuizClick" styleClass="button" text="Start Quiz" />
-                  <Button fx:id="lernmodusButton" mnemonicParsing="false" onAction="#showCsvUploadDialog" prefHeight="45.0" prefWidth="113.0" text="Learning Mode" />
+                     <Button fx:id="playGame" onAction="#onStartQuizClick" styleClass="button" text="Start Quiz" />
+                  <Button fx:id="learnmodeButton" mnemonicParsing="false" onAction="#showCsvUploadDialog" prefHeight="45.0" prefWidth="113.0" text="Learning Mode" />
                      <Button onAction="#onExitClick" styleClass="button" text="Quit" />
-                     <Button fx:id="tutorialSpielen" onAction="#onTutorialModeClick" styleClass="button" text="Start Storymode" />
+                     <Button fx:id="playTutorial" onAction="#onTutorialModeClick" styleClass="button" text="Start Storymode" />
          </children>
 
               </VBox>
