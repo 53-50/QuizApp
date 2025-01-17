@@ -32,13 +32,15 @@ public class MainMenuController {
 
     //für Text Eingabe benötigt
     @FXML
-    private TextField inputTextField;
+    private TextField inputTextField; //hier wird NamenText eingegeben
     @FXML
-    private Button inputTextFieldButton;
+    private Button inputTextFieldButton; //hier wird die NamenEingabe bestätigt
     @FXML
-    private Button unlockInputTextFieldButton;
+    private Button unlockInputTextFieldButton; //hier wird die NamenEingabe wieder gelöscht
 
-    private static final int MAX_CHARACTERS = 15;
+    private static final int MAX_CHARACTERS = 15; // Angabe von max. zulässigen Zeichen bei NamenEingabe
+
+    public String currentName; //mithilfe dieser wird der Name an andere Controller übergeben
 
     @FXML
     private Label errorLabel;
@@ -49,12 +51,10 @@ public class MainMenuController {
     @FXML
     private Button playTutorial;
 
-    public String currentname;
-
     private File uploadedCsvFile;
 
     @FXML
-    private Button learnmodeButton;
+    private Button learnModeButton;
 
 
 
@@ -65,6 +65,7 @@ public class MainMenuController {
         //damit das Eingabefeld nicht gleich fokussiert ist und man den Prompttext lesen kann
         inputTextField.setFocusTraversable(false);
 
+        //damit bevor nicht Namen angegeben die Modes die Namen benötigen nicht spielbar sind
         playTutorial.setDisable(true);
         playGame.setDisable(true);
 
@@ -79,24 +80,22 @@ public class MainMenuController {
         // Optional: Standardmäßig z.B. rbEasy auswählen
         rbEasy.setSelected(true);
 
-        // Beschränkungen von den Zeichen indem Änderungen an der Texteingabe überwacht
-        // und überflüssige Zeichen abschneidet
+        // Beschränkungen von Zeichen indem Änderungen an Texteingabe überwacht
+        // + überflüssige Zeichen abschneidet
+        // textProperty() gibt Bindung ("Property") des Textes zurück, der sich im TextField befindet.
+        // Mit Property kann Veränderungen am Textfeld überwacht werden
 
-        // textProperty() gibt eine Bindung (eine sogenannte Property) des Textes zurück, der sich im TextField befindet.
-        // Mit dieser Property können wir Veränderungen am Textfeld überwachen.
-
-        // addListener fügt Listener hinzu.
-        // Listener ist Methode, die bei einer Veränderung ausgeführt wird. reagiert auf Änderungen der textProperty()
-
-        // observable: überwachte Objekt (in diesem Fall textProperty des Textfeldes). Für unseren Fall nicht direkt genutzt.
-        // oldValue: Der alte Wert (Text), bevor die Änderung erfolgte.
-        // newValue: Der neue Wert (Text), nachdem die Änderung eingetreten ist.
+        // addListener fügt Listener hinzu
+        // Listener ist Methode, die bei Veränderung ausgeführt wird, reagiert auf Änderungen d. textProperty()
+        // observable: überwachte Objekt (textProperty des Textfeldes) => nicht direkt genutzt
+        // oldValue: alte Wert, vor Änderung <=> newValue: neue Wert nach Änderung
         inputTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 
             //Bedingung prüft, ob Länge des neuen Texts (nach der Änderung)
             // maximale erlaubte Anzahl an Zeichen (MAX_CHARACTERS) überschreitet.
             if (newValue.length() > MAX_CHARACTERS) {
                 // Kürze den Text, wenn er zu lang ist
+                // inputTextField auf Text gesetzt => aus ersten MAX_CHARACTERS des Strings newValue besteht
                 inputTextField.setText(newValue.substring(0, MAX_CHARACTERS));
             }
         });
@@ -130,7 +129,7 @@ public class MainMenuController {
                 // Get the QuizController
                 QuizController quizController = loader.getController();
                 // damit der playername auch beim quizspielen übergeben wird
-                quizController.setPlayerName(currentname);
+                quizController.setPlayerName(currentName);
                 quizController.setDifficulty(getSelectedDifficultyMMC()); //Doppelt, why??
 
                // selectedDifficultyMMC = getSelectedDifficultyMMC();
@@ -215,7 +214,7 @@ public class MainMenuController {
     private void uploadCsvFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Dateien", "*.csv"));
-        Stage stage = (Stage) learnmodeButton.getScene().getWindow();
+        Stage stage = (Stage) learnModeButton.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
@@ -270,7 +269,7 @@ public class MainMenuController {
                 LernmodusController lernmodusController = loader.getController();
                 lernmodusController.loadQuestionsFromCsv(uploadedCsvFile);
 
-                Stage stage = (Stage) learnmodeButton.getScene().getWindow();
+                Stage stage = (Stage) learnModeButton.getScene().getWindow();
                 stage.setScene(new Scene(lernmodusRoot));
                 stage.show();
             } catch (IOException e) {
@@ -313,66 +312,62 @@ public class MainMenuController {
     }
 */
 
-    // Namen Eingabe - Wird mal nur gespeichert in der Variable und dann bei Enter in der Console ausgegeben
+    // Namen Eingabe Handeling - Button Click "Enter"
     @FXML
     public void onButtonClick(ActionEvent event) {
-
+        //wenn TextEingabeFeld leer ist = trim damit leerzeichen nicht zählen als eingabe
         if (inputTextField.getText().trim().isEmpty()) {
             // Zeige eine Fehlermeldung an
             errorLabel.setVisible(true);
             inputTextField.setStyle("-fx-border-color: #ff0000;");
-        } else { // Weiterverarbeiten der Eingabe
-            errorLabel.setVisible(false);
+        } else { // Weiterverarbeiten der Eingabe, wenn was drinnen ist
+            errorLabel.setVisible(false); // Fehledermeldung wegmachen falls sie da stand
             inputTextField.setStyle("-fx-border-color: black;");
-            String name = inputTextField.getText();
-            currentname = name;
-            System.out.println(currentname);
-            playTutorial.setDisable(false);
-            playGame.setDisable(false);
-            inputTextField.setDisable(true);
-
-            unlockInputTextFieldButton.setDisable(false);
-            inputTextFieldButton.setDisable(true);
+            currentName = inputTextField.getText(); // variable zuordnen
+            playTutorial.setDisable(false); // tutorial modus möglich machen zum spielen
+            playGame.setDisable(false); // quiz modus möglich machen zum spielen
+            inputTextField.setDisable(true); //verhindern dass man nameneingabe ändern kann
+            unlockInputTextFieldButton.setDisable(false); //ermöglichen eingabe zu löschen
+            inputTextFieldButton.setDisable(true); // verhindern enter erneut zu drücken
         }
     }
 
-    // was passiert wenn man auf den UnlockButton klickt
+    // was passiert wenn man auf UnlockButton klickt
     @FXML
     public void onButtonClickUnlock(ActionEvent event) {
-        //input wird wieder möglich aber zurückgesetzt
+        //input wird wieder möglich aber zurückgesetzt (gelöscht) - Ausgangssituation
         inputTextField.setDisable(false);
         unlockInputTextFieldButton.setDisable(true);
         inputTextFieldButton.setDisable(false);
         inputTextField.clear();
-        currentname = null;
+        currentName = null;
         playTutorial.setDisable(true);
         playGame.setDisable(true);
-
     }
 
 
-    //FÜR TUTORIAL MODUS
-    // Holt sich die Stage welche dann benötigt wird sobald ein AcionEvent gesetzt wird
-    private void switchScene(ActionEvent event, String fxmlPath) {
+    @FXML
+    // wenn "TutorialMode" - Button geklickt wird -> scenen wechsel zu Tutorial_Layout.fxml
+    public void onTutorialModeClick(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            // FXMLLoader läd FXML Datei (tutorial_layout.fxml) => Layout von Tutorial Mode
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/tutorial_layout.fxml"));
+            // liest die Datei und gibt zurück den Root Node vom Layout (Start von Scene)
             Parent root = loader.load();
 
+            // loader.getController() = erhälts controller instance => erstellt + initialisiert von FXMLLoader
             TutorialController tutorialController = loader.getController();
-            tutorialController.setPlayerName(currentname);
+            // dem Controller übergibst du über Methode "setPlayerName" die currentName Variable
+            tutorialController.setPlayerName(currentName);
 
             // Aktuelle Stage holen und neue Szene setzen
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    // wenn TutorialMode geklickt wird gibt die Methode den fxml path an switchScene weiter
-    public void onTutorialModeClick(ActionEvent event) {
-        switchScene(event, "/Layouts/tutorial_layout.fxml");
     }
 
     private void showAlert(String title, String content) {

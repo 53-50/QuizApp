@@ -1,36 +1,36 @@
 [
   {
-    "QuestionText": "Where did this brave mouse's journey begin?",
+    "questionText": "Where did this brave mouse's journey begin?",
     "correctAnswer": "New Mexico, USA (the home of cheese legends)",
     "incorrectAnswers": ["Disneyland Paris, France (no, it wasn't a holiday)",
       "Moscow, Russia (even Lenin liked mice)", "Burgenland, Austria (with a glass of wine)"]
   },
   {
-    "QuestionText": "When did the first mouse set foot on the galactic cheese road?",
+    "questionText": "When did the first mouse set foot on the galactic cheese road?",
     "correctAnswer": "31.08.1950 (the mouse wanted to conquer the universe, just like the jet planes wanted to conquer the Atlantic)",
     "incorrectAnswers": ["22.07.1951 (the mouse wanted to make its journey as fast as the first nuclear submarine)",
       "14.07.1949 (the mouse was a real pioneer - the moon came later)", "200 BC (Archimedes already had crazy ideas back then!)"]
   },
   {
-    "QuestionText": "What was the name of the brave mouse?",
+    "questionText": "What was the name of the brave mouse?",
     "correctAnswer": "Unknown (heroines don't need a name)",
     "incorrectAnswers": ["Tom (the cat missed the flight)",
       "Jerry (the cheese lover from the neighbourhood)", "Mickey (Disney has no rights to it)"]
   },
   {
-    "QuestionText": "Which cheese was the first to make it into space?",
+    "questionText": "Which cheese was the first to make it into space?",
     "correctAnswer": "Le Brouère (the cheese that made the Eiffel Tower jealous)",
     "incorrectAnswers": ["Comté (thought there was fondue in orbit)",
       "Emmentaler (the one with the holes for air resistance", "None yet (the cheese lobby is working on it!)"]
   },
   {
-    "QuestionText": "When did the cheese finally make it into space?",
+    "questionText": "When did the cheese finally make it into space?",
     "correctAnswer": "07.02.2010 (when the cheese won its ”world champion title’)",
     "incorrectAnswers": ["31.08.1950 (that's when the mouse tried to smuggle it in)",
       "29.02.1951 (the cheese was waiting for a leap year portal)", "06.06.2006 (the date just sounded mystical enough)"]
   },
   {
-    "QuestionText": "Why did this heroic mouse's dream fail?",
+    "questionText": "Why did this heroic mouse's dream fail?",
     "correctAnswer": "Parachute system failed (Gravity won)",
     "incorrectAnswers": ["Reaction to the anaesthetic (the cheesy reverie was too intense)",
       "Old age (the galactic years count double)", "Cheese deprivation (a true tragedy for any mouse)"]

@@ -19,38 +19,49 @@ import java.io.IOException;
 
 public interface QuizBase {
 
+    // damit Namen Übergabe vom Main Menu möglich ist
     void setPlayerName(String name);
 
+    // damit das Spiel initialisiert wird
     void initialize() throws IOException;
 
+    // Timer wird gestartet
     void startTimer();
 
+    // Timer wird zurückgesetzt
     void resetTimer();
 
+    // was passiert wenn die Zeit abläuft wird hier gehandelt
     void handleTimeOut() throws IOException;
 
+    // die aktuelle Frage wird angezeigt
     void displayCurrentQuestion() throws IOException, InterruptedException;
 
+    // was passiert wenn ein Button als Antwort geklickt wurde
     void handleAnswerButtonClick(ActionEvent mainEvent) throws IOException, InterruptedException;
 
+    // Feedback wird angezeigt je nach obs korrekt oder falsch ist
     void showFeedback(String feedback, boolean isCorrect);
 
+    // es wird kontrolliert ob die angeklickte antwort die richtige antwort ist
     void checkAnswer(String givenAnswer);
 
+    // was alles passieren soll wenn die frage richtig beantwortet wurde
     default void markQuestionAsRight(int points, int rightOnes, Label pointsLabel) {
         // Logik zum Markieren der aktuellen Frage als richtig
         pointsLabel.setText(Integer.toString(points));
     }
 
+    // was alles passieren soll wenn die frage falsch beantwortet wurde
     default void markQuestionAsWrong(int lives, Label livesLabel) {
         // Logik zum Markieren der aktuellen Frage als falsch
         livesLabel.setText(Integer.toString(lives));
     }
 
-    // richtig und falsch buttons anzeigen
-    // muss selbst implementiert werden, weil richtige fragenlogik unterschiedlich
+    // richtig und falsch buttons graphisch anzeigen was die richtige/falsche antwort gewesen wäre
     void setAnswerButtonColors();
 
+    // die buttoncolors zurücksetzten auf ursprünglichen look (black)
     default void resetAnswerButtonColors(Button answer1, Button answer2, Button answer3, Button answer4) {
         // Alle Buttons wieder auf die Standardfarbe setzen
         Button[] answerButtons = {answer1, answer2, answer3, answer4};
@@ -59,18 +70,21 @@ public interface QuizBase {
         }
     }
 
-    //allgemeine wenn auf das schließen button geklickt wird
+    //wenn auf den Exit button geklickt wird
     default void onExit(ActionEvent event, Timeline timer) {
 
-        // braucht man damit popup auftaucht und er nach bist du sicher das spiel beendet wird
+        // braucht man damit popup auftaucht und erst nach "bist du sicher -> OK" das spiel beendet wird
         try {
+            // FXML von Pop-Up wird geladen
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/popups.fxml"));
             Parent root = loader.load();
 
             PopupController popupController = loader.getController();
+            // Pop-Up Message wird gesetzt
             popupController.setPopupMessage("Are you really sure?");
 
-            // Nachricht setzen
+            // Der extra Button mit der Auswahl "Back to Game" wird hier angezeigt da er
+            // bei anderen Pop-Ups nicht gebraucht wird
             popupController.exitButton.setVisible(true);
 
             Stage popupStage = new Stage();
@@ -81,7 +95,7 @@ public interface QuizBase {
             popupController.setPopupStage(popupStage);
 
             // Modus von Stage festzulegen
-            // Blockiert alle anderen Fenster der Anwendung
+            // Blockiert alle anderen Fenster der Anwendung - macht Pop-up modal
             popupStage.initModality(Modality.APPLICATION_MODAL);
 
             // Aussehen und Verhalten von Stage ändern
@@ -93,13 +107,14 @@ public interface QuizBase {
             }
 
             // Zeigt das Pop-up an und wartet, bis es geschlossen wird
-            popupStage.initModality(Modality.APPLICATION_MODAL);  // Macht das Pop-up modal (blockiert das Hauptfenster)
             popupStage.showAndWait();
 
-            if(popupController.isUserSure()) {
+            // nur wenn isUserSure() true dann wird die scene zu Main Menu gewechselt
+            if(popupController.getUserSure()) {
                 // Wenn das Pop-up geschlossen wird, führe das aus:
                 switchScene(event, "/Layouts/main_menu.fxml");
             } else {
+                // wenn nicht userSure also "Back to Game" gedrückt wurde - geht Game und Timer weiter
                 timer.play();
             }
 
@@ -127,7 +142,7 @@ public interface QuizBase {
         }
     }
 
-    //showendscreen
+    //showendscreen - Win/Lose wird angezeigt und PlayerName + Controller wird übergeben
     default void showEndScreen(Stage stage, String playerName, ControllerBase controller) {
         try {
             // Lade den Win Screen (FXML-Datei)
@@ -141,13 +156,13 @@ public interface QuizBase {
             winLoseLayoutControllerController.setQuizController(controller);
             winLoseLayoutControllerController.setPlayerName(playerName);
 
-            // Anzeige der Punktzahl aktualisieren
-            winLoseLayoutControllerController.displayPunkte();
-            winLoseLayoutControllerController.displayLeben();
+            // Anzeige der Statistik aktualisieren mit Methoden vom WinLoseLayoutController
+            winLoseLayoutControllerController.displayPoints();
+            winLoseLayoutControllerController.displayLives();
             winLoseLayoutControllerController.displayWinOrLose();
             winLoseLayoutControllerController.displayRight();
-            winLoseLayoutControllerController.displayNamenLabel();
-            winLoseLayoutControllerController.displayModus();
+            winLoseLayoutControllerController.displayNameLabel();
+            winLoseLayoutControllerController.displayMode();
 
             // Szene wechseln
             Scene winScene = new Scene(winRoot);

@@ -19,26 +19,20 @@ public class WinLoseController {
 
     @FXML
     private Label modeLabel;
-
     @FXML
     private Label pointsLabel;
-
     @FXML
     private Label livesLabel;
-
     @FXML
     private Label endLabel;
-
     @FXML
     private Label rightOnesLabel;
-
     @FXML
     private Text storyTextLabel;
 
     // namen
     @FXML
     private Label nameLabel;
-
     private String playerName;
 
     // Infos von Controller holen damit man Statistik befüllen kann
@@ -46,45 +40,50 @@ public class WinLoseController {
 
     // damit der modus angezeigt werden kann
     private String mode;
-
     private String difficulty;
+
+    public void setPlayerName(String name) {
+        this.playerName = name;
+    }
 
     // controller setzten: tutorial oder quiz?
     public void setQuizController(ControllerBase controller) {
         this.controller = controller;
 
-        if (controller instanceof QuizController) {
-            difficulty = ((QuizController) controller).getDifficultyQC();
-            if (difficulty == null || difficulty.isEmpty()) {
+        if (controller instanceof QuizController) { // wenn es ein QuizController ist
+            difficulty = ((QuizController) controller).getDifficultyQC(); //hol dir aktuelle difficulty
+            if (difficulty == null || difficulty.isEmpty()) { // Fehler Handeling
                 difficulty = "Error";
             }
-            mode = "Quiz " + difficulty;
-        } else if (controller instanceof TutorialController) { //wenn tutorial dann wird geschichte angezeigt und modus
+            mode = "Quiz " + difficulty;  // setze die Variable mode
+        } else if (controller instanceof TutorialController) { //wenn tutorial dann wird geschichte angezeigt
             storyTextLabel.setText("As we now know, she arrived a few years too early, " +
                             "missing the historic achievement of becoming the first cheese connoisseur in space. " +
                             "Tragically, her dream was cut short by human error. Let us take a moment to honor " +
                             "this unknown mouse, who gave her life in pursuit of her heroic aspirations. "+
                             "THE END ");
             storyTextLabel.setVisible(true);
-            mode = "Tutorial";
-        } else if (controller instanceof LernmodusController){
-            mode = "Learning";
+            mode = "Tutorial"; // setze die Variable mode
+        } else if (controller instanceof LernmodusController){ // wenn lernmodus
+            mode = "Learning"; // setze die Variable mode
         }
 
     }
 
-    public void displayModus() {
+
+// ------------ DISPLAY LOGIC ------------
+    public void displayMode() {
         modeLabel.setText("Mode:" + mode);
     }
 
-    public void displayPunkte() {
+    public void displayPoints() {
         int finalPoints = controller.getPoints();
 
+        // wenn noch leben übrig sind => pro Lebel +5 Punkte
         if (controller.getLives() > 0) {
             finalPoints += controller.getLives() * 5;
         }
         pointsLabel.setText("Points: " + finalPoints);
-        System.out.println("~DEBUGGING~ *DP-WLC* punkte: " + finalPoints);
     }
 
     public void displayRight() {
@@ -92,7 +91,7 @@ public class WinLoseController {
         rightOnesLabel.setText(rightOnes + "/" + controller.getQuestions());
     }
 
-    public void displayLeben() {
+    public void displayLives() {
         int finalLives = controller.getLives();
 
         if (finalLives < 0) {
@@ -110,14 +109,12 @@ public class WinLoseController {
         }
     }
 
-    public void setPlayerName(String name) {
-        this.playerName = name;
-    }
-
-    public void displayNamenLabel() {
-        String name = playerName;
+    public void displayNameLabel() {
         nameLabel.setText("Name: " + playerName);
     }
+
+
+// ------------ BUTTON LOGIC (Retry, Home, Highscore) ------------
 
     // allgemeiner scene switch
     private void switchScene(ActionEvent event, String fxmlPath) {
@@ -126,26 +123,28 @@ public class WinLoseController {
             Parent root = loader.load();
 
             //equals funktioniert mit String gut - muss man nicht overridden weil keine extra Logik benötigt
-            if (fxmlPath.equals("/Layouts/tutorial_layout.fxml")) {
+            if (fxmlPath.equals("/Layouts/tutorial_layout.fxml")) { // wenn es tutorial ist
                 TutorialController tutorialController = loader.getController();
-                tutorialController.setPlayerName(playerName); // Name weitergeben
+                tutorialController.setPlayerName(playerName); // Name wieder geben
             }
 
-            if (fxmlPath.equals("/Layouts/quiz_layout.fxml")) {
+            if (fxmlPath.equals("/Layouts/quiz_layout.fxml")) { // wenn es quiz ist
                 QuizController quizController = loader.getController();
-                quizController.setPlayerName(playerName); // Name weitergeben
-                quizController.setDifficulty(difficulty);
+                quizController.setPlayerName(playerName); // Name wieder geben
+                quizController.setDifficulty(difficulty); // schwierigkeit wieder geben
             }
 
             // Aktuelle Stage holen und neue Szene setzen
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    @FXML
     // spiel nochmal spielen
     public void onRetryClick(ActionEvent event) {
         if (controller instanceof TutorialController) {
@@ -156,14 +155,13 @@ public class WinLoseController {
             switchScene(event, "/Layouts/lernmodus_layout.fxml");
         } else {
             switchScene(event, "/Layouts/main_menu.fxml");
-            System.out.println("~DEBUGGING~ something went wrong");
         }
     }
 
-        //Zum Hauptmenü
+    @FXML
+    //Zum Hauptmenü
     public void onHomeClick(ActionEvent event) {
         switchScene(event, "/Layouts/main_menu.fxml");
-
 
         /*Name, Punkte und Schwierigkeit an Highscore Manager übergeben
         int finalePunkte = controller.getPunkte();

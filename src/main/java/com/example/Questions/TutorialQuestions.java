@@ -12,6 +12,7 @@ public class TutorialQuestions implements QuestionBase {
     protected List<String> incorrectAnswers;
     protected String QuestionText;
 
+    // Konstrukteur
     public TutorialQuestions(String QuestionText, String correctAnswer, List<String> incorrectAnswers) {
         this.QuestionText = QuestionText;
         this.correctAnswer = correctAnswer;
@@ -19,13 +20,12 @@ public class TutorialQuestions implements QuestionBase {
     }
 
     // Getter und Setter
-
     @Override
     public String getQuestionText() {
         return QuestionText;
     }
 
-    public void setQuestion(String question) {
+    public void setQuestionText(String question) {
         this.QuestionText = QuestionText;
     }
 
@@ -49,8 +49,8 @@ public class TutorialQuestions implements QuestionBase {
 
     // Diese Methode kombiniert die richtige Antwort mit den falschen und mischt sie
     public List<String> getAllAnswers() {
-        List<String> allAnswers = new ArrayList<>(incorrectAnswers);
-        allAnswers.add(correctAnswer);
+        List<String> allAnswers = new ArrayList<>(incorrectAnswers); // befülle es mit allen falschen
+        allAnswers.add(correctAnswer); // füge die richtige auch hinzu
         Collections.shuffle(allAnswers); // Randomisieren der Antworten
         return allAnswers;
     }

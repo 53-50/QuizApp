@@ -67,7 +67,6 @@ public class QuizController implements QuizBase, ControllerBase {
     private Button answerBtn4;
 
 
-    //TODO
     private String playerName; //namen übergabe
     @Override
     public void setPlayerName(String name) {

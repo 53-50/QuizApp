@@ -20,28 +20,28 @@ import java.util.List;
 public class QuestionLoader {
 
     public static List<TutorialQuestions> loadQuestionsFromJson(String filePath) {
-        // JSON-Daten lesen und deserialisieren
+        // JSON-Daten lesen + deserialisieren
         Gson gson = new Gson();
 
-        // FileReader: Liest die JSON-Datei vom angegebenen Pfad filePath.
+        // FileReader: Liest JSON-Datei vom angegebenen Pfad filePath
         // try mit Ressourcenschließung (try-with-resources): Stellt sicher, dass
-        // FileReader nach der Verwendung automatisch geschlossen wird
+        // FileReader nach Verwendung automatisch geschlossen wird
         try (FileReader reader = new FileReader(filePath)) {
 
-            // Erstellt Type, der die generische Typinformation für List<TutorialQuestions> enthält
-            // Dies ist erforderlich, da Generics in Java zur Laufzeit gelöscht werden (Type Erasure
-            // und Gson diese Information benötigt.
+            // Erstellt Type, der generische Typinfo für List<TutorialQuestions> enthält
+            // ist erforderlich, da Generics in Java zur Laufzeit gelöscht werden
+            // und Gson diese Information benötigt
             Type questionListType = new TypeToken<List<TutorialQuestions>>() {}.getType();
 
-            // Verwendet fromJson-Methode der Gson-Instanz, um
-            // JSON-Daten in eine Liste von TutorialQuestions-Objekten zu deserialisieren.
-            // reader: Der Dateiinhalt wird eingelesen.
-            // questionListType: Typ, in den die Daten konvertiert werden (hier List<TutorialQuestions>).
+            // fromJson-Methode der Gson-Instanz, um JSON-Daten in Liste von TutorialQuestions-Objekten deserialisieren
+            // reader: Dateiinhalt wird eingelesen.
+            // questionListType: Typ, in den Daten konvertiert werden (hier List<TutorialQuestions>).
             return gson.fromJson(reader, questionListType);
+
         } catch (IOException e) {
             // Fängt Fehler ab wenn Datei =/ existiert =/ lesbar ist od. anderer I/O-Fehler auftritt
-            // e.printStackTrace(): Gibt Fehlermeldung auf der Konsole aus (nützlich für Debugging).
-            // return null: Gibt null zurück, wenn Fehler auftritt.
+            // e.printStackTrace(): Gibt Fehlermeldung auf Konsole aus
+            // return null: Gibt null zurück, wenn Fehler auftritt
             e.printStackTrace();
             return null;
         }

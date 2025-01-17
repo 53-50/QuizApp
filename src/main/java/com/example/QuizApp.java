@@ -13,7 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 // Importiert Stage-Klasse, die das Hauptfenster der Anwendung darstellt.
 import javafx.stage.Stage;
-
+// zum Verwenden von Images
 import javafx.scene.image.Image;
 
 // Klasse QuizApp erbt von JavaFX Application-Klasse = erforderlich, um JavaFX-Anwendung zu erstellen
@@ -21,6 +21,7 @@ public class QuizApp extends Application {
 
     // start-Methode wird von JavaFX aufgerufen, wenn Anwendung gestartet wird
     // Diese Methode erhält Stage-Objekt, das das Hauptfenster der Anwendung darstellt
+    // überschreibt start-Methode => Methode von JavaFX-Application-Klasse definiert
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Hauptmenü-FXML laden => definiert Layout und die Benutzeroberfläche des Menüs.
@@ -39,6 +40,7 @@ public class QuizApp extends Application {
         // Zum Debuggen vielleicht hilfreich weil Infos angezeigt wegen Versionen
         // System.out.println(System.getProperties());
 
+        // Titel der Application wird gesetzt
         primaryStage.setTitle("Mice in Space");
         primaryStage.setScene(mainMenuScene);
         primaryStage.show();
