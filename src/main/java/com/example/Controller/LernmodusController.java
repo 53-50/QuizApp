@@ -1,5 +1,7 @@
 package com.example.Controller;
 
+import com.example.Interface.QuizBase;
+import com.example.Questions.AnswerEvaluation;
 import com.example.Questions.LernmodusQuestion;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -12,21 +14,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.util.Duration;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
 import java.io.*;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LernmodusController {
+public class LernmodusController implements QuizBase {
 
     @FXML
     private Label lblQuestion;
@@ -37,40 +33,97 @@ public class LernmodusController {
     @FXML
     private Button btnNext;
     @FXML
+    private Button btnEvaluation;
+    @FXML
     private Label lblResult;
     @FXML
     private Label timerLabel;
 
     private List<LernmodusQuestion> questions;
+    private List<AnswerEvaluation> answers;
     private int currentQuestionIndex;
 
     private Timeline timer;
-    private LocalTime startTime;
+    private int elapsedSeconds;
+
+    @Override
+    public void setPlayerName(String name) {
+
+    }
 
     @FXML
     public void initialize() {
         questions = new ArrayList<>();
+        answers = new ArrayList<>();
         currentQuestionIndex = 0;
         lblResult.setVisible(false);
         btnNext.setDisable(true);
-        setupTimer();
+        btnNext.setVisible(false);
+        btnEvaluation.setVisible(false);
     }
 
-    private void setupTimer() {
-        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> updateTimer()));
+    @Override
+    public void startTimer() {
+        elapsedSeconds = 0;
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            elapsedSeconds++;
+            updateTimerLabel();
+        }));
         timer.setCycleCount(Timeline.INDEFINITE);
+        timer.play();
     }
 
-    private void updateTimer() {
-        LocalTime now = LocalTime.now();
-        long secondsElapsed = ChronoUnit.SECONDS.between(startTime, now);
+    @Override
+    public void resetTimer() {
+        if (timer != null) {
+            timer.stop();
+        }
+        elapsedSeconds = 0;
+        updateTimerLabel();
+    }
 
-        long hours = secondsElapsed / 3600;
-        long minutes = (secondsElapsed % 3600) / 60;
-        long seconds = secondsElapsed % 60;
+    @Override
+    public void handleTimeOut() throws IOException {
 
+    }
+
+    @Override
+    public void displayCurrentQuestion() throws IOException, InterruptedException {
+
+    }
+
+    @Override
+    public void handleAnswerButtonClick(ActionEvent mainEvent) throws IOException, InterruptedException {
+
+    }
+
+    @Override
+    public void showFeedback(String feedback, boolean isCorrect) {
+
+    }
+
+    @Override
+    public void checkAnswer(String givenAnswer) {
+
+    }
+
+    @Override
+    public void setAnswerButtonColors() {
+
+    }
+
+    private void updateTimerLabel() {
+        int hours = elapsedSeconds / 3600;
+        int minutes = (elapsedSeconds % 3600) / 60;
+        int seconds = elapsedSeconds % 60;
         String formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds);
         timerLabel.setText(formattedTime);
+    }
+
+    private void stopTimer() {
+        if (timer != null) {
+            timer.stop();
+        }
     }
 
     public void loadQuestionsFromCsv(File file) {
@@ -87,6 +140,7 @@ public class LernmodusController {
                 }
             }
             if (!questions.isEmpty()) {
+                resetTimer();
                 startTimer();
                 displayQuestion();
             } else {
@@ -97,32 +151,14 @@ public class LernmodusController {
         }
     }
 
-    private void startTimer() {
-        startTime = LocalTime.now();
-        timer.play();
-    }
-
-    private void stopTimer() {
-        if (timer != null) {
-            timer.stop();
-        }
-    }
-
     private void displayQuestion() {
         if (currentQuestionIndex < questions.size()) {
             lblQuestion.setText(questions.get(currentQuestionIndex).getQuestion());
             txtAnswer.clear();
             lblResult.setVisible(false);
+
             btnNext.setVisible(false);
             btnNext.setDisable(true);
-        } else {
-            lblQuestion.setText("Alle Fragen beantwortet!");
-            txtAnswer.setDisable(true);
-            btnSubmit.setDisable(true);
-            lblResult.setText("Quiz beendet!");
-            lblResult.setStyle("-fx-text-fill: black;");
-            lblResult.setVisible(true);
-            stopTimer();
         }
     }
 
@@ -131,8 +167,9 @@ public class LernmodusController {
         if (currentQuestionIndex < questions.size()) {
             String userAnswer = txtAnswer.getText().trim();
             String correctAnswer = questions.get(currentQuestionIndex).getAnswer();
+            boolean isCorrect = userAnswer.equalsIgnoreCase(correctAnswer);
 
-            if (userAnswer.equalsIgnoreCase(correctAnswer)) {
+            if (isCorrect) {
                 lblResult.setText("Richtig!");
                 lblResult.setStyle("-fx-text-fill: green;");
             } else {
@@ -140,6 +177,14 @@ public class LernmodusController {
                 lblResult.setStyle("-fx-text-fill: red;");
             }
             lblResult.setVisible(true);
+
+            answers.add(new AnswerEvaluation(
+                    questions.get(currentQuestionIndex).getQuestion(),
+                    userAnswer,
+                    isCorrect,
+                    correctAnswer
+            ));
+
             btnNext.setVisible(true);
             btnNext.setDisable(false);
         }
@@ -148,7 +193,38 @@ public class LernmodusController {
     @FXML
     private void onNextClick(ActionEvent event) {
         currentQuestionIndex++;
-        displayQuestion();
+
+        if (currentQuestionIndex < questions.size()) {
+            displayQuestion();
+        } else {
+            lblQuestion.setText("Alle Fragen beantwortet!");
+            txtAnswer.setDisable(true);
+            btnSubmit.setDisable(true);
+            lblResult.setText("Quiz beendet!");
+            lblResult.setStyle("-fx-text-fill: black;");
+            lblResult.setVisible(true);
+            stopTimer();
+            btnNext.setVisible(false);
+            btnEvaluation.setVisible(true);
+        }
+    }
+
+    @FXML
+    private void onEvaluationClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/evaluation_layout.fxml"));
+            Parent evaluationRoot = loader.load();
+
+            EvaluationController evaluationController = loader.getController();
+            evaluationController.setAnswers(answers);
+
+            Stage stage = new Stage();
+            stage.setTitle("Auswertung");
+            stage.setScene(new Scene(evaluationRoot));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
