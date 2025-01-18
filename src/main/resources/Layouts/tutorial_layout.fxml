@@ -6,81 +6,83 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1100.0" styleClass="rootQuiz" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.TutorialController">
+<VBox prefHeight="700.0" prefWidth="1100.0" styleClass="rootQuiz" xmlns="http://javafx.com/javafx/17.0.2-ea"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.TutorialController">
 
    <!-- reinladen vom CSS File -->
    <stylesheets>
-      <URL value="@../css/application.css" />
+      <URL value="@../css/application.css"/>
    </stylesheets>
 
-   <children>
-      <VBox alignment="CENTER" fillWidth="false" prefHeight="700.0" prefWidth="1100.0">
-         <children>
-            <HBox alignment="CENTER" prefHeight="65.0" prefWidth="800.0" spacing="150.0">
-               <children>
-                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
-                     <children>
-                        <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/Lives_Heart_Pixel.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="tutLivesLabel" text="00" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/points_star.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="tutPointsLabel" text="Points" />
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER" prefHeight="100.0" prefWidth="50.0">
-                     <children>
-                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/timer_clock.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="tutTimerLabel" text="Timer" />
-                     </children>
-                  </VBox>
-                  <Button mnemonicParsing="false" onAction="#onTutorialExit" text="Exit" />
-               </children>
+   <VBox alignment="CENTER" fillWidth="false">
+      <padding>
+         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+      </padding>
+
+      <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="800.0" spacing="85.0">
+         <Button mnemonicParsing="false" onAction="#onTutorialExit" text="Exit" styleClass="buttonExit"/>
+
+         <HBox styleClass="parameterBox" spacing="30">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0">
+               <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../images/Lives_Heart_Pixel.png"/>
+               </ImageView>
+               <Label fx:id="tutLivesLabel" text="00" styleClass="whiteFont"/>
             </HBox>
-            <Label fx:id="tutQuestionNumberLabel" prefHeight="30.0" prefWidth="18.0" text="0/0" />
-            <Label fx:id="tutQuestionLabel" prefHeight="30.0" prefWidth="48.0" text="Question">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Label>
-            <VBox prefHeight="200.0" prefWidth="600.0">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="200.0" prefWidth="600.0" spacing="30.0">
-                     <children>
-                        <Button fx:id="tutAnswer1" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 1" textAlignment="CENTER" wrapText="true" />
-                        <Button fx:id="tutAnswer2" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 2" textAlignment="CENTER" wrapText="true" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="200.0" prefWidth="600.0" spacing="30.0">
-                     <children>
-                        <Button fx:id="tutAnswer3" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 3" textAlignment="CENTER" wrapText="true" />
-                        <Button fx:id="tutAnswer4" mnemonicParsing="false" onAction="#handleAnswerButtonClick" prefHeight="60.0" prefWidth="200.0" text="Antwort 4" textAlignment="CENTER" wrapText="true" />
-                     </children>
-                  </HBox>
-               </children>
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </VBox>
-            <Label fx:id="tutFeedbackLabel" alignment="CENTER" prefWidth="500.0" text="Comment" visible="false" />
-         </children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0">
+               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../images/points_star.png"/>
+               </ImageView>
+               <Label fx:id="tutPointsLabel" text="Points" styleClass="whiteFont"/>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0">
+               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <Image url="@../images/timer_clock.png"/>
+               </ImageView>
+               <Label fx:id="tutTimerLabel" text="Timer" styleClass="whiteFont"/>
+            </HBox>
+         </HBox>
+
          <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            <Insets bottom="50.0"/>
          </padding>
+
+      </HBox>
+
+      <VBox alignment="CENTER">
+         <Label fx:id="tutQuestionNumberLabel" text="0/0" styleClass="whiteFont"/>
+         <VBox alignment="CENTER">
+            <VBox.margin>
+               <Insets top="10.0"/>
+            </VBox.margin>
+            <Label alignment="CENTER" wrapText="true" fx:id="tutQuestionLabel" text="Question"
+                   styleClass="label-question" prefHeight="80.0" prefWidth="600.00"/>
+         </VBox>
       </VBox>
-   </children>
-</AnchorPane>
+
+      <VBox prefHeight="250.0" prefWidth="800.0">
+         <VBox.margin>
+            <Insets top="20.0"/>
+         </VBox.margin>
+
+         <HBox alignment="CENTER" prefHeight="200.0" prefWidth="800.0" spacing="30.0">
+            <Button fx:id="tutAnswer1" mnemonicParsing="false" onAction="#handleAnswerButtonClick"
+                    prefHeight="100.0" prefWidth="300.0" text="Antwort 1" textAlignment="CENTER"
+                    wrapText="true" styleClass="buttonAnswer"/>
+            <Button fx:id="tutAnswer2" mnemonicParsing="false" onAction="#handleAnswerButtonClick"
+                    prefHeight="100.0" prefWidth="300.0" text="Antwort 2" textAlignment="CENTER"
+                    wrapText="true" styleClass="buttonAnswer"/>
+         </HBox>
+         <HBox alignment="CENTER" prefHeight="200.0" prefWidth="800.0" spacing="30.0">
+            <Button fx:id="tutAnswer3" mnemonicParsing="false" onAction="#handleAnswerButtonClick"
+                    prefHeight="100.0" prefWidth="300.0" text="Antwort 3" textAlignment="CENTER"
+                    wrapText="true" styleClass="buttonAnswer"/>
+            <Button fx:id="tutAnswer4" mnemonicParsing="false" onAction="#handleAnswerButtonClick"
+                    prefHeight="100.0" prefWidth="300.0" text="Antwort 4" textAlignment="CENTER"
+                    wrapText="true" styleClass="buttonAnswer"/>
+         </HBox>
+      </VBox>
+      <Label fx:id="tutFeedbackLabel" alignment="CENTER" prefWidth="500.0" styleClass="label-feedback" text="Comment"
+             visible="false"/>
+   </VBox>
+</VBox>

@@ -350,7 +350,7 @@ public class TutorialController implements QuizBase, ControllerBase {
     @Override
     public void showFeedback(String feedback, boolean isCorrect) {
         tutFeedbackLabel.setText(feedback);
-        tutFeedbackLabel.setStyle(isCorrect ? "-fx-text-fill: green;" : "-fx-text-fill: red;");
+        tutFeedbackLabel.setStyle(isCorrect ? "-fx-text-fill: #5cd686;" : "-fx-text-fill: #e85c6c;");
         tutFeedbackLabel.setVisible(true);  // Feedback anzeigen
     }
 
@@ -383,9 +383,9 @@ public class TutorialController implements QuizBase, ControllerBase {
 
             // schauen ob button text der richtigen antwort von frage entspricht
             if (answer.equalsIgnoreCase(currentQuestion.getCorrectAnswer())) {
-                button.setStyle("-fx-text-fill: green;");  // Richtige Antwort grün
+                button.setStyle("-fx-text-fill: #5cd686;");  // Richtige Antwort grün
             } else {
-                button.setStyle("-fx-text-fill: red;");  // Falsche Antwort rot
+                button.setStyle("-fx-text-fill: #e85c6c;");  // Falsche Antwort rot
             }
         }
     }

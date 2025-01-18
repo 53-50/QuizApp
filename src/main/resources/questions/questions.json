@@ -7,8 +7,8 @@
   },
   {
     "questionText": "When did the first mouse set foot on the galactic cheese road?",
-    "correctAnswer": "31.08.1950 (the mouse wanted to conquer the universe, just like the jet planes wanted to conquer the Atlantic)",
-    "incorrectAnswers": ["22.07.1951 (the mouse wanted to make its journey as fast as the first nuclear submarine)",
+    "correctAnswer": "31.08.1950 (wanted to conquer the universe, like the jet planes wanted to conquer the Atlantic)",
+    "incorrectAnswers": ["22.07.1951 (wanted to make its journey as fast as the first nuclear submarine)",
       "14.07.1949 (the mouse was a real pioneer - the moon came later)", "200 BC (Archimedes already had crazy ideas back then!)"]
   },
   {
