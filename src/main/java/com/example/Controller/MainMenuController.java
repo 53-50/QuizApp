@@ -21,7 +21,6 @@ import java.io.*;
 
 public class MainMenuController {
 
-    public RadioButton rbTutorial;
     @FXML
     private RadioButton rbEasy;
     @FXML
@@ -33,29 +32,31 @@ public class MainMenuController {
 
     //für Text Eingabe benötigt
     @FXML
-    private TextField inputTextField;
+    private TextField inputTextField; //hier wird NamenText eingegeben
     @FXML
-    private Button inputTextFieldButton;
+    private Button inputTextFieldButton; //hier wird die NamenEingabe bestätigt
     @FXML
-    private Button unlockInputTextFieldButton;
+    private Button unlockInputTextFieldButton; //hier wird die NamenEingabe wieder gelöscht
 
-    private static final int MAX_CHARACTERS = 15;
+    private static final int MAX_CHARACTERS = 15; // Angabe von max. zulässigen Zeichen bei NamenEingabe
+
+    public String currentName; //mithilfe dieser wird der Name an andere Controller übergeben
 
     @FXML
     private Label errorLabel;
 
     @FXML
-    private Button spielStarten;
+    private Button playGame;
 
     @FXML
-    private Button tutorialSpielen;
-
-    public String currentname;
+    private Button playTutorial;
 
     private File uploadedCsvFile;
 
     @FXML
-    private Button lernmodusButton;
+    private Button learnModeButton;
+
+
 
 
     @FXML
@@ -64,8 +65,9 @@ public class MainMenuController {
         //damit das Eingabefeld nicht gleich fokussiert ist und man den Prompttext lesen kann
         inputTextField.setFocusTraversable(false);
 
-        tutorialSpielen.setDisable(true);
-        spielStarten.setDisable(true);
+        //damit bevor nicht Namen angegeben die Modes die Namen benötigen nicht spielbar sind
+        playTutorial.setDisable(true);
+        playGame.setDisable(true);
 
         difficultyToggleGroup = new ToggleGroup();
 
@@ -78,30 +80,29 @@ public class MainMenuController {
         // Optional: Standardmäßig z.B. rbEasy auswählen
         rbEasy.setSelected(true);
 
-        // Beschränkungen von den Zeichen indem Änderungen an der Texteingabe überwacht
-        // und überflüssige Zeichen abschneidet
+        // Beschränkungen von Zeichen indem Änderungen an Texteingabe überwacht
+        // + überflüssige Zeichen abschneidet
+        // textProperty() gibt Bindung ("Property") des Textes zurück, der sich im TextField befindet.
+        // Mit Property kann Veränderungen am Textfeld überwacht werden
 
-        // textProperty() gibt eine Bindung (eine sogenannte Property) des Textes zurück, der sich im TextField befindet.
-        // Mit dieser Property können wir Veränderungen am Textfeld überwachen.
-
-        // addListener fügt Listener hinzu.
-        // Listener ist Methode, die bei einer Veränderung ausgeführt wird. reagiert auf Änderungen der textProperty()
-
-        // observable: überwachte Objekt (in diesem Fall textProperty des Textfeldes). Für unseren Fall nicht direkt genutzt.
-        // oldValue: Der alte Wert (Text), bevor die Änderung erfolgte.
-        // newValue: Der neue Wert (Text), nachdem die Änderung eingetreten ist.
+        // addListener fügt Listener hinzu
+        // Listener ist Methode, die bei Veränderung ausgeführt wird, reagiert auf Änderungen d. textProperty()
+        // observable: überwachte Objekt (textProperty des Textfeldes) => nicht direkt genutzt
+        // oldValue: alte Wert, vor Änderung <=> newValue: neue Wert nach Änderung
         inputTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 
             //Bedingung prüft, ob Länge des neuen Texts (nach der Änderung)
             // maximale erlaubte Anzahl an Zeichen (MAX_CHARACTERS) überschreitet.
             if (newValue.length() > MAX_CHARACTERS) {
                 // Kürze den Text, wenn er zu lang ist
+                // inputTextField auf Text gesetzt => aus ersten MAX_CHARACTERS des Strings newValue besteht
                 inputTextField.setText(newValue.substring(0, MAX_CHARACTERS));
             }
         });
     }
 
-    private String getSelectedDifficulty() {
+    public String getSelectedDifficultyMMC() {
+        //User wählt schwierigkeit aus, nach Klick auf "Quiz-Play" wird difficulty an QuizController übergeben
         // Check which radio button is selected
         if (difficultyToggleGroup.getSelectedToggle() == rbEasy) {
             return "easy";
@@ -116,15 +117,10 @@ public class MainMenuController {
 
     @FXML
     private void onStartQuizClick(ActionEvent event) {
-        String selectedDifficulty = getSelectedDifficulty();
+        //User wählt schwierigkeit aus, nach Klick auf "Quiz-Play" wird difficulty an QuizController übergeben
+        String selectedDifficultyMMC = getSelectedDifficultyMMC();
 
-        if (selectedDifficulty.equals("learn")) {
-            // Wenn Lernmodus ausgewählt ist, lade die Lernmodus-Szene
-            /*loadLearnModeScene(event);*/
-        } else if (selectedDifficulty.equals("easy") || selectedDifficulty.equals("medium") || selectedDifficulty.equals("hard")){
-            // Andernfalls starte den API-basierten Quiz-Modus
-            // loadQuizScene(event, selectedDifficulty);
-
+        if (selectedDifficultyMMC.equals("easy") || selectedDifficultyMMC.equals("medium") || selectedDifficultyMMC.equals("hard")){
             try {
                 // Load the Quiz layout
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/quiz_layout.fxml"));
@@ -133,15 +129,14 @@ public class MainMenuController {
                 // Get the QuizController
                 QuizController quizController = loader.getController();
                 // damit der playername auch beim quizspielen übergeben wird
-                quizController.setPlayerName(currentname);
+                quizController.setPlayerName(currentName);
+                quizController.setDifficulty(getSelectedDifficultyMMC()); //Doppelt, why??
 
-                selectedDifficulty = getSelectedDifficulty();
-                quizController.setDifficulty(selectedDifficulty); // Pass the selected difficulty
-
-                quizController.resetQuiz(); // Reset the quiz for a new game
+               // selectedDifficultyMMC = getSelectedDifficultyMMC();
+                //quizController.setDifficulty(selectedDifficultyMMC); // Pass the selected difficulty
 
                 // Start the quiz (load the first question)
-                quizController.loadNewQuestion(); // <-- Call it explicitly here
+                quizController.loadNewQuestion(true); // <-- Call it explicitly here
 
                 // Switch to the quiz scene
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -151,7 +146,6 @@ public class MainMenuController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     }
 
@@ -186,9 +180,11 @@ public class MainMenuController {
     @FXML
     private void showCsvUploadDialog() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("CSV-Datei hochladen/Template herunterladen");
+        alert.setTitle("Learning Mode");
         alert.setHeaderText(null);
-        alert.setContentText("Bitte .csv file hochladen oder ein Template herunterladen falls du noch keines hast.");
+        alert.setContentText("Welcome to the Learning Mode !\n\nPlease download a template if you dont have one yet " +
+                "and enter your questions in the column <Questions> and your answers in the column <Answers>.\n\nFinally " +
+                "upload the filled out template. The Learning Mode will start automatically after the upload.\n\nHappy learning :)");
 
         try {
             ImageView customIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/KLKM_Logo.png")));
@@ -199,9 +195,9 @@ public class MainMenuController {
             e.printStackTrace();
         }
 
-        ButtonType uploadButton = new ButtonType("Hochladen");
-        ButtonType downloadTemplateButton = new ButtonType("Template herunterladen");
-        ButtonType cancelButton = new ButtonType("Abbrechen", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType uploadButton = new ButtonType("Upload");
+        ButtonType downloadTemplateButton = new ButtonType("Download Template");
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         alert.getButtonTypes().setAll(uploadButton, downloadTemplateButton, cancelButton);
 
@@ -218,24 +214,23 @@ public class MainMenuController {
     private void uploadCsvFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Dateien", "*.csv"));
-        Stage stage = (Stage) lernmodusButton.getScene().getWindow();
+        Stage stage = (Stage) learnModeButton.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
             uploadedCsvFile = selectedFile;
-            startLernmodus();
+            startLearnMode();
         } else {
-            showAlert("Fehler", "Keine Datei ausgewählt. Bitte lade zuerst eine Datei hoch");
+            showAlert("Error", "No file chosen. Please upload a file first.");
         }
-        //uploadedCsvFile = fileChooser.showOpenDialog(stage);
     }
 
     private void downloadCsvTemplate() {
-        String templateFileName = "/CSV Template/Lernmodus_CSV_Template.csv";
+        String templateFileName = "/CSV Template/Learning Mode_CSV_Template.csv";
         FileChooser fileChooser = new FileChooser();
 
-        fileChooser.setInitialFileName("Lernmodus_CSV_Template.csv");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Dateien", "*.csv"));
+        fileChooser.setInitialFileName("Learning Mode_CSV_Template.csv");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
 
         Stage stage = new Stage();
         File targetFile = fileChooser.showSaveDialog(stage);
@@ -245,7 +240,7 @@ public class MainMenuController {
                  OutputStream outputStream = new FileOutputStream(targetFile)) {
 
                 if (inputStream == null) {
-                    showAlert("Fehler", "Das Template konnte nicht gefunden werden.");
+                    showAlert("Error", "Template could not be found.");
                     return;
                 }
 
@@ -255,32 +250,38 @@ public class MainMenuController {
                     outputStream.write(buffer, 0, bytesRead);
                 }
 
-                showAlert("Erfolg", "Das Template wurde erfolgreich heruntergeladen: " + targetFile.getAbsolutePath());
+                showAlert("Success", "The template was successfully downloaded: " + targetFile.getAbsolutePath());
             } catch (IOException e) {
                 e.printStackTrace();
-                showAlert("Fehler", "Das Template konnte nicht heruntergeladen werden.");
+                showAlert("Error", "The template could not be downloaded.");
             }
         }
+        showCsvUploadDialog();
     }
 
-    private void startLernmodus() {
+    private void startLearnMode() {
         if (uploadedCsvFile != null) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/lernmodus_layout.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/learnmode_layout.fxml"));
                 Parent lernmodusRoot = loader.load();
 
-                LernmodusController lernmodusController = loader.getController();
-                lernmodusController.loadQuestionsFromCsv(uploadedCsvFile);
+                LearnModeController learnModeController = loader.getController();
+                learnModeController.loadQuestionsFromCsv(uploadedCsvFile);
 
-                Stage stage = (Stage) lernmodusButton.getScene().getWindow();
+                if (learnModeController.getQuestions().isEmpty()) {
+                    showAlert("Error", "The CSV-File has no valid data.");
+                    return;
+                }
+
+                Stage stage = (Stage) learnModeButton.getScene().getWindow();
                 stage.setScene(new Scene(lernmodusRoot));
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
-                showAlert("Fehler", "Ein Problem ist beim Laden des Lernmodus aufgetreten.");
+                showAlert("Error", "A problem occurred while loading the Learn mode.");
             }
         } else {
-            showAlert("Fehler", "Keine CSV-Datei vorhanden. Bitte lade zuerst eine Datei hoch");
+            showAlert("Error", "No CSV-File available. Please upload a file first.");
         }
     }
 
@@ -291,6 +292,7 @@ public class MainMenuController {
         stage.close();
     }
 
+    /*
     private void loadQuizScene(ActionEvent event, String difficulty) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/quiz_layout.fxml"));
@@ -312,67 +314,64 @@ public class MainMenuController {
             e.printStackTrace();
         }
     }
+*/
 
-    // Namen Eingabe - Wird mal nur gespeichert in der Variable und dann bei Enter in der Console ausgegeben
+    // Namen Eingabe Handeling - Button Click "Enter"
     @FXML
     public void onButtonClick(ActionEvent event) {
-
+        //wenn TextEingabeFeld leer ist = trim damit leerzeichen nicht zählen als eingabe
         if (inputTextField.getText().trim().isEmpty()) {
             // Zeige eine Fehlermeldung an
             errorLabel.setVisible(true);
             inputTextField.setStyle("-fx-border-color: #ff0000;");
-        } else { // Weiterverarbeiten der Eingabe
-            errorLabel.setVisible(false);
+        } else { // Weiterverarbeiten der Eingabe, wenn was drinnen ist
+            errorLabel.setVisible(false); // Fehledermeldung wegmachen falls sie da stand
             inputTextField.setStyle("-fx-border-color: black;");
-            String name = inputTextField.getText();
-            currentname = name;
-            System.out.println(currentname);
-            tutorialSpielen.setDisable(false);
-            spielStarten.setDisable(false);
-            inputTextField.setDisable(true);
-
-            unlockInputTextFieldButton.setDisable(false);
-            inputTextFieldButton.setDisable(true);
+            currentName = inputTextField.getText(); // variable zuordnen
+            playTutorial.setDisable(false); // tutorial modus möglich machen zum spielen
+            playGame.setDisable(false); // quiz modus möglich machen zum spielen
+            inputTextField.setDisable(true); //verhindern dass man nameneingabe ändern kann
+            unlockInputTextFieldButton.setDisable(false); //ermöglichen eingabe zu löschen
+            inputTextFieldButton.setDisable(true); // verhindern enter erneut zu drücken
         }
     }
 
-    // was passiert wenn man auf den UnlockButton klickt
+    // was passiert wenn man auf UnlockButton klickt
     @FXML
     public void onButtonClickUnlock(ActionEvent event) {
-        //input wird wieder möglich aber zurückgesetzt
+        //input wird wieder möglich aber zurückgesetzt (gelöscht) - Ausgangssituation
         inputTextField.setDisable(false);
         unlockInputTextFieldButton.setDisable(true);
         inputTextFieldButton.setDisable(false);
         inputTextField.clear();
-        currentname = null;
-        tutorialSpielen.setDisable(true);
-        spielStarten.setDisable(true);
-
+        currentName = null;
+        playTutorial.setDisable(true);
+        playGame.setDisable(true);
     }
 
 
-    //FÜR TUTORIAL MODUS
-    // Holt sich die Stage welche dann benötigt wird sobald ein AcionEvent gesetzt wird
-    private void switchScene(ActionEvent event, String fxmlPath) {
+    @FXML
+    // wenn "TutorialMode" - Button geklickt wird -> scenen wechsel zu Tutorial_Layout.fxml
+    public void onTutorialModeClick(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            // FXMLLoader läd FXML Datei (tutorial_layout.fxml) => Layout von Tutorial Mode
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/tutorial_layout.fxml"));
+            // liest die Datei und gibt zurück den Root Node vom Layout (Start von Scene)
             Parent root = loader.load();
 
+            // loader.getController() = erhälts controller instance => erstellt + initialisiert von FXMLLoader
             TutorialController tutorialController = loader.getController();
-            tutorialController.setPlayerName(currentname);
+            // dem Controller übergibst du über Methode "setPlayerName" die currentName Variable
+            tutorialController.setPlayerName(currentName);
 
             // Aktuelle Stage holen und neue Szene setzen
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    // wenn TutorialMode geklickt wird gibt die Methode den fxml path an switchScene weiter
-    public void onTutorialModeClick(ActionEvent event) {
-        switchScene(event, "/Layouts/tutorial_layout.fxml");
     }
 
     private void showAlert(String title, String content) {
@@ -382,4 +381,22 @@ public class MainMenuController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+    /*
+    // schriftartenwechsel gilt nur für Startseite
+    public void switchFirstFont(ActionEvent actionEvent) {
+        root.getStyleClass().removeAll("second-font");
+        root.getStyleClass().add("first-font");
+        secondFont.setDisable(false);
+        firstFont.setDisable(true);
+    }
+
+    // schriftartenwechsel gilt nur für Startseite
+    public void switchSecondFont(ActionEvent actionEvent) {
+        root.getStyleClass().removeAll("first-font");
+        root.getStyleClass().add("second-font");
+        firstFont.setDisable(false);
+        secondFont.setDisable(true);
+    }
+     */
 }

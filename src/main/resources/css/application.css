@@ -2,26 +2,53 @@
 /* allgemein ist es eine möglichkeit das Design von der Spiellogik zu trennen */
 
 /* Hintergrundbild für die gesamte Szene */
-.root {
-    -fx-background-image: url("/images/background.png");
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: cover;
-    -fx-background-position: center;
+
+/* COLORS */
+/*
+pink        #b16b96
+blue        #3d8bb6
+senf        #efd07a
+black       #332e37
+bluegreen   #2a817e
+lilac       #8f89c0
+green       #5cd686
+red         #e85c6c
+yellow      #e2aa4e
+*/
+
+@font-face {
+    font-family: "Galindo";
+    src: url("/fonts/Galindo-Regular.ttf"); /* Relativer Pfad zur Schriftartdatei */
 }
 
-/* Styling für den inneren VBox */
-.vbox-inner {
-    -fx-background-color: rgba(255,255,255,0.7);
-    -fx-padding: 20;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-    -fx-spacing: 20;
+.root {
+    -fx-background-image: url("/images/menue_background.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-font-family: "Galindo";
+    -fx-alignment: center;
 }
+
+.rootQuiz {
+    -fx-background-image: url("/images/quiz_background.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-alignment: center;
+}
+
 
 /* Styling für Label */
 .label-welcome {
-    -fx-text-fill: black; /* Beispiel */
-    -fx-font-size: 24px;
+    -fx-text-fill: black;
+    -fx-font-size: 35px;
+    -fx-background-color: #3d8bb6;
+    -fx-padding: 20px;
+    -fx-background-radius: 120;
+    -fx-border-width: 7;
+    -fx-border-radius: 120;
+    -fx-border-color: white;
+    -fx-text-fill: white;
+    -fx-padding: 0 150 0 150;
 }
 
 .label-winorlose {
@@ -30,33 +57,178 @@
 }
 
 .label-statistik {
-    -fx-text-fill: yellow;
+    -fx-text-fill: #3d8bb6;
+    -fx-font-size: 16px;
+}
+
+.label-question {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-background-color: #2a817e;
+    -fx-padding: 10 30 10 30;
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+}
+
+.label-feedback {
+    -fx-background-color: rgba(0,0,0,0.5);
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-padding: 20;
+    -fx-font-size: 16px;
+}
+
+.text-story {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-fill: white;
+}
+
+.label-greetingname {
+    -fx-text-fill: #e2aa4e;
+    -fx-font-size: 24px;
+}
+
+
+.whiteFont {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
 }
 
 /* Styling für Buttons */
 .button {
     -fx-padding: 10 20;
-    -fx-font-size: 14px;
-    -fx-background-color: #4CAF50;
+    -fx-font-size: 18px;
+    -fx-background-color: #e2aa4e;
     -fx-text-fill: white;
+    -fx-background-radius: 30;
+    -fx-border-width: 4;
+    -fx-border-radius: 30;
+    -fx-border-color: #e2aa4e;
 }
 
 .button:hover {
-    -fx-background-color: pink;
+    -fx-background-color: #332e37;
 }
 
-/* Styling für HBox */
+.nameInputButton {
+    -fx-padding: 5 10;
+    -fx-font-size: 12px;
+    -fx-background-color: #8f89c0;
+    -fx-text-fill: white;
+    -fx-background-radius: 30;
+    -fx-border-width: 4;
+    -fx-border-radius: 30;
+    -fx-border-color: #8f89c0;
+}
+
+.nameInputButton:hover {
+    -fx-background-color: #332e37;
+    -fx-text-fill: white;
+}
+
+.buttonExit {
+    -fx-padding: 5 10;
+    -fx-font-size: 12px;
+    -fx-background-color: #e85c6c;
+    -fx-text-fill: white;
+    -fx-background-radius: 30;
+    -fx-border-width: 4;
+    -fx-border-radius: 30;
+    -fx-border-color: #e85c6c;
+}
+
+.buttonExit:hover {
+    -fx-background-color: #332e37;
+    -fx-text-fill: white;
+}
+
+.radioButton {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+
+.radioButton .radio {
+    -fx-border-width: 2px;
+    -fx-border-color: #332e37;
+    -fx-background-color: white;
+    -fx-border-radius: 15px;
+    -fx-padding: 3px;
+}
+.radioButton .radio:selected {
+    -fx-background-color: white;
+}
+.radioButton -radio:armed {
+    -fx-background-color: white;
+}
+.radioButton -radio:determinate {
+    -fx-background-color: white;
+}
+.radioButton -radio:indeterminate {
+    -fx-background-color: white;
+}
+.radioButton .dot {
+    -fx-background-radius: 15px;
+    -fx-padding: 8px;
+}
+
+.buttonAnswer {
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-background-color: #332e37;
+    -fx-text-fill: white;
+    -fx-background-radius: 30;
+    -fx-border-width: 3;
+    -fx-border-radius: 30;
+    -fx-border-color: #2a817e;
+}
+
+.buttonAnswer:hover {
+    -fx-border-color: #efd07a;
+}
+
+/* Styling für HBox Main Menu*/
+
+.mainMenuHBoxActionButtons {
+    -fx-translate-x: -150;
+}
+
 .hbox-radio {
-    -fx-alignment: center;
+    -fx-alignment: CENTER_LEFT;
     -fx-spacing: 10;
 }
 
 /* Styling für Nameneingabe */
 
 .required-field {
-    -fx-border-color: black; /* RAND */
+    -fx-border-color: #8f89c0; /* RAND */
+    -fx-background-color: white;
+    -fx-opacity: 0.9;
+    -fx-background-radius: 30;
+    -fx-border-width: 4;
+    -fx-border-radius: 30;
 }
 
 .error-message {
-    -fx-text-fill: red; /* Rote Farbe für die Fehlermeldung */
+    -fx-text-fill: #e85c6c; /* Rote Farbe für die Fehlermeldung */
+}
+
+
+/* Styling für Quiz */
+
+.parameterBox {
+    -fx-background-color: rgba(0,0,0,0.5);
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-spacing: 70;
+    -fx-padding: 20 50 20 50;
+}
+
+/* Styling für WinLose */
+
+.box-statistik {
+    -fx-background-color: rgba(0,0,0,0.5);
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-padding: 20 50 20 50;
 }

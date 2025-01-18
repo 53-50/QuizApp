@@ -7,11 +7,11 @@ package com.example.Interface;
 
 public interface ControllerBase {
 
-    default int getPunkte() {
+    default int getPoints() {
         return 0;
     }
 
-    default int getLeben() {
+    default int getLives() {
         return 0;
     }
 
@@ -22,5 +22,7 @@ public interface ControllerBase {
     default int getQuestions() {
         return 0;
     }
+
+    // default String getDifficulty() {return null; };
 
 }

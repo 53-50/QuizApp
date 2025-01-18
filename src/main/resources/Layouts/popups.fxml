@@ -5,14 +5,17 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="popup" alignment="CENTER" prefHeight="300.0" prefWidth="300.0" spacing="10.0" styleClass="vbox" xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.PopupController">
-    <!-- reinladen vom CSS File -->
+<VBox fx:id="popup" alignment="CENTER" prefHeight="350.0" prefWidth="600.0" spacing="10.0" styleClass="vbox"
+      xmlns="http://javafx.com/javafx/17.0.8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.Controller.PopupController">
 
+    <!-- reinladen vom CSS File -->
     <stylesheets>
-        <URL value="@/css/popup.css" />
+        <URL value="@/css/popup.css"/>
     </stylesheets>
 
-    <Label fx:id="popupMessage" styleClass="label" text="Willkommen zum Tutorial!" wrapText="true" />
-    <Button onAction="#handleClosePopup" styleClass="button" text="OK" />
-    <Button fx:id="exitButton" onAction="#handleNotClosePopup" styleClass="button" text="Nicht OK" visible="false"/>
+    <Label fx:id="popupMessage" styleClass="label" text="Welcome to the Tutorial!" wrapText="true"/>
+    <Button onAction="#handleClosePopup" styleClass="button" text="OK"/>
+    <Button fx:id="exitButton" onAction="#handleNotClosePopup" styleClass="button" text="Return to Game"
+            visible="false"/>
 </VBox>

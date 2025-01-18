@@ -1,98 +1,39 @@
 package com.example.Questions;
 
+import com.example.Interface.QuestionBase;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-public class TriviaQuestion extends BaseQuestionClass {
+public class TriviaQuestion implements QuestionBase {
+    private String correctAnswer; //Aus Interface
+    private List<String> incorrectAnswers; //Aus Interface
+    private String QuestionText; //Aus Interface
+
 
     // Der Feldname muss 'question' sein, um mit dem JSON übereinzustimmen
-    @SerializedName("question")
+    @SerializedName("question") //Damit aus dem gson zum Json gelesen werden kann -> Fragen
     private APIQuestionData APIQuestionData;
-
-    // Setter für 'APIQuestionData', wird von Gson aufgerufen
-    public void setAPIQuestionData(APIQuestionData APIQuestionData) {
-        this.APIQuestionData = APIQuestionData;
-        if (APIQuestionData != null) {
-            this.questionText = APIQuestionData.getText();
-            // Debug-Ausgabe
-            System.out.println("Setter 'APIQuestionData' aufgerufen. FrageText gesetzt auf: " + this.questionText);
-        } else {
-            System.out.println("Setter 'APIQuestionData' aufgerufen, aber Frage ist null.");
-        }
-    }
-
-    // Getter für 'APIQuestionData' (optional)
-    public APIQuestionData getAPIQuestionData() {
-        return APIQuestionData;
-    }
 
     // Innere Klasse für das verschachtelte JSON-Objekt "question"
     public static class APIQuestionData {
         private String text;
-
         public String getText() { return text; }
         public void setText(String text) { this.text = text; }
     }
-}
 
 
+    // Getter/Setter
 
-
-/*
-
-public class TriviaQuestion extends BaseQuestionClass {
-
-    private Question question;
-
-    public TriviaQuestion(String id, Question question, String correctAnswer, List<String> incorrectAnswers,
-                          String category, String difficulty) {
-        super(id, question.getText(), correctAnswer, incorrectAnswers, category, difficulty);
-        this.question = question;
+    public APIQuestionData getAPIQuestionData() {
+        return APIQuestionData;
     }
 
-    public Question getQuestion() {
-        return question;
+    public void setAPIQuestionData(TriviaQuestion.APIQuestionData APIQuestionData) {
+        this.APIQuestionData = APIQuestionData;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
-        this.questionText = question.getText(); // Aktualisiert den Fragetext
-    }
 
-    // Innere Klasse für die API-Struktur
-    public static class Question {
-        private String text;
-
-        public String getText() {
-            return text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
-        }
-    }
-}
-
-
-public class TriviaQuestion {
-    private String id;
-    private Question question; // Verschachteltes Objekt für den Fragetext
-    private String correctAnswer;
-    private List<String> incorrectAnswers;
-    private String category;
-    private String difficulty;
-    private List<String> tags;
-    private List<String> regions;
-
-    // Getter und Setter
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
+    @Override
     public String getCorrectAnswer() {
         return correctAnswer;
     }
@@ -101,6 +42,8 @@ public class TriviaQuestion {
         this.correctAnswer = correctAnswer;
     }
 
+
+    @Override
     public List<String> getIncorrectAnswers() {
         return incorrectAnswers;
     }
@@ -109,52 +52,19 @@ public class TriviaQuestion {
         this.incorrectAnswers = incorrectAnswers;
     }
 
-    public String getCategory() {
-        return category;
-    }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
-    }
-
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public List<String> getRegions() {
-        return regions;
-    }
-
-    public void setRegions(List<String> regions) {
-        this.regions = regions;
-    }
-
-    // Frageobjekt
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
-
-    // Getter für den Fragetext
+    @Override
     public String getQuestionText() {
-        return question != null ? question.getText() : "No question text available.";
+        return QuestionText;
     }
 
+    public void setQuestionText(String questionText) {
+        QuestionText = questionText;
+    }
 }
 
-*/
+
+
+
+
+

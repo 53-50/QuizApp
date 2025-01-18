@@ -1,30 +1,35 @@
 package com.example.Questions;
 
+import com.example.Interface.QuestionBase;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TutorialQuestions {
+public class TutorialQuestions implements QuestionBase {
 
-    private String question;
-    private String correctAnswer;
-    private List<String> incorrectAnswers;
+    protected String correctAnswer;
+    protected List<String> incorrectAnswers;
+    protected String questionText;
 
-    public TutorialQuestions(String question, String correctAnswer, List<String> incorrectAnswers) {
-        this.question = question;
+    // Konstrukteur
+    public TutorialQuestions(String questionText, String correctAnswer, List<String> incorrectAnswers) {
+        this.questionText = questionText;
         this.correctAnswer = correctAnswer;
         this.incorrectAnswers = incorrectAnswers;
     }
 
     // Getter und Setter
-    public String getQuestion() {
-        return question;
+    @Override
+    public String getQuestionText() {
+        return questionText;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setQuestionText(String question) {
+        this.questionText = questionText;
     }
 
+    @Override
     public String getCorrectAnswer() {
         return correctAnswer;
     }
@@ -33,6 +38,7 @@ public class TutorialQuestions {
         this.correctAnswer = correctAnswer;
     }
 
+    @Override
     public List<String> getIncorrectAnswers() {
         return incorrectAnswers;
     }
@@ -43,8 +49,8 @@ public class TutorialQuestions {
 
     // Diese Methode kombiniert die richtige Antwort mit den falschen und mischt sie
     public List<String> getAllAnswers() {
-        List<String> allAnswers = new ArrayList<>(incorrectAnswers);
-        allAnswers.add(correctAnswer);
+        List<String> allAnswers = new ArrayList<>(incorrectAnswers); // befülle es mit allen falschen
+        allAnswers.add(correctAnswer); // füge die richtige auch hinzu
         Collections.shuffle(allAnswers); // Randomisieren der Antworten
         return allAnswers;
     }

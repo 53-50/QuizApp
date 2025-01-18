@@ -13,7 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 // Importiert Stage-Klasse, die das Hauptfenster der Anwendung darstellt.
 import javafx.stage.Stage;
-
+// zum Verwenden von Images
 import javafx.scene.image.Image;
 
 // Klasse QuizApp erbt von JavaFX Application-Klasse = erforderlich, um JavaFX-Anwendung zu erstellen
@@ -21,22 +21,26 @@ public class QuizApp extends Application {
 
     // start-Methode wird von JavaFX aufgerufen, wenn Anwendung gestartet wird
     // Diese Methode erhält Stage-Objekt, das das Hauptfenster der Anwendung darstellt
+    // überschreibt start-Methode => Methode von JavaFX-Application-Klasse definiert
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Hauptmenü-FXML laden => definiert Layout und die Benutzeroberfläche des Menüs.
         Parent mainMenuRoot = FXMLLoader.load(getClass().getResource("/Layouts/main_menu.fxml"));
-        Scene mainMenuScene = new Scene(mainMenuRoot, 500, 800);
+        Scene mainMenuScene = new Scene(mainMenuRoot, 1100, 700);
         //zuweisen des css files zu der scene
         mainMenuScene.getStylesheets().add("/css/application.css");
         primaryStage.getIcons().add(new Image("/images/KLKM_Logo.png")) ;
 
         // Breite der Stage fix festlegen am Beginn
-        primaryStage.setWidth(800);
-        primaryStage.setHeight(500);
+        // primaryStage.setMaximized(true);
+
+        //primaryStage.setMaxHeight(500);
+        //primaryStage.setMaxWidth(500);
 
         // Zum Debuggen vielleicht hilfreich weil Infos angezeigt wegen Versionen
         // System.out.println(System.getProperties());
 
+        // Titel der Application wird gesetzt
         primaryStage.setTitle("Mice in Space");
         primaryStage.setScene(mainMenuScene);
         primaryStage.show();
