@@ -64,7 +64,7 @@ public class WinLoseController {
                             "THE END ");
             storyTextLabel.setVisible(true);
             mode = "Tutorial"; // setze die Variable mode
-        } else if (controller instanceof LernmodusController){ // wenn lernmodus
+        } else if (controller instanceof LearnModeController){ // wenn lernmodus
             mode = "Learning"; // setze die Variable mode
         }
 
@@ -151,8 +151,8 @@ public class WinLoseController {
             switchScene(event, "/Layouts/tutorial_layout.fxml");
         } else if (controller instanceof QuizController) {
             switchScene(event, "/Layouts/quiz_layout.fxml");
-        } else if (controller instanceof LernmodusController) {
-            switchScene(event, "/Layouts/lernmodus_layout.fxml");
+        } else if (controller instanceof LearnModeController) {
+            switchScene(event, "/Layouts/learnmode_layout.fxml");
         } else {
             switchScene(event, "/Layouts/main_menu.fxml");
         }

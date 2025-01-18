@@ -20,9 +20,9 @@ public class EvaluationController {
     private void displayEvaluation() {
         if (answers != null) {
             for (AnswerEvaluation answer : answers) {
-                String result = "Frage: " + answer.getQuestion() + "\n"
-                        + "Deine Antwort: " + answer.getUserAnswer() + "\n"
-                        + (answer.isCorrect() ? "Richtig" : "Falsch! Richtige Antwort: " + answer.getCorrectAnswer())
+                String result = "Question: " + answer.getQuestion() + "\n"
+                        + "Your Answer: " + answer.getUserAnswer() + "\n"
+                        + (answer.isCorrect() ? "Correct" : "Wrong! Correct Answer: " + answer.getCorrectAnswer())
                         + "\n";
                 evaluationListView.getItems().add(result);
             }

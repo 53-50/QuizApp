@@ -22,7 +22,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LernmodusController implements QuizBase {
+public class LearnModeController implements QuizBase {
 
     @FXML
     private Label lblQuestion;
@@ -139,15 +139,11 @@ public class LernmodusController implements QuizBase {
                     questions.add(new LernmodusQuestion(parts[0], parts[1]));
                 }
             }
-            if (!questions.isEmpty()) {
-                resetTimer();
-                startTimer();
-                displayQuestion();
-            } else {
-                showAlert("Fehler", "Die CSV-Datei enthät keine gültigen Daten.");
-            }
+            resetTimer();
+            startTimer();
+            displayQuestion();
         } catch (IOException e) {
-            showAlert("Fehler", "Die CSV-Datei konnte nicht gelesen werden");
+            showAlert("Error", "The CSV-File could not be read.");
         }
     }
 
@@ -163,17 +159,17 @@ public class LernmodusController implements QuizBase {
     }
 
     @FXML
-    private void onSubmitClick(ActionEvent event) {
+    private void onSubmitClick() {
         if (currentQuestionIndex < questions.size()) {
             String userAnswer = txtAnswer.getText().trim();
             String correctAnswer = questions.get(currentQuestionIndex).getAnswer();
             boolean isCorrect = userAnswer.equalsIgnoreCase(correctAnswer);
 
             if (isCorrect) {
-                lblResult.setText("Richtig!");
+                lblResult.setText("Correct!");
                 lblResult.setStyle("-fx-text-fill: green;");
             } else {
-                lblResult.setText("Falsch! Die richtige Antwort ist: " + correctAnswer);
+                lblResult.setText("Wrong! The correct answer is: " + correctAnswer);
                 lblResult.setStyle("-fx-text-fill: red;");
             }
             lblResult.setVisible(true);
@@ -191,16 +187,16 @@ public class LernmodusController implements QuizBase {
     }
 
     @FXML
-    private void onNextClick(ActionEvent event) {
+    private void onNextClick() {
         currentQuestionIndex++;
 
         if (currentQuestionIndex < questions.size()) {
             displayQuestion();
         } else {
-            lblQuestion.setText("Alle Fragen beantwortet!");
+            lblQuestion.setText("All questions answered!");
             txtAnswer.setDisable(true);
             btnSubmit.setDisable(true);
-            lblResult.setText("Quiz beendet!");
+            lblResult.setText("Quiz finished!");
             lblResult.setStyle("-fx-text-fill: black;");
             lblResult.setVisible(true);
             stopTimer();
@@ -210,7 +206,7 @@ public class LernmodusController implements QuizBase {
     }
 
     @FXML
-    private void onEvaluationClick(ActionEvent event) {
+    private void onEvaluationClick() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/evaluation_layout.fxml"));
             Parent evaluationRoot = loader.load();
@@ -219,7 +215,7 @@ public class LernmodusController implements QuizBase {
             evaluationController.setAnswers(answers);
 
             Stage stage = new Stage();
-            stage.setTitle("Auswertung");
+            stage.setTitle("Evaluation");
             stage.setScene(new Scene(evaluationRoot));
             stage.show();
         } catch (IOException e) {
@@ -229,18 +225,7 @@ public class LernmodusController implements QuizBase {
 
     @FXML
     private void onBackClick(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/main_menu.fxml"));
-            Parent mainMenuRoot = loader.load();
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(mainMenuRoot));
-            stage.show();
-            stopTimer();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Fehler", "Das Hauptmenü konnte nicht geladen werden");
-        }
+        switchScene(event, "/Layouts/main_menu.fxml");
     }
 
     private void showAlert(String title, String content) {
@@ -249,6 +234,10 @@ public class LernmodusController implements QuizBase {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public List<LernmodusQuestion> getQuestions() {
+        return questions;
     }
 
 }
