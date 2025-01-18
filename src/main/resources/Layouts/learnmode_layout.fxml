@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.LernmodusController">
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.LearnModeController">
 
     <children>
         <!-- Platzhalter für Abstand nach oben -->
@@ -26,12 +26,12 @@
         <!-- Hauptbereich für die Frage, Eingabe und Buttons -->
         <VBox alignment="CENTER" spacing="10">
             <children>
-                <Label fx:id="lblQuestion" text="Hier erscheint die Frage" />
-                <TextField fx:id="txtAnswer" promptText="Gib hier deine Antwort ein" />
+                <Label fx:id="lblQuestion" text="The question will appear here!" />
+                <TextField fx:id="txtAnswer" promptText="Please enter your answer here!" />
                 <HBox alignment="CENTER" spacing="10">
                     <children>
-                        <Button fx:id="btnSubmit" onAction="#onSubmitClick" text="Antwort abschicken" />
-                        <Button fx:id="btnBack" onAction="#onBackClick" text="Zurück zum Menü" />
+                        <Button fx:id="btnSubmit" onAction="#onSubmitClick" text="Submit" />
+                        <Button fx:id="btnBack" onAction="#onBackClick" text="Back to Menu" />
                     </children>
                 </HBox>
                 <Label fx:id="lblResult" text="" visible="false" />
@@ -47,7 +47,7 @@
                 <!-- Links ausgerichteter Button -->
                 <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
                     <children>
-                        <Button fx:id="btnEvaluation" text="Auswertung" onAction="#onEvaluationClick" visible="false">
+                        <Button fx:id="btnEvaluation" text="Evaluation" onAction="#onEvaluationClick" visible="false">
                             <HBox.margin>
                                 <Insets left="10.0" bottom="10.0"/>
                             </HBox.margin>
@@ -58,7 +58,7 @@
                 <!-- Rechts ausgerichteter Button -->
                 <HBox alignment="BOTTOM_RIGHT" HBox.hgrow="ALWAYS">
                     <children>
-                        <Button fx:id="btnNext" text="Weiter" onAction="#onNextClick" visible="false">
+                        <Button fx:id="btnNext" text="Next Question" onAction="#onNextClick" visible="false">
                             <HBox.margin>
                                 <Insets right="10.0" bottom="10.0"/>
                             </HBox.margin>

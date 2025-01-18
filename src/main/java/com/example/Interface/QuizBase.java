@@ -125,7 +125,7 @@ public interface QuizBase {
     }
 
     //allgemeinen Scenen switchen festlegen
-    private void switchScene(ActionEvent event, String fxmlPath) {
+    default void switchScene(ActionEvent event, String fxmlPath) {
         try {
 
             //sich neues FXML holen
