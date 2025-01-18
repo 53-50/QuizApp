@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import com.example.Highscore.HighscoreManager;
 
 
 import java.io.IOException;
@@ -158,40 +157,37 @@ public class WinLoseController {
         }
     }
 
+
+    //TODO as soon as it works to give points to highscoreController - extra points if remaining lives calculated?
     @FXML
-    //Zum Hauptmenü
-    public void onHomeClick(ActionEvent event) {
+    private void onHomeClick(ActionEvent event) {
+        // ins Main Menue wechseln
         switchScene(event, "/Layouts/main_menu.fxml");
 
-        /*Name, Punkte und Schwierigkeit an Highscore Manager übergeben
-        int finalePunkte = controller.getPunkte();
-        String difficulty = "Leicht";
-        HighscoreManager.getInstance().addScore(playerName, finalePunkte, difficulty);*/
-
-        // Nur Werte vom Quiz Controller werden übernommen
+        // Nur im Quiz-Modus in Highscore speichern
         if (controller instanceof QuizController) {
-            // Dann Highscore-Eintrag schreiben
-            //TODO as soon as it works to give points to highscoreController - extra points if remaining lives calculated?
-            int finalPoints = controller.getPoints();
-            // Difficulty abfragen
-            String difficulty = ((QuizController) controller).getDifficultyQC();
+            String name = playerName;
+            int finalScore = controller.getPoints();
+            String difficulty = ((QuizController) controller).getDifficultyQC(); // "easy" / "medium" / "hard"
 
-
-            HighscoreManager.getInstance().addScore(playerName, finalPoints, difficulty);
+            // Eintrag in den Highscore
+            HighscoreController.addScore(name, finalScore, difficulty);
         }
     }
 
-    // WinLoseLayoutController
     @FXML
-    public void onHighscoreClick(ActionEvent event) {
-        // Score ins Highscore-System übernehmen, nur wenn QuizController
+    private void onHighscoreClick(ActionEvent event) {
+
+        // Nur im Quiz-Modus in Highscore speichern
         if (controller instanceof QuizController) {
-            int finalPoints = controller.getPoints();
+            String name = playerName;
+            int finalScore = controller.getPoints();
             String difficulty = ((QuizController) controller).getDifficultyQC();
-            HighscoreManager.getInstance().addScore(playerName, finalPoints, difficulty);
+
+            HighscoreController.addScore(name, finalScore, difficulty);
         }
 
-        // Wechsel in die Highscore-Szene
+        // in Highscore wechseln
         switchScene(event, "/Layouts/highscore_layout.fxml");
     }
 

@@ -3,10 +3,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import java.net.URL?>
 <VBox alignment="CENTER" prefHeight="700" prefWidth="1100" spacing="10"
       xmlns="http://javafx.com/javafx/17.0.08"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.Controller.HighscoreController">
+
+    <!-- reinladen vom CSS File -->
+    <stylesheets>
+        <URL value="@../css/application.css"/>
+    </stylesheets>
 
     <!-- Überschrift Highscore -->
     <Label fx:id="Highscore" text="Highscore" wrapText="true">
@@ -15,48 +21,55 @@
         </font>
     </Label>
 
+    <!-- Hier: Neues Label für den Rang -->
+    <Label fx:id="lblCurrentRank" text="Rank:" />
+
     <!-- Filter Button -->
     <HBox alignment="CENTER" spacing="10">
    <MenuButton fx:id="HighscoreFilterButton" mnemonicParsing="false" text="Filter">
      <items>
-       <MenuItem onAction="#onFilterLeicht" text="Leicht" />
-       <MenuItem onAction="#onFilterMittel" text="Mittel" />
-         <MenuItem onAction="#onFilterSchwer" text="Schwer" />
+       <MenuItem onAction="#onFilterEasy" text="Easy" />
+       <MenuItem onAction="#onFilterMedium" text="Medium" />
+         <MenuItem onAction="#onFilterHard" text="Hard" />
      </items>
    </MenuButton>
 
-    <Button text="Filter zurücksetzen" onAction="#onClearFilter" />
+    <Button text="Delete filter" onAction="#onClearFilter" />
     </HBox>
 
-    <TableView fx:id="tableHighscore" prefHeight="300.0" prefWidth="600.0">
+    <!-- Ganzes Fenster 700/1100 -->
+    <TableView fx:id="tableHighscore" prefHeight="450.0" prefWidth="1100">
 
         <columns>
 
+            <!-- Nummern-Spalte -->
+            <TableColumn fx:id="colIndex" text="" prefWidth="50"/>
+
             <!-- LEICHT: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
-            <TableColumn id="ColumnLeicht" text="Leicht">
+            <TableColumn id="ColumnEasy" text="Easy">
                 <columns>
-                    <TableColumn fx:id="colLeichtPlayer" prefWidth="100.0" text="Player" />
-                    <TableColumn fx:id="colLeichtScore" prefWidth="100.0" text="Score" />
+                    <TableColumn fx:id="colEasyPlayer" prefWidth="175.0" text="Player" />
+                    <TableColumn fx:id="colEasyScore" prefWidth="175.0" text="Score" />
                 </columns>
             </TableColumn>
 
             <!-- MITTEL: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
-            <TableColumn id="ColumnMittel" text="Mittel">
+            <TableColumn id="ColumnMedium" text="Medium">
                 <columns>
-                    <TableColumn fx:id="colMittelPlayer" prefWidth="100.0" text="Player" />
-                    <TableColumn fx:id="colMittelScore" prefWidth="100.0" text="Score" />
+                    <TableColumn fx:id="colMediumPlayer" prefWidth="175.0" text="Player" />
+                    <TableColumn fx:id="colMediumScore" prefWidth="175.0" text="Score" />
                 </columns>
             </TableColumn>
 
             <!-- SCHWER: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
-            <TableColumn id="ColumnSchwer" text="Schwer">
+            <TableColumn id="ColumnHard" text="Hard">
                 <columns>
-                    <TableColumn fx:id="colSchwerPlayer" prefWidth="100.0" text="Player" />
-                    <TableColumn fx:id="colSchwerScore" prefWidth="100.0" text="Score" />
+                    <TableColumn fx:id="colHardPlayer" prefWidth="175.0" text="Player" />
+                    <TableColumn fx:id="colHardScore" prefWidth="175.0" text="Score" />
                 </columns>
             </TableColumn>
         </columns>
     </TableView>
 
-    <Button onAction="#onBackClick" prefHeight="5.0" prefWidth="112.0" text="Zurück zum Menü" />
+    <Button onAction="#onBackClick" prefHeight="5.0" prefWidth="112.0" text="Menue" />
 </VBox>
