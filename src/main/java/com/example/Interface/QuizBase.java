@@ -66,7 +66,7 @@ public interface QuizBase {
         // Alle Buttons wieder auf die Standardfarbe setzen
         Button[] answerButtons = {answer1, answer2, answer3, answer4};
         for (Button button : answerButtons) {
-            button.setStyle("-fx-text-fill: black;"); // Standardfarbe zurücksetzen
+            button.setStyle("-fx-text-fill: white;"); // Standardfarbe zurücksetzen
         }
     }
 

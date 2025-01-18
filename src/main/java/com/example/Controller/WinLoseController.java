@@ -73,7 +73,7 @@ public class WinLoseController {
 
 // ------------ DISPLAY LOGIC ------------
     public void displayMode() {
-        modeLabel.setText("Mode:" + mode);
+        modeLabel.setText("Mode: " + mode);
     }
 
     public void displayPoints() {
@@ -88,7 +88,7 @@ public class WinLoseController {
 
     public void displayRight() {
         int rightOnes = controller.getRightOnes();
-        rightOnesLabel.setText(rightOnes + "/" + controller.getQuestions());
+        rightOnesLabel.setText("Right Answers: " + rightOnes + "/" + controller.getQuestions());
     }
 
     public void displayLives() {
@@ -110,7 +110,7 @@ public class WinLoseController {
     }
 
     public void displayNameLabel() {
-        nameLabel.setText("Name: " + playerName);
+        nameLabel.setText(playerName);
     }
 
 

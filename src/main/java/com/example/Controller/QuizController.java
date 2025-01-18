@@ -297,7 +297,7 @@ public class QuizController implements QuizBase, ControllerBase {
     @Override
     public void showFeedback(String feedback, boolean isCorrect) {
         feedbackLabel.setText(feedback);
-        feedbackLabel.setStyle(isCorrect ? "-fx-text-fill: green;" : "-fx-text-fill: red;");
+        feedbackLabel.setStyle(isCorrect ? "-fx-text-fill: #5cd686;" : "-fx-text-fill: #e85c6c;");
         feedbackLabel.setVisible(true);  // Feedback anzeigen
     }
 
@@ -471,9 +471,9 @@ public class QuizController implements QuizBase, ControllerBase {
             String answer = button.getText();
 
             if (answer.equalsIgnoreCase(recentQuestion.getCorrectAnswer())) {
-                button.setStyle("-fx-text-fill: green;");  // Richtige Antwort grün
+                button.setStyle("-fx-text-fill: #5cd686;");  // Richtige Antwort grün
             } else {
-                button.setStyle("-fx-text-fill: red;");  // Falsche Antwort rot
+                button.setStyle("-fx-text-fill: #e85c6c;");  // Falsche Antwort rot
             }
         }
     }

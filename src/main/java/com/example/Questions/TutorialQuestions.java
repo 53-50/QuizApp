@@ -10,11 +10,11 @@ public class TutorialQuestions implements QuestionBase {
 
     protected String correctAnswer;
     protected List<String> incorrectAnswers;
-    protected String QuestionText;
+    protected String questionText;
 
     // Konstrukteur
-    public TutorialQuestions(String QuestionText, String correctAnswer, List<String> incorrectAnswers) {
-        this.QuestionText = QuestionText;
+    public TutorialQuestions(String questionText, String correctAnswer, List<String> incorrectAnswers) {
+        this.questionText = questionText;
         this.correctAnswer = correctAnswer;
         this.incorrectAnswers = incorrectAnswers;
     }
@@ -22,11 +22,11 @@ public class TutorialQuestions implements QuestionBase {
     // Getter und Setter
     @Override
     public String getQuestionText() {
-        return QuestionText;
+        return questionText;
     }
 
     public void setQuestionText(String question) {
-        this.QuestionText = QuestionText;
+        this.questionText = questionText;
     }
 
     @Override
