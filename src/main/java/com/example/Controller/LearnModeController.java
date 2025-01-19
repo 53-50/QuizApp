@@ -46,8 +46,9 @@ public class LearnModeController implements QuizBase {
     private Timeline timer; // Animations-Timer zur Aktualisierung der Zeit
     private int elapsedSeconds; // Zähler für die vergangenen Sekunden
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
-    public void setPlayerName(String name) {} // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
+    public void setPlayerName(String name) {}
 
     // Wird beim Laden des Controllers aufgerufen
     // Initialisiert die Listen questions und answers
@@ -87,31 +88,37 @@ public class LearnModeController implements QuizBase {
         updateTimerLabel(); // Aktualisiert das Timer-Label auf "00:00:00"
     }
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
     public void handleTimeOut() throws IOException {
 
     }
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
     public void displayCurrentQuestion() throws IOException, InterruptedException {
 
     }
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
     public void handleAnswerButtonClick(ActionEvent mainEvent) throws IOException, InterruptedException {
 
     }
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
     public void showFeedback(String feedback, boolean isCorrect) {
 
     }
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
     public void checkAnswer(String givenAnswer) {
 
     }
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
     public void setAnswerButtonColors() {
 
@@ -201,10 +208,13 @@ public class LearnModeController implements QuizBase {
         }
     }
 
+    // Methode um zur nächsten Frage zu kommen
     @FXML
     private void onNextClick() {
-        currentQuestionIndex++;
+        currentQuestionIndex++; // Erhöht den Index um eins wenn aufgerufen
 
+        // Überprüft ob es noch Fragen gibt, falls nicht wird der EndScreen angezeigt
+        // der "Next Question" inkl. "Submit" Button werden deaktiviert und "Evaluation" wird aktiviert
         if (currentQuestionIndex < questions.size()) {
             displayQuestion();
         } else {
@@ -220,29 +230,35 @@ public class LearnModeController implements QuizBase {
         }
     }
 
+    // Methode zum Anzeigen der Auswertungsliste
     @FXML
     private void onEvaluationClick() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/evaluation_layout.fxml"));
-            Parent evaluationRoot = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/evaluation_layout.fxml")); // Ladet das passende Layout
+            Parent evaluationRoot = loader.load(); // Speichert den Wurzelknoten des geladenen Layouts
 
+            // Eine Referenz auf den passenden Controller zum Layout
+            // Ruft Controller Instanz ab die der geladenen FXML-Datei zugeordnet ist
             EvaluationController evaluationController = loader.getController();
+            // Übergibt die Liste der Antworten an den EvaluationController für die Auswertung
             evaluationController.setAnswers(answers);
 
-            Stage stage = new Stage();
-            stage.setTitle("Evaluation");
-            stage.setScene(new Scene(evaluationRoot));
-            stage.show();
+            Stage stage = new Stage(); // Erstellt ein neues Stage Objekt für das Auswertungs Fenster
+            stage.setTitle("Evaluation"); // Setzt den Titel
+            stage.setScene(new Scene(evaluationRoot)); // Erstellt eine neue Szene die das geladene FXML Layout verwendet
+            stage.show(); // Zeigt das Fenster an
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Gibt im Falle einer Ausnahem die vollständige Fehlermeldung in der Konsole aus
         }
     }
 
+    // Methode um zurück zum Hauptmenü zu kommen
     @FXML
     private void onBackClick(ActionEvent event) {
-        switchScene(event, "/Layouts/main_menu.fxml");
+        switchScene(event, "/Layouts/main_menu.fxml"); // Interface aus QuizBase verwendet
     }
 
+    // Methode zur Anzeige einiger PopUp´s
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -251,6 +267,7 @@ public class LearnModeController implements QuizBase {
         alert.showAndWait();
     }
 
+    // Methode zum holen der Fragen für die startLearnMode Methode
     public List<LernmodusQuestion> getQuestions() {
         return questions;
     }
