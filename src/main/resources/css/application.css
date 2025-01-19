@@ -39,7 +39,6 @@ yellow      #e2aa4e
 
 /* Styling für Label */
 .label-welcome {
-    -fx-text-fill: black;
     -fx-font-size: 35px;
     -fx-background-color: #3d8bb6;
     -fx-padding: 20px;
@@ -95,6 +94,35 @@ yellow      #e2aa4e
     -fx-font-size: 16px;
 }
 
+.mrSqueakOpinion {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+
+.LernModeAnswerTextField {
+    -fx-border-color: #8f89c0; /* RAND */
+    -fx-background-color: white;
+    -fx-opacity: 0.9;
+    -fx-background-radius: 30;
+    -fx-border-width: 4;
+    -fx-border-radius: 30;
+    -fx-font-size: 16px;
+}
+
+.evaluationLabel {
+    -fx-font-size: 25px;
+    -fx-text-fill: white;
+    -fx-background-color: rgba(0,0,0,0.5);
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-padding: 10;
+}
+
+.highscoreLabel {
+    -fx-font-size: 40px;
+    -fx-text-fill: #e2aa4e;
+}
+
 /* Styling für Buttons */
 .button {
     -fx-padding: 10 20;
@@ -128,8 +156,8 @@ yellow      #e2aa4e
 }
 
 .buttonExit {
-    -fx-padding: 5 10;
-    -fx-font-size: 12px;
+    -fx-padding: 5 20;
+    -fx-font-size: 15px;
     -fx-background-color: #e85c6c;
     -fx-text-fill: white;
     -fx-background-radius: 30;
@@ -174,7 +202,7 @@ yellow      #e2aa4e
 
 .buttonAnswer {
     -fx-padding: 10 20;
-    -fx-font-size: 14px;
+    -fx-font-size: 16px;
     -fx-background-color: #332e37;
     -fx-text-fill: white;
     -fx-background-radius: 30;
@@ -187,7 +215,7 @@ yellow      #e2aa4e
     -fx-border-color: #efd07a;
 }
 
-/* Styling für HBox Main Menu*/
+/* Styling für Main Menu*/
 
 .mainMenuHBoxActionButtons {
     -fx-translate-x: -150;
@@ -196,6 +224,46 @@ yellow      #e2aa4e
 .hbox-radio {
     -fx-alignment: CENTER_LEFT;
     -fx-spacing: 10;
+}
+
+.subnavHigh {
+    -fx-background-image: url("/images/highscore_icon.png");
+    -fx-background-size: 30 30;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+    -fx-padding: 5 10;
+    -fx-font-size: 12px;
+    -fx-background-color: #262626;
+    -fx-text-fill: white;
+    -fx-background-radius: 30;
+    -fx-border-width: 4;
+    -fx-border-radius: 30;
+    -fx-border-color: #262626;
+}
+
+.subnavHigh:hover {
+    -fx-background-color: #262626;
+    -fx-border-color: #c6c6c6;
+}
+
+.subnavMice {
+    -fx-background-image: url("/images/micemode_icon.png");
+    -fx-background-size: 45 30;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position:center;
+    -fx-padding: 5 10;
+    -fx-font-size: 12px;
+    -fx-background-color: #262626;
+    -fx-text-fill: white;
+    -fx-background-radius: 30;
+    -fx-border-width: 4;
+    -fx-border-radius: 30;
+    -fx-border-color: #262626;
+}
+
+.subnavMice:hover {
+    -fx-background-color: #262626;
+    -fx-border-color: #c6c6c6;
 }
 
 /* Styling für Nameneingabe */
@@ -231,4 +299,53 @@ yellow      #e2aa4e
     -fx-background-radius: 30;
     -fx-border-radius: 30;
     -fx-padding: 20 50 20 50;
+}
+
+
+/* Styling für ListView Lernmode */
+
+.evaluationList {
+    -fx-font-size: 16px;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #b16b96;
+}
+
+.list-cell:even {
+    -fx-background-color: white;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: rgba(0,0,0,0.1);;
+}
+
+
+/* Styling Highscore */
+
+.columnMain {
+    -fx-background-color: rgba(0,0,0,0.1);
+}
+
+
+.table-row-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white; /* Standard-Textfarbe */
+}
+
+/* Stil für Zeile, wenn sie gehovert wird */
+.table-row-cell:hover {
+    -fx-background-color: rgba(0,0,0,0.1);
+}
+
+/* Stil für ausgewählte Zeile */
+.table-row-cell:selected {
+    -fx-background-color: #b16b96; /* Hintergrundfarbe für ausgewählte Zeile */
+    -fx-text-fill: white; /* Textfarbe für ausgewählte Zeile */
+}
+
+/* Optional: Stil für Zeilen mit Fokus */
+.table-row-cell:focused {
+    -fx-border-color: #e2aa4e; /* Rahmenfarbe bei Fokus */
+    -fx-border-width: 2; /* Breite des Rahmens */
 }

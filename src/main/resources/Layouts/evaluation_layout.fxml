@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.EvaluationController">
-    <children>
-        <Label style="-fx-font-size: 20;" text="Evaluation" />
-        <ListView fx:id="evaluationListView" prefHeight="300" prefWidth="400" />
-        <Button onAction="#onCloseClick" text="Close">
-         <VBox.margin>
-            <Insets bottom="10.0" />
-         </VBox.margin></Button>
-    </children>
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.Controller.EvaluationController">
+
+    <!-- reinladen vom CSS File -->
+    <stylesheets>
+        <URL value="@../css/application.css"/>
+    </stylesheets>
+
+    <Label styleClass="evaluationLabel" text="Evaluation"/>
+    <ListView styleClass="evaluationList" fx:id="evaluationListView" prefHeight="500" prefWidth="500"/>
+    <Button styleClass="buttonExit" onAction="#onCloseClick" text="Close">
+        <VBox.margin>
+            <Insets bottom="10.0"/>
+        </VBox.margin>
+    </Button>
 </VBox>

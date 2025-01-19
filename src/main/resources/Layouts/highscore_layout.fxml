@@ -18,10 +18,7 @@
     <Label fx:id="Highscore"
            text="Highscore"
            wrapText="true"
-           styleClass="whiteFont">
-        <font>
-            <Font size="18.0"/>
-        </font>
+           styleClass="highscoreLabel">
     </Label>
 
     <!-- Hier: Neues Label für den Rang -->
@@ -39,19 +36,19 @@
      </items>
    </MenuButton>
 
-    <Button text="Delete filter" onAction="#onClearFilter" />
+    <Button text="Delete filter" onAction="#onClearFilter" styleClass="nameInputButton"/>
     </HBox>
 
     <!-- Ganzes Fenster 700/1100 -->
-    <TableView fx:id="tableHighscore" prefHeight="450.0" prefWidth="1100">
+    <TableView fx:id="tableHighscore" prefHeight="450.0" maxWidth="1000">
 
         <columns>
 
             <!-- Nummern-Spalte -->
-            <TableColumn fx:id="colIndex" text="" prefWidth="50"/>
+            <TableColumn styleClass="columnMain" fx:id="colIndex" text="Rank" prefWidth="50"/>
 
             <!-- LEICHT: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
-            <TableColumn id="ColumnEasy" text="Easy">
+            <TableColumn styleClass="columnMain" id="ColumnEasy" text="Easy">
                 <columns>
                     <TableColumn fx:id="colEasyPlayer" prefWidth="175.0" text="Player" />
                     <TableColumn fx:id="colEasyScore" prefWidth="175.0" text="Score" />
@@ -59,7 +56,7 @@
             </TableColumn>
 
             <!-- MITTEL: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
-            <TableColumn id="ColumnMedium" text="Medium">
+            <TableColumn styleClass="columnMain" id="ColumnMedium" text="Medium">
                 <columns>
                     <TableColumn fx:id="colMediumPlayer" prefWidth="175.0" text="Player" />
                     <TableColumn fx:id="colMediumScore" prefWidth="175.0" text="Score" />
@@ -67,7 +64,7 @@
             </TableColumn>
 
             <!-- SCHWER: Übergeordnete Spalte mit zwei Unterkategorien Player und Score -->
-            <TableColumn id="ColumnHard" text="Hard">
+            <TableColumn styleClass="columnMain" id="ColumnHard" text="Hard">
                 <columns>
                     <TableColumn fx:id="colHardPlayer" prefWidth="175.0" text="Player" />
                     <TableColumn fx:id="colHardScore" prefWidth="175.0" text="Score" />
