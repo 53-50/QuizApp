@@ -25,32 +25,34 @@ import java.util.List;
 public class LearnModeController implements QuizBase {
 
     @FXML
-    private Label lblQuestion;
+    private Label lblQuestion; // Zeigt die aktuelle Frage an
     @FXML
-    private TextField txtAnswer;
+    private TextField txtAnswer; // Eingabefeld für die Antwort des Benutzers
     @FXML
-    private Button btnSubmit;
+    private Button btnSubmit; // Button zum Absenden der Antwort
     @FXML
-    private Button btnNext;
+    private Button btnNext; // Button um zur nächsten Frage zu kommen
     @FXML
-    private Button btnEvaluation;
+    private Button btnEvaluation; // Button um die Auswertung an zu zeigen
     @FXML
-    private Label lblResult;
+    private Label lblResult; // Zeigt an ob die Antwort richtig oder falsch war
     @FXML
-    private Label timerLabel;
+    private Label timerLabel; // Label für die Anzeige des Timers
 
-    private List<LernmodusQuestion> questions;
-    private List<AnswerEvaluation> answers;
-    private int currentQuestionIndex;
+    private List<LernmodusQuestion> questions; // Liste der Fragen die aus der CSV-Datei geladen wurden
+    private List<AnswerEvaluation> answers; // Liste mit Bewertungen der Antworten des Benutzers
+    private int currentQuestionIndex; // Index der aktuell angezeigten Frage
 
-    private Timeline timer;
-    private int elapsedSeconds;
+    private Timeline timer; // Animations-Timer zur Aktualisierung der Zeit
+    private int elapsedSeconds; // Zähler für die vergangenen Sekunden
 
     @Override
-    public void setPlayerName(String name) {
+    public void setPlayerName(String name) {} // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
 
-    }
-
+    // Wird beim Laden des Controllers aufgerufen
+    // Initialisiert die Listen questions und answers
+    // Setzt den aktuellen Frageindex auf 0 damit bei der ersten Frage begonnen wird
+    // Versteckt bzw. deaktiviert Buttons und das Ergebnis-Label zum Start
     @FXML
     public void initialize() {
         questions = new ArrayList<>();
@@ -62,24 +64,27 @@ public class LearnModeController implements QuizBase {
         btnEvaluation.setVisible(false);
     }
 
+    // Methode zum starten des Timers
     @Override
     public void startTimer() {
-        elapsedSeconds = 0;
-        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            elapsedSeconds++;
-            updateTimerLabel();
+        elapsedSeconds = 0; // Setzt den Timer-Zähler auf 0
+        // Erstellt eine Timeline, die ein Ereignis (hier ein KeyFrame) in regelmäßigen Abständen ausführt
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> { // Führt jede Sekunde die Lambda-Funktion aus
+            elapsedSeconds++; // Erhöht den Zähler für vergangene Sekunden
+            updateTimerLabel(); // Aktualisiert den Timer-Label
         }));
-        timer.setCycleCount(Timeline.INDEFINITE);
-        timer.play();
+        timer.setCycleCount(Timeline.INDEFINITE); // Lässt den Timer unbegrenzt laufen
+        timer.play(); // Startet den Timer
     }
 
+    // Methode zum zurücksetzen des Timers
     @Override
     public void resetTimer() {
-        if (timer != null) {
-            timer.stop();
+        if (timer != null) { // Überprüft ob ein Timer existiert
+            timer.stop(); // Stoppt den Timer falls er läuft
         }
-        elapsedSeconds = 0;
-        updateTimerLabel();
+        elapsedSeconds = 0; // Setzt den Zähler auf 0
+        updateTimerLabel(); // Aktualisiert das Timer-Label auf "00:00:00"
     }
 
     @Override
