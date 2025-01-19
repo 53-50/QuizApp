@@ -362,7 +362,7 @@ public class TutorialController implements QuizBase, ControllerBase {
 
     // was passiwer wenn frage richtig beantwortet wurde
     private void markQuestionAsRight() {
-        points += 10;
+        points += 100;
         rightOnes++;
         QuizBase.super.markQuestionAsRight(getPoints(), getRightOnes(), tutPointsLabel);
     }
