@@ -76,5 +76,5 @@
         </columns>
     </TableView>
 
-    <Button onAction="#onBackClick" prefHeight="5.0" prefWidth="112.0" text="Menue" />
+    <Button onAction="#onBackClick" prefHeight="5.0" prefWidth="112.0" text="Menu" />
 </VBox>

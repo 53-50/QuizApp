@@ -28,6 +28,7 @@ public class HighscoreController {
         private final int score;
         private final String difficulty;
 
+
         public HighscoreEntry(String playerName, int score, String difficulty) {
             this.playerName = playerName;
             this.score = score;
@@ -65,7 +66,7 @@ public class HighscoreController {
         loadFromFile();
     }
 
-    //Methode, um in anderen Controllern Highscore-Einträge hinzuzufügen
+    //Methode, um in WinLose Highscore-Einträge hinzuzufügen
     public static void addScore(String playerName, int score, String difficulty) {
         HighscoreEntry entry = new HighscoreEntry(playerName, score, difficulty);
         highscoreList.add(entry);
@@ -79,6 +80,32 @@ public class HighscoreController {
         // Speichern
         saveToFile();
     }
+
+    // Update des Punktestands bei Retry und ggf. in Highscore überschreiben
+    public static void updateScoreIfBetter(String playerName, int newScore, String difficulty) {
+        // Suche nach vorhandenem Eintrag mit gleichem Namen und Schwierigkeit
+        HighscoreEntry existingEntry = null;
+        for (HighscoreEntry entry : highscoreList) {
+            if (entry.getPlayerName().equals(playerName)
+                    && entry.getDifficulty().equalsIgnoreCase(difficulty)) {
+                existingEntry = entry;
+                break;
+            }
+        }
+
+        if (existingEntry != null) {
+            // Falls der neue Score höher ist: alten Eintrag entfernen und neuen hinzufügen
+            if (newScore > existingEntry.getScore()) {
+                highscoreList.remove(existingEntry);
+                addScore(playerName, newScore, difficulty);
+            }
+            // Sonst nichts tun, wenn der alte Score schon höher oder gleich hoch ist
+        } else {
+            // Kein Eintrag vorhanden => neuen Score hinzufügen
+            addScore(playerName, newScore, difficulty);
+        }
+    }
+
 
     // Laden aus CSV-Datei
     private static void loadFromFile() {
@@ -181,7 +208,7 @@ public class HighscoreController {
             if ("easy".equalsIgnoreCase(entry.getDifficulty())) {
                 return new SimpleObjectProperty<>(entry.getScore());
             }
-            return new SimpleObjectProperty<>(0);
+            return new SimpleObjectProperty<>(null);
         });
 
         // MEDIUM-Spalten
@@ -197,7 +224,7 @@ public class HighscoreController {
             if ("medium".equalsIgnoreCase(entry.getDifficulty())) {
                 return new SimpleObjectProperty<>(entry.getScore());
             }
-            return new SimpleObjectProperty<>(0);
+            return new SimpleObjectProperty<>(null);
         });
 
         // HARD-Spalten
@@ -213,7 +240,7 @@ public class HighscoreController {
             if ("hard".equalsIgnoreCase(entry.getDifficulty())) {
                 return new SimpleObjectProperty<>(entry.getScore());
             }
-            return new SimpleObjectProperty<>(0);
+            return new SimpleObjectProperty<>(null);
         });
 
         // Falls zuletzt ein Eintrag hinzugefügt wurde:
