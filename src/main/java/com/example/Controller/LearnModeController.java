@@ -117,59 +117,66 @@ public class LearnModeController implements QuizBase {
 
     }
 
+    // Methode zur Aktualisierung des Timers
     private void updateTimerLabel() {
-        int hours = elapsedSeconds / 3600;
-        int minutes = (elapsedSeconds % 3600) / 60;
-        int seconds = elapsedSeconds % 60;
-        String formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-        timerLabel.setText(formattedTime);
+        int hours = elapsedSeconds / 3600; // Berechnet die Stunden aus den vergangenen Sekunden
+        int minutes = (elapsedSeconds % 3600) / 60; // Berechnet die Minuten aus den verbleibenden Sekunden
+        int seconds = elapsedSeconds % 60; // Berechnet die verbleibenden Sekunden
+        String formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds); // Formatiert die Zeit als HH:MM:SS
+        timerLabel.setText(formattedTime); // Aktualisiert das Timer-Label mit der formatierten Zeit
     }
 
+    // Methode zum stoppen des Timers
     private void stopTimer() {
         if (timer != null) {
             timer.stop();
         }
     }
 
+    // Methode zum laden der Fragen aus dem CSV File
     public void loadQuestionsFromCsv(File file) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) { // Öffnet die CSV-Datei und liest sie zeilenweise
             String line;
 
-            reader.readLine();
+            reader.readLine(); // Überspringt die erste Zeile (Kopfzeile der CSV-Datei
 
             while ((line = reader.readLine()) != null) {
-                String delimiter = line.contains(";") ? ";" : ",";
-                String[] parts = line.split(delimiter);
+                String delimiter = line.contains(";") ? ";" : ","; // Prüft (Ternary Operator) ob Trennzeichen ein ";" falls nein dann ","
+                String[] parts = line.split(delimiter); // Teilt die Zeile anhand des Trennzeichens in Spalten auf
                 if (parts.length == 2) {
-                    questions.add(new LernmodusQuestion(parts[0], parts[1]));
+                    questions.add(new LernmodusQuestion(parts[0], parts[1])); // Fügt nur gültige Zeilen mit genau zwei Spalten hinzu
                 }
             }
-            resetTimer();
-            startTimer();
-            displayQuestion();
+            resetTimer(); // Setzt Timer zurück
+            startTimer(); // Startet Timer neu
+            displayQuestion(); // Zeigt die erste Frage an
         } catch (IOException e) {
             showAlert("Error", "The CSV-File could not be read.");
         }
     }
 
+    // Methode zum anzeigen der Fragen
     private void displayQuestion() {
-        if (currentQuestionIndex < questions.size()) {
-            lblQuestion.setText(questions.get(currentQuestionIndex).getQuestion());
-            txtAnswer.clear();
-            lblResult.setVisible(false);
+        if (currentQuestionIndex < questions.size()) { // Überprüft ob noch unbeantwortete Fragen übrig sind
+            lblQuestion.setText(questions.get(currentQuestionIndex).getQuestion()); // Zeigt die aktuelle Frage an
+            txtAnswer.clear(); // Löscht den Inhalt des Eingabefelds
+            lblResult.setVisible(false); // Versteckt das Ergebnis-Label
 
+            // Deaktiviert den "Next Question" Button
             btnNext.setVisible(false);
             btnNext.setDisable(true);
         }
     }
 
+    // Methode zur Prüfung der Antwort und anzeige des Ergebnisses
     @FXML
     private void onSubmitClick() {
         if (currentQuestionIndex < questions.size()) {
-            String userAnswer = txtAnswer.getText().trim();
-            String correctAnswer = questions.get(currentQuestionIndex).getAnswer();
-            boolean isCorrect = userAnswer.equalsIgnoreCase(correctAnswer);
+            String userAnswer = txtAnswer.getText().trim(); // Ruft die eingegebene Antwort aus txtAnswer ab - Trim entfernt Leerzeichen
+            String correctAnswer = questions.get(currentQuestionIndex).getAnswer(); // Ruft passende Antwort zur Frage ab
+            boolean isCorrect = userAnswer.equalsIgnoreCase(correctAnswer); // Speichert das Ergebnis des Vergleichs - korrekt = true, falsch = false
 
+            // IF statement umd heraus zu finden welches Ergebnis ausgegeben wird basierend auf isCorrect
             if (isCorrect) {
                 lblResult.setText("Correct!");
                 lblResult.setStyle("-fx-text-fill: green;");
@@ -177,8 +184,10 @@ public class LearnModeController implements QuizBase {
                 lblResult.setText("Wrong! The correct answer is: " + correctAnswer);
                 lblResult.setStyle("-fx-text-fill: red;");
             }
-            lblResult.setVisible(true);
+            lblResult.setVisible(true); // Ergebnis wird angezeigt
 
+            // Fügt eine neue Instanz der Klasse AnswerEvaluation der Liste answers hinzu und erstellt ein neues AnswerEvaluation Objekt
+            // mit den unten aufgelisteten Informationen - Wird für auswertung gespeichert
             answers.add(new AnswerEvaluation(
                     questions.get(currentQuestionIndex).getQuestion(),
                     userAnswer,
@@ -186,6 +195,7 @@ public class LearnModeController implements QuizBase {
                     correctAnswer
             ));
 
+            // Aktiviert wieder den Button "Next Question"
             btnNext.setVisible(true);
             btnNext.setDisable(false);
         }
