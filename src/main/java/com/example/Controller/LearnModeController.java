@@ -167,10 +167,10 @@ public class LearnModeController implements QuizBase {
 
             if (isCorrect) {
                 lblResult.setText("Correct!");
-                lblResult.setStyle("-fx-text-fill: #5cd686;");
+                lblResult.setStyle("-fx-text-fill: green;");
             } else {
                 lblResult.setText("Wrong! The correct answer is: " + correctAnswer);
-                lblResult.setStyle("-fx-text-fill: #e85c6c;");
+                lblResult.setStyle("-fx-text-fill: red;");
             }
             lblResult.setVisible(true);
 
@@ -197,7 +197,7 @@ public class LearnModeController implements QuizBase {
             txtAnswer.setDisable(true);
             btnSubmit.setDisable(true);
             lblResult.setText("Quiz finished!");
-            lblResult.setStyle("-fx-text-fill: white;");
+            lblResult.setStyle("-fx-text-fill: black;");
             lblResult.setVisible(true);
             stopTimer();
             btnNext.setVisible(false);
@@ -225,7 +225,7 @@ public class LearnModeController implements QuizBase {
 
     @FXML
     private void onBackClick(ActionEvent event) {
-        QuizBase.super.onExit(event, timer); // Ruft die default-Methode aus dem Interface auf
+        switchScene(event, "/Layouts/main_menu.fxml");
     }
 
     private void showAlert(String title, String content) {
