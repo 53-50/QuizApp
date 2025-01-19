@@ -15,14 +15,19 @@
     </stylesheets>
 
     <!-- Überschrift Highscore -->
-    <Label fx:id="Highscore" text="Highscore" wrapText="true">
+    <Label fx:id="Highscore"
+           text="Highscore"
+           wrapText="true"
+           styleClass="whiteFont">
         <font>
-            <Font size="18.0" />
+            <Font size="18.0"/>
         </font>
     </Label>
 
     <!-- Hier: Neues Label für den Rang -->
-    <Label fx:id="lblCurrentRank" text="Rank:" />
+    <Label fx:id="lblCurrentRank"
+           text="Rank:"
+           styleClass="whiteFont"/>
 
     <!-- Filter Button -->
     <HBox alignment="CENTER" spacing="10">
