@@ -8,15 +8,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
+
+import java.awt.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
+
 
 public class HighscoreController {
 
     /* -------------------- EIGENE DATENKLASSE -------------------- */
+
     public static class HighscoreEntry {
         private final String playerName;
         private final int score;
@@ -27,12 +33,23 @@ public class HighscoreController {
             this.score = score;
             this.difficulty = difficulty;
         }
-        public String getPlayerName() { return playerName; }
-        public int getScore() { return score; }
-        public String getDifficulty() { return difficulty; }
+
+        //----GETTER----//
+
+        public String getPlayerName() {
+            return playerName;
+        }
+
+        public int getScore() {
+            return score;
+        }
+
+        public String getDifficulty() {
+            return difficulty;
+        }
     }
 
-    /* -------------------- VERWALTUNG DER EINTRÄGE -------------------- */
+    /* -------------------- VERWALTUNG EINTRÄGE -------------------- */
 
     // Liste aller Einträge
     private static List<HighscoreEntry> highscoreList = new ArrayList<>();
@@ -55,10 +72,6 @@ public class HighscoreController {
 
         // Sortieren (score absteigend)
         highscoreList.sort(Comparator.comparingInt(HighscoreEntry::getScore).reversed());
-        // Auf 20 Einträge begrenzen
-        if (highscoreList.size() > 20) {
-            highscoreList = new ArrayList<>(highscoreList.subList(0, 20));
-        }
 
         // Rang (= Index + 1)
         lastAddedRank = highscoreList.indexOf(entry) + 1;
@@ -140,6 +153,9 @@ public class HighscoreController {
     @FXML
     public void initialize() {
 
+        //Sorgt dafür, dass Tabelle bei Filter setzen sich anpasst
+        tableHighscore.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
         // Aktuelle Daten in die TableView packen
         // (ohne Filter => zeigt alle an)
         ObservableList<HighscoreEntry> data = FXCollections.observableArrayList(highscoreList);
@@ -202,7 +218,7 @@ public class HighscoreController {
 
         // Falls zuletzt ein Eintrag hinzugefügt wurde:
         if (lastAddedRank > 0) {
-            lblCurrentRank.setText("You are currently on rank #" + lastAddedRank + "!");
+            lblCurrentRank.setText("You are currently on rank # " + lastAddedRank + "!");
         } else {
             lblCurrentRank.setText("");
         }
@@ -217,6 +233,7 @@ public class HighscoreController {
         tableHighscore.setItems(FXCollections.observableArrayList(filtered));
 
         // Regeleung der Spalten-Sichtbarkeit nach Filter setzen
+
         switch (diff.toLowerCase()) {
             case "easy":
                 colEasyPlayer.setVisible(true); //Easy wird angezeigt
@@ -228,6 +245,7 @@ public class HighscoreController {
                 colHardPlayer.setVisible(false);
                 colHardScore.setVisible(false);
                 break;
+
             case "medium":
                 colEasyPlayer.setVisible(false);
                 colEasyScore.setVisible(false);
@@ -238,6 +256,7 @@ public class HighscoreController {
                 colHardPlayer.setVisible(false);
                 colHardScore.setVisible(false);
                 break;
+
             case "hard":
                 colEasyPlayer.setVisible(false);
                 colEasyScore.setVisible(false);
@@ -248,6 +267,7 @@ public class HighscoreController {
                 colHardPlayer.setVisible(true); //Hard wird angezeigt
                 colHardScore.setVisible(true);
                 break;
+
             default:
                 onClearFilter(null);
         }
@@ -268,13 +288,16 @@ public class HighscoreController {
 
     @FXML
     private void onClearFilter(ActionEvent e) {
+
         // Filter löschen und alle wieder anzeigen
         tableHighscore.setItems(FXCollections.observableArrayList(highscoreList));
 
         colEasyPlayer.setVisible(true);
         colEasyScore.setVisible(true);
+
         colMediumPlayer.setVisible(true);
         colMediumScore.setVisible(true);
+
         colHardPlayer.setVisible(true);
         colHardScore.setVisible(true);
     }
@@ -284,12 +307,14 @@ public class HighscoreController {
     //Zurück ins Main Menü
     @FXML
     private void onBackClick(ActionEvent event) {
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/main_menu.fxml"));
             Parent root = loader.load();
             Stage st = (Stage) ((Node) event.getSource()).getScene().getWindow();
             st.setScene(new Scene(root));
             st.show();
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
