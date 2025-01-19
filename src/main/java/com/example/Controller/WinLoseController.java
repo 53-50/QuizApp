@@ -78,7 +78,7 @@ public class WinLoseController {
     public void displayPoints() {
         int finalPoints = controller.getPoints();
 
-        // wenn noch leben übrig sind => pro Lebel +5 Punkte
+        // wenn noch leben übrig sind => pro Leben +5 Punkte
         if (controller.getLives() > 0) {
             finalPoints += controller.getLives() * 5;
         }
@@ -155,10 +155,26 @@ public class WinLoseController {
         } else {
             switchScene(event, "/Layouts/main_menu.fxml");
         }
+
+        if (controller instanceof QuizController) {
+            String name = playerName;
+            int finalScore = controller.getPoints();
+
+            // Zusätzliche Punkte, wenn Leben übrig sind
+            if (controller.getLives() > 0) {
+                finalScore += controller.getLives() * 5;
+            }
+
+            // Difficulty aus QuizController holen (easy, medium, hard)
+            String difficulty = ((QuizController) controller).getDifficultyQC();
+
+            // Prüfen im Highscore Controller, ob Wert vorhanden und ggf. überschreiben
+            HighscoreController.updateScoreIfBetter(name, finalScore, difficulty);
+
+        }
     }
 
 
-    //TODO as soon as it works to give points to highscoreController - extra points if remaining lives calculated?
     @FXML
     private void onHomeClick(ActionEvent event) {
         // ins Main Menue wechseln
@@ -168,6 +184,13 @@ public class WinLoseController {
         if (controller instanceof QuizController) {
             String name = playerName;
             int finalScore = controller.getPoints();
+            int finalLives = controller.getLives();
+
+            //Für jedes übrig gebliebene Leben zusätzliche 5 Punkte
+            if (controller.getLives() > 0) {
+                finalScore += controller.getLives() * 5;
+            }
+
             String difficulty = ((QuizController) controller).getDifficultyQC(); // "easy" / "medium" / "hard"
 
             // Eintrag in den Highscore
@@ -182,6 +205,13 @@ public class WinLoseController {
         if (controller instanceof QuizController) {
             String name = playerName;
             int finalScore = controller.getPoints();
+            int finalLives = controller.getLives();
+
+            //Für jedes übrig gebliebene Leben zusätzliche 5 Punkte
+            if (controller.getLives() > 0) {
+                finalScore += controller.getLives() * 5;
+            }
+
             String difficulty = ((QuizController) controller).getDifficultyQC();
 
             HighscoreController.addScore(name, finalScore, difficulty);
