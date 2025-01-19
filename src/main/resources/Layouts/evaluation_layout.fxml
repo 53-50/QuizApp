@@ -14,6 +14,7 @@
         <URL value="@../css/application.css"/>
     </stylesheets>
 
+    <!-- setten von Überschrift, Listen Anzeige und Button für Auswertung -->
     <Label styleClass="evaluationLabel" text="Evaluation"/>
     <ListView styleClass="evaluationList" fx:id="evaluationListView" prefHeight="500" prefWidth="500"/>
     <Button styleClass="buttonExit" onAction="#onCloseClick" text="Close">
