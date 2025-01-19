@@ -40,6 +40,7 @@ public class WinLoseController {
     // damit der modus angezeigt werden kann
     private String mode;
     private String difficulty;
+    private int finalPoints = 0;
 
     public void setPlayerName(String name) {
         this.playerName = name;
@@ -76,7 +77,7 @@ public class WinLoseController {
     }
 
     public void displayPoints() {
-        int finalPoints = controller.getPoints();
+        finalPoints = controller.getPoints();
 
         // wenn noch leben übrig sind => pro Leben +5 Punkte
         if (controller.getLives() > 0) {
@@ -204,17 +205,8 @@ public class WinLoseController {
         // Nur im Quiz-Modus in Highscore speichern
         if (controller instanceof QuizController) {
             String name = playerName;
-            int finalScore = controller.getPoints();
-            int finalLives = controller.getLives();
-
-            //Für jedes übrig gebliebene Leben zusätzliche 5 Punkte
-            if (controller.getLives() > 0) {
-                finalScore += controller.getLives() * 5;
-            }
-
             String difficulty = ((QuizController) controller).getDifficultyQC();
-
-            HighscoreController.addScore(name, finalScore, difficulty);
+            HighscoreController.addScore(name, finalPoints, difficulty);
         }
 
         // in Highscore wechseln
