@@ -19,10 +19,6 @@ import java.util.*;
 
 public class QuizController implements QuizBase, ControllerBase {
 
-
-    //TODO - Katrin - Highscore
-    private int correctAnswerHigh = 0;//Variable to save correct Answers for Highscore-list
-
     // ~~~~~~ TIMER ~~~~~~
     private Timeline timer; //der Timer für onExit
     private int timeRemaining = 15; //Zeit des Timers
@@ -389,19 +385,20 @@ public class QuizController implements QuizBase, ControllerBase {
 
     private void markQuestionAsWrong() {
         lives--;
-
+/*
+Funktion macht gerade gar nix - raus?
         if (streakCounter > 0) {
             System.out.println("Streak Lost!");
             streakLabel.setVisible(false);
             streakCounter = 0;
         }
-
+*/
         System.out.println("~DEBUGGING~ *mQaW* Leben: " + lives);
         QuizBase.super.markQuestionAsWrong(getLives(), quizLivesLabel);
     }
 
     private void markQuestionAsRight() {
-        points += 10;
+        points += 100;
         rightOnes++;
         streakCounter++;
 
