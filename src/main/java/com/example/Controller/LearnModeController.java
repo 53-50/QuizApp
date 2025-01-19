@@ -78,7 +78,6 @@ public class LearnModeController implements QuizBase {
         timer.play(); // Startet den Timer
     }
 
-    // Methode zum zurücksetzen des Timers
     @Override
     public void resetTimer() {
         if (timer != null) { // Überprüft ob ein Timer existiert
@@ -186,10 +185,10 @@ public class LearnModeController implements QuizBase {
             // IF statement umd heraus zu finden welches Ergebnis ausgegeben wird basierend auf isCorrect
             if (isCorrect) {
                 lblResult.setText("Correct!");
-                lblResult.setStyle("-fx-text-fill: green;");
+                lblResult.setStyle("-fx-text-fill: #5cd686;");
             } else {
                 lblResult.setText("Wrong! The correct answer is: " + correctAnswer);
-                lblResult.setStyle("-fx-text-fill: red;");
+                lblResult.setStyle("-fx-text-fill: #e85c6c;");
             }
             lblResult.setVisible(true); // Ergebnis wird angezeigt
 
@@ -222,7 +221,7 @@ public class LearnModeController implements QuizBase {
             txtAnswer.setDisable(true);
             btnSubmit.setDisable(true);
             lblResult.setText("Quiz finished!");
-            lblResult.setStyle("-fx-text-fill: black;");
+            lblResult.setStyle("-fx-text-fill: white;");
             lblResult.setVisible(true);
             stopTimer();
             btnNext.setVisible(false);
@@ -255,7 +254,7 @@ public class LearnModeController implements QuizBase {
     // Methode um zurück zum Hauptmenü zu kommen
     @FXML
     private void onBackClick(ActionEvent event) {
-        switchScene(event, "/Layouts/main_menu.fxml"); // Interface aus QuizBase verwendet
+        QuizBase.super.onExit(event, timer); // Ruft die default-Methode aus dem Interface auf
     }
 
     // Methode zur Anzeige einiger PopUp´s

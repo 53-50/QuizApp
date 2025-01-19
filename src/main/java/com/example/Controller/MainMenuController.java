@@ -56,7 +56,10 @@ public class MainMenuController {
     @FXML
     private Button learnModeButton; // Button für den Lernmodus
 
-
+    @FXML
+    private Label mrSqueakLabel;
+    @FXML
+    private Button mrSqueakButton;
 
 
     @FXML
@@ -429,6 +432,56 @@ public class MainMenuController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void onHighscoreClick(ActionEvent event) {
+        try {
+            // FXMLLoader läd FXML Datei (highscore.fxml)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/highscore_layout.fxml"));
+            // liest Datei + gibt zurück den Root Node vom Layout (Start von Scene)
+            Parent root = loader.load();
+
+            // loader.getController() = erhälts controller instance => erstellt + initialisiert von FXMLLoader
+            HighscoreController highscoreController = loader.getController();
+
+            // Aktuelle Stage holen und neue Szene setzen
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // MICE MODE
+
+    public void setMrSqueak() {
+        mrSqueakLabel.setVisible(true);
+        mrSqueakButton.setDisable(true);
+    }
+
+    @FXML
+    private void onMiceModeClick(ActionEvent event) {
+
+        try {
+            // FXMLLoader läd FXML Datei (highscore.fxml)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/micemode_layout.fxml"));
+            // liest Datei + gibt zurück den Root Node vom Layout (Start von Scene)
+            Parent root = loader.load();
+
+            // loader.getController() = erhälts controller instance => erstellt + initialisiert von FXMLLoader
+            MiceModeController miceModeController = loader.getController();
+
+            // Aktuelle Stage holen und neue Szene setzen
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*

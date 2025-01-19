@@ -1,0 +1,68 @@
+[
+  {
+    "questionText": "squeak squeak squeak",
+    "correctAnswer": "squeak squeak squeak",
+    "incorrectAnswers": ["squeak squeak squeak squeak",
+      "squeak", "squeak squeak"]
+  },
+  {
+    "questionText": "piep piep piep",
+    "correctAnswer": "piep",
+    "incorrectAnswers": ["piep piep",
+      "piep piep piep", "piep piep piep piep"]
+  },
+  {
+    "questionText": "i-i-i-i i-i-i-i i-i-i-i",
+    "correctAnswer": "i-i-i-i i-i-i-i",
+    "incorrectAnswers": ["i-i-i-i i-i-i-i i-i-i-i",
+      "i-i-i-i", "i-i-i-i i-i-i-i i-i-i-i i-i-i-i"]
+  },
+  {
+    "questionText": "cleek cleek cleek",
+    "correctAnswer": "cleek cleek cleek",
+    "incorrectAnswers": ["cleek cleek cleek cleek",
+      "cleek cleek", "cleek"]
+  },
+  {
+    "questionText": "cin cin cin",
+    "correctAnswer": "cin cin",
+    "incorrectAnswers": ["cin cin cin cin",
+      "cin cin cin", "cin"]
+  },
+  {
+    "questionText": "squitt-squitt squitt-squitt squitt-squitt",
+    "correctAnswer": "squitt-squitt",
+    "incorrectAnswers": ["squitt-squitt squitt-squitt",
+      "squitt-squitt squitt-squitt squitt-squitt", "squitt-squitt squitt-squitt squitt-squitt squitt-squitt"]
+  },
+  {
+    "questionText": "chuu-chuu chuu-chuu chuu-chuu",
+    "correctAnswer": "chuu-chuu chuu-chuu",
+    "incorrectAnswers": ["chuu-chuu",
+      "chuu-chuu chuu-chuu chuu-chuu chuu-chuu", "chuu-chuu chuu-chuu chuu-chuu"]
+  },
+  {
+    "questionText": "jjik-jjik jjik-jjik jjik-jjik",
+    "correctAnswer": "jjik-jjik jjik-jjik jjik-jjik",
+    "incorrectAnswers": ["jjik-jjik jjik-jjik",
+      "jjik-jjik", "jjik-jjik jjik-jjik jjik-jjik jjik-jjik"]
+  },
+  {
+    "questionText": "zī-zī zī-zī zī-zī",
+    "correctAnswer": "zī-zī zī-zī zī-zī ",
+    "incorrectAnswers": ["zī-zī",
+      "zī-zī", "zī-zī zī-zī zī-zī zī-zī"]
+  },
+  {
+    "questionText": "cui-cui cui-cui cui-cui",
+    "correctAnswer": "cui-cui cui-cui",
+    "incorrectAnswers": ["cui-cui cui-cui cui-cui cui-cui",
+      "cui-cui", "cui-cui cui-cui cui-cui"]
+  },
+  {
+    "questionText": "pip-pip pip-pip pip-pip ",
+    "correctAnswer": "pip-pip",
+    "incorrectAnswers": ["pip-pip pip-pip pip-pip pip-pip",
+      "pip-pip pip-pip", "pip-pip pip-pip pip-pip"]
+  }
+]

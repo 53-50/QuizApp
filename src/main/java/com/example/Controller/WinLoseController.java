@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -28,6 +29,8 @@ public class WinLoseController {
     private Label rightOnesLabel;
     @FXML
     private Text storyTextLabel;
+    @FXML
+    private Button highscoreButton;
 
     // namen
     @FXML
@@ -56,6 +59,7 @@ public class WinLoseController {
                 difficulty = "Error";
             }
             mode = "Quiz " + difficulty;  // setze die Variable mode
+            highscoreButton.setVisible(true);
         } else if (controller instanceof TutorialController) { //wenn tutorial dann wird geschichte angezeigt
             storyTextLabel.setText("As we now know, she arrived a few years too early, " +
                             "missing the historic achievement of becoming the first cheese connoisseur in space. " +
