@@ -87,7 +87,7 @@
                             prefWidth="100.0" onAction="#onHighscoreClick"/>
                     <Button fx:id="mrSqueakButton" styleClass="subnavMice" mnemonicParsing="false" prefHeight="45.0"
                             prefWidth="100.0" onAction="#onMiceModeClick"/>
-                    <Label styleClass="mrSqueakOpinion" fx:id="mrSqueakLabel" text="Mr. Squeak doesn't want to talk to you right now."
+                    <Label styleClass="whiteFont" fx:id="mrSqueakLabel" text="Mr. Squeak doesn't want to talk to you right now."
                            visible="false" wrapText="true" maxWidth="300"/>
                 </HBox>
             </VBox>
