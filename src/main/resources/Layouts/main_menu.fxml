@@ -41,7 +41,7 @@
             <HBox styleClass="mainMenuHBoxActionButtons" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="800.0" spacing="20">
 
                 <VBox alignment="CENTER" spacing="40">
-                    <Button fx:id="learnModeButton" mnemonicParsing="false" onAction="#showCsvUploadDialog"
+                    <Button fx:id="learnModeButton" mnemonicParsing="false" onAction="#showLearnModeDialog"
                             prefHeight="50" prefWidth="250" text="Learning Mode"/>
                     <Button fx:id="playTutorial" onAction="#onTutorialModeClick" styleClass="button"
                             text="Start Storymode" prefHeight="50" prefWidth="250"/>

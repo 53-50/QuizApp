@@ -6,20 +6,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.Controller.EvaluationController">
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.EvaluationController">
 
     <!-- reinladen vom CSS File -->
     <stylesheets>
-        <URL value="@../css/application.css"/>
+        <URL value="@../css/application.css" />
     </stylesheets>
-
-    <!-- setten von Überschrift, Listen Anzeige und Button für Auswertung -->
-    <Label styleClass="evaluationLabel" text="Evaluation"/>
-    <ListView styleClass="evaluationList" fx:id="evaluationListView" prefHeight="500" prefWidth="500"/>
-    <Button styleClass="buttonExit" onAction="#onCloseClick" text="Close">
-        <VBox.margin>
-            <Insets bottom="10.0"/>
-        </VBox.margin>
-    </Button>
+   <children>
+   
+       <!-- setten von Überschrift, Listen Anzeige und Button für Auswertung -->
+       <Label styleClass="evaluationLabel" text="Evaluation" />
+       <Label fx:id="timeLabel" style="-fx-alignment: center-right;" styleClass="evaluationTime" text="" HBox.hgrow="ALWAYS">
+         <VBox.margin>
+            <Insets left="350.0" />
+         </VBox.margin>
+      </Label>
+       <ListView fx:id="evaluationListView" prefHeight="500" prefWidth="500" styleClass="evaluationList" />
+       <Button onAction="#onCloseClick" styleClass="buttonExit" text="Close">
+           <VBox.margin>
+               <Insets bottom="10.0" />
+           </VBox.margin>
+       </Button>
+   </children>
 </VBox>
