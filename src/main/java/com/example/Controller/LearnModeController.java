@@ -274,7 +274,7 @@ public class LearnModeController implements QuizBase {
     public void showPopup(String message, boolean showExitButton) {
         try {
             // FXML Objekt wird erstellt um das PopUp Layout zu laden
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/popup.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/popups.fxml"));
             // Ladet FXML-Layout in ein Parent-Objekt die als Wurzel für eine Szene dient
             Parent popupRoot = loader.load();
 
@@ -283,7 +283,7 @@ public class LearnModeController implements QuizBase {
             // Übergibt Nachricht an den Controller
             popupController.setPopupMessage(message);
 
-            popupController.exitButton.setVisible(true);
+            popupController.exitButton.setVisible(false);
 
             // Erstellt neue Stage für separates Fenster
             Stage popupStage = new Stage();

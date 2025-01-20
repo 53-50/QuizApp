@@ -265,7 +265,7 @@ public class MainMenuController {
 
                 // Fehlermeldung falls der Dateipfad in der Projektstruktur nicht gefunden werden kann
                 if (inputStream == null) {
-                    showPopup("Template could not be found.", true);
+                    showPopup("Template could not be found.", false);
                     return;
                 }
 
@@ -282,7 +282,7 @@ public class MainMenuController {
             } catch (IOException e) {
                 // Fehlermeldung im Falle einer Ausnahme inkl. Fehlermeldung in der Konsole
                 e.printStackTrace();
-                showPopup("The template could not be downloaded.", true);
+                showPopup("The template could not be downloaded.", false);
             }
         }
         // Nach Abschluss des Downloads wird der Dialog erneut automatisch angezeigt für Benutzerfreundlichkeit
@@ -420,7 +420,7 @@ public class MainMenuController {
     public void showPopup(String message, boolean showExitButton) {
         try {
             // FXML Objekt wird erstellt um das PopUp Layout zu laden
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/popup.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/popups.fxml"));
             // Ladet FXML-Layout in ein Parent-Objekt die als Wurzel für eine Szene dient
             Parent popupRoot = loader.load();
 
@@ -429,7 +429,7 @@ public class MainMenuController {
             // Übergibt Nachricht an den Controller
             popupController.setPopupMessage(message);
 
-            popupController.exitButton.setVisible(true);
+            popupController.exitButton.setVisible(false);
 
             // Erstellt neue Stage für separates Fenster
             Stage popupStage = new Stage();
