@@ -25,32 +25,35 @@ import java.util.List;
 public class LearnModeController implements QuizBase {
 
     @FXML
-    private Label lblQuestion;
+    private Label lblQuestion; // Zeigt die aktuelle Frage an
     @FXML
-    private TextField txtAnswer;
+    private TextField txtAnswer; // Eingabefeld für die Antwort des Benutzers
     @FXML
-    private Button btnSubmit;
+    private Button btnSubmit; // Button zum Absenden der Antwort
     @FXML
-    private Button btnNext;
+    private Button btnNext; // Button um zur nächsten Frage zu kommen
     @FXML
-    private Button btnEvaluation;
+    private Button btnEvaluation; // Button um die Auswertung an zu zeigen
     @FXML
-    private Label lblResult;
+    private Label lblResult; // Zeigt an ob die Antwort richtig oder falsch war
     @FXML
-    private Label timerLabel;
+    private Label timerLabel; // Label für die Anzeige des Timers
 
-    private List<LernmodusQuestion> questions;
-    private List<AnswerEvaluation> answers;
-    private int currentQuestionIndex;
+    private List<LernmodusQuestion> questions; // Liste der Fragen die aus der CSV-Datei geladen wurden
+    private List<AnswerEvaluation> answers; // Liste mit Bewertungen der Antworten des Benutzers
+    private int currentQuestionIndex; // Index der aktuell angezeigten Frage
 
-    private Timeline timer;
-    private int elapsedSeconds;
+    private Timeline timer; // Animations-Timer zur Aktualisierung der Zeit
+    private int elapsedSeconds; // Zähler für die vergangenen Sekunden
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
-    public void setPlayerName(String name) {
+    public void setPlayerName(String name) {}
 
-    }
-
+    // Wird beim Laden des Controllers aufgerufen
+    // Initialisiert die Listen questions und answers
+    // Setzt den aktuellen Frageindex auf 0 damit bei der ersten Frage begonnen wird
+    // Versteckt bzw. deaktiviert Buttons und das Ergebnis-Label zum Start
     @FXML
     public void initialize() {
         questions = new ArrayList<>();
@@ -62,118 +65,135 @@ public class LearnModeController implements QuizBase {
         btnEvaluation.setVisible(false);
     }
 
+    // Methode zum starten des Timers
     @Override
     public void startTimer() {
-        elapsedSeconds = 0;
-        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            elapsedSeconds++;
-            updateTimerLabel();
+        elapsedSeconds = 0; // Setzt den Timer-Zähler auf 0
+        // Erstellt eine Timeline, die ein Ereignis (hier ein KeyFrame) in regelmäßigen Abständen ausführt
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> { // Führt jede Sekunde die Lambda-Funktion aus
+            elapsedSeconds++; // Erhöht den Zähler für vergangene Sekunden
+            updateTimerLabel(); // Aktualisiert den Timer-Label
         }));
-        timer.setCycleCount(Timeline.INDEFINITE);
-        timer.play();
+        timer.setCycleCount(Timeline.INDEFINITE); // Lässt den Timer unbegrenzt laufen
+        timer.play(); // Startet den Timer
     }
 
     @Override
     public void resetTimer() {
-        if (timer != null) {
-            timer.stop();
+        if (timer != null) { // Überprüft ob ein Timer existiert
+            timer.stop(); // Stoppt den Timer falls er läuft
         }
-        elapsedSeconds = 0;
-        updateTimerLabel();
+        elapsedSeconds = 0; // Setzt den Zähler auf 0
+        updateTimerLabel(); // Aktualisiert das Timer-Label auf "00:00:00"
     }
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
     public void handleTimeOut() throws IOException {
 
     }
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
     public void displayCurrentQuestion() throws IOException, InterruptedException {
 
     }
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
     public void handleAnswerButtonClick(ActionEvent mainEvent) throws IOException, InterruptedException {
 
     }
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
     public void showFeedback(String feedback, boolean isCorrect) {
 
     }
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
     public void checkAnswer(String givenAnswer) {
 
     }
 
+    // Interface aus QuizBase - Wird für Lernmodus nicht verwendet
     @Override
     public void setAnswerButtonColors() {
 
     }
 
+    // Methode zur Aktualisierung des Timers
     private void updateTimerLabel() {
-        int hours = elapsedSeconds / 3600;
-        int minutes = (elapsedSeconds % 3600) / 60;
-        int seconds = elapsedSeconds % 60;
-        String formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds);
-        timerLabel.setText(formattedTime);
+        int hours = elapsedSeconds / 3600; // Berechnet die Stunden aus den vergangenen Sekunden
+        int minutes = (elapsedSeconds % 3600) / 60; // Berechnet die Minuten aus den verbleibenden Sekunden
+        int seconds = elapsedSeconds % 60; // Berechnet die verbleibenden Sekunden
+        String formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds); // Formatiert die Zeit als HH:MM:SS
+        timerLabel.setText(formattedTime); // Aktualisiert das Timer-Label mit der formatierten Zeit
     }
 
+    // Methode zum stoppen des Timers
     private void stopTimer() {
         if (timer != null) {
             timer.stop();
         }
     }
 
+    // Methode zum laden der Fragen aus dem CSV File
     public void loadQuestionsFromCsv(File file) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) { // Öffnet die CSV-Datei und liest sie zeilenweise
             String line;
 
-            reader.readLine();
+            reader.readLine(); // Überspringt die erste Zeile (Kopfzeile der CSV-Datei
 
             while ((line = reader.readLine()) != null) {
-                String delimiter = line.contains(";") ? ";" : ",";
-                String[] parts = line.split(delimiter);
+                String delimiter = line.contains(";") ? ";" : ","; // Prüft (Ternary Operator) ob Trennzeichen ein ";" falls nein dann ","
+                String[] parts = line.split(delimiter); // Teilt die Zeile anhand des Trennzeichens in Spalten auf
                 if (parts.length == 2) {
-                    questions.add(new LernmodusQuestion(parts[0], parts[1]));
+                    questions.add(new LernmodusQuestion(parts[0], parts[1])); // Fügt nur gültige Zeilen mit genau zwei Spalten hinzu
                 }
             }
-            resetTimer();
-            startTimer();
-            displayQuestion();
+            resetTimer(); // Setzt Timer zurück
+            startTimer(); // Startet Timer neu
+            displayQuestion(); // Zeigt die erste Frage an
         } catch (IOException e) {
             showAlert("Error", "The CSV-File could not be read.");
         }
     }
 
+    // Methode zum anzeigen der Fragen
     private void displayQuestion() {
-        if (currentQuestionIndex < questions.size()) {
-            lblQuestion.setText(questions.get(currentQuestionIndex).getQuestion());
-            txtAnswer.clear();
-            lblResult.setVisible(false);
+        if (currentQuestionIndex < questions.size()) { // Überprüft ob noch unbeantwortete Fragen übrig sind
+            lblQuestion.setText(questions.get(currentQuestionIndex).getQuestion()); // Zeigt die aktuelle Frage an
+            txtAnswer.clear(); // Löscht den Inhalt des Eingabefelds
+            lblResult.setVisible(false); // Versteckt das Ergebnis-Label
 
+            // Deaktiviert den "Next Question" Button
             btnNext.setVisible(false);
             btnNext.setDisable(true);
         }
     }
 
+    // Methode zur Prüfung der Antwort und anzeige des Ergebnisses
     @FXML
     private void onSubmitClick() {
         if (currentQuestionIndex < questions.size()) {
-            String userAnswer = txtAnswer.getText().trim();
-            String correctAnswer = questions.get(currentQuestionIndex).getAnswer();
-            boolean isCorrect = userAnswer.equalsIgnoreCase(correctAnswer);
+            String userAnswer = txtAnswer.getText().trim(); // Ruft die eingegebene Antwort aus txtAnswer ab - Trim entfernt Leerzeichen
+            String correctAnswer = questions.get(currentQuestionIndex).getAnswer(); // Ruft passende Antwort zur Frage ab
+            boolean isCorrect = userAnswer.equalsIgnoreCase(correctAnswer); // Speichert das Ergebnis des Vergleichs - korrekt = true, falsch = false
 
+            // IF statement umd heraus zu finden welches Ergebnis ausgegeben wird basierend auf isCorrect
             if (isCorrect) {
                 lblResult.setText("Correct!");
-                lblResult.setStyle("-fx-text-fill: green;");
+                lblResult.setStyle("-fx-text-fill: #5cd686;");
             } else {
                 lblResult.setText("Wrong! The correct answer is: " + correctAnswer);
-                lblResult.setStyle("-fx-text-fill: red;");
+                lblResult.setStyle("-fx-text-fill: #e85c6c;");
             }
-            lblResult.setVisible(true);
+            lblResult.setVisible(true); // Ergebnis wird angezeigt
 
+            // Fügt eine neue Instanz der Klasse AnswerEvaluation der Liste answers hinzu und erstellt ein neues AnswerEvaluation Objekt
+            // mit den unten aufgelisteten Informationen - Wird für auswertung gespeichert
             answers.add(new AnswerEvaluation(
                     questions.get(currentQuestionIndex).getQuestion(),
                     userAnswer,
@@ -181,15 +201,19 @@ public class LearnModeController implements QuizBase {
                     correctAnswer
             ));
 
+            // Aktiviert wieder den Button "Next Question"
             btnNext.setVisible(true);
             btnNext.setDisable(false);
         }
     }
 
+    // Methode um zur nächsten Frage zu kommen
     @FXML
     private void onNextClick() {
-        currentQuestionIndex++;
+        currentQuestionIndex++; // Erhöht den Index um eins wenn aufgerufen
 
+        // Überprüft ob es noch Fragen gibt, falls nicht wird der EndScreen angezeigt
+        // der "Next Question" inkl. "Submit" Button werden deaktiviert und "Evaluation" wird aktiviert
         if (currentQuestionIndex < questions.size()) {
             displayQuestion();
         } else {
@@ -197,7 +221,7 @@ public class LearnModeController implements QuizBase {
             txtAnswer.setDisable(true);
             btnSubmit.setDisable(true);
             lblResult.setText("Quiz finished!");
-            lblResult.setStyle("-fx-text-fill: black;");
+            lblResult.setStyle("-fx-text-fill: white;");
             lblResult.setVisible(true);
             stopTimer();
             btnNext.setVisible(false);
@@ -205,29 +229,35 @@ public class LearnModeController implements QuizBase {
         }
     }
 
+    // Methode zum Anzeigen der Auswertungsliste
     @FXML
     private void onEvaluationClick() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/evaluation_layout.fxml"));
-            Parent evaluationRoot = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/evaluation_layout.fxml")); // Ladet das passende Layout
+            Parent evaluationRoot = loader.load(); // Speichert den Wurzelknoten des geladenen Layouts
 
+            // Eine Referenz auf den passenden Controller zum Layout
+            // Ruft Controller Instanz ab die der geladenen FXML-Datei zugeordnet ist
             EvaluationController evaluationController = loader.getController();
+            // Übergibt die Liste der Antworten an den EvaluationController für die Auswertung
             evaluationController.setAnswers(answers);
 
-            Stage stage = new Stage();
-            stage.setTitle("Evaluation");
-            stage.setScene(new Scene(evaluationRoot));
-            stage.show();
+            Stage stage = new Stage(); // Erstellt ein neues Stage Objekt für das Auswertungs Fenster
+            stage.setTitle("Evaluation"); // Setzt den Titel
+            stage.setScene(new Scene(evaluationRoot)); // Erstellt eine neue Szene die das geladene FXML Layout verwendet
+            stage.show(); // Zeigt das Fenster an
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Gibt im Falle einer Ausnahem die vollständige Fehlermeldung in der Konsole aus
         }
     }
 
+    // Methode um zurück zum Hauptmenü zu kommen
     @FXML
     private void onBackClick(ActionEvent event) {
-        switchScene(event, "/Layouts/main_menu.fxml");
+        QuizBase.super.onExit(event, timer); // Ruft die default-Methode aus dem Interface auf
     }
 
+    // Methode zur Anzeige einiger PopUp´s
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -236,6 +266,7 @@ public class LearnModeController implements QuizBase {
         alert.showAndWait();
     }
 
+    // Methode zum holen der Fragen für die startLearnMode Methode
     public List<LernmodusQuestion> getQuestions() {
         return questions;
     }

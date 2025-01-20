@@ -54,9 +54,12 @@ public class MainMenuController {
     private File uploadedCsvFile;
 
     @FXML
-    private Button learnModeButton;
+    private Button learnModeButton; // Button für den Lernmodus
 
-
+    @FXML
+    private Label mrSqueakLabel;
+    @FXML
+    private Button mrSqueakButton;
 
 
     @FXML
@@ -177,16 +180,22 @@ public class MainMenuController {
 //        }
 //    }
 
+    // Methode zur Anzeige des CSV Dialogs
     @FXML
     private void showCsvUploadDialog() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Learning Mode");
-        alert.setHeaderText(null);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION); // Erstellt neues Alert Objekt für das PopUp
+        alert.setTitle("Learning Mode"); // Setzt den Titel des Fensters auf "Learning Mode"
+        alert.setHeaderText(null); // Gibt an das es keinen Header Text gibt
+        // Setzt des Inhalt des Fensters
         alert.setContentText("Welcome to the Learning Mode !\n\nPlease download a template if you dont have one yet " +
                 "and enter your questions in the column <Questions> and your answers in the column <Answers>.\n\nFinally " +
                 "upload the filled out template. The Learning Mode will start automatically after the upload.\n\nHappy learning :)");
 
         try {
+            // Ändert das Icon des Fensters welches links vom Text angezeigt wird
+            // Standardmäßig war es ein Rufzeichen
+            // Passt Höhe und Breite des neuen Icons an
+            // Gibt Fehlermeldung in Konsole aus falls File nicht gefunden werden kann
             ImageView customIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/KLKM_Logo.png")));
             customIcon.setFitWidth(50);
             customIcon.setFitHeight(50);
@@ -195,12 +204,14 @@ public class MainMenuController {
             e.printStackTrace();
         }
 
-        ButtonType uploadButton = new ButtonType("Upload");
-        ButtonType downloadTemplateButton = new ButtonType("Download Template");
-        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType uploadButton = new ButtonType("Upload"); // Button für das hochladen
+        ButtonType downloadTemplateButton = new ButtonType("Download Template"); // Button für das runterladen
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE); // Button zum schließen
 
+        // Entfernt standard Buttons aus dem Alert Fenster und tauscht sie mit upload, download und cancel
         alert.getButtonTypes().setAll(uploadButton, downloadTemplateButton, cancelButton);
 
+        // Pürft Useraktion ab und ruft dann die passende methode dazu auf
         alert.showAndWait().ifPresent(response -> {
             if (response == uploadButton) {
                 uploadCsvFile();
@@ -210,77 +221,117 @@ public class MainMenuController {
         });
     }
 
+    // Methode für den Fileupload
     @FXML
     private void uploadCsvFile() {
+        // Neue Instanz von FileChooser wird erstellt damit der User die Möglichkeit hat
+        // eine Datei von seinem Computer hoch zu laden
         FileChooser fileChooser = new FileChooser();
+        // Zeigt dem User im Dialog nur csv files an
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Dateien", "*.csv"));
+        // Wandelt Ergebnis von getWindow() in Stage um
+        // Ermittelt aktuelles Anwendungsfenster um Datei-Dialog innerhalb desselben Fensters zu öffnen
         Stage stage = (Stage) learnModeButton.getScene().getWindow();
+        // Zeigt Datei-Dialog an und erwartet Benutzerinteraktion
+        // Gibt die vom Benutzer ausgewählte Datei als File-Objekt zurück
         File selectedFile = fileChooser.showOpenDialog(stage);
 
+        // Überprüft ob eine Datei ausgewählt wurde
         if (selectedFile != null) {
+            // Falls ja, dann wird die Datei der Klassenvariable übergeben und der Lernmodus
+            // wird gestartet
             uploadedCsvFile = selectedFile;
             startLearnMode();
         } else {
+            // Fehlermeldung im Falle einer Ausnahme
             showAlert("Error", "No file chosen. Please upload a file first.");
         }
     }
 
     private void downloadCsvTemplate() {
+        // Pfad zum Template aus Projektstruktur definiert
         String templateFileName = "/CSV Template/Learning Mode_CSV_Template.csv";
+        // Neue Instanz von FileChooser um Speicherort zu bestimmen
         FileChooser fileChooser = new FileChooser();
 
+        // Standard Dateiname wird festgelegt
         fileChooser.setInitialFileName("Learning Mode_CSV_Template.csv");
+        // Filter damit der user nur Dateien speichern kann mit der Endung .csv
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
 
+        // Neue Stage für den Dateidialog
         Stage stage = new Stage();
+        // Öffnet Dialog indem Benutzer Speicherort und Namen für Datei wählen kann
         File targetFile = fileChooser.showSaveDialog(stage);
 
+        // Prüft ob Benutzer tatsächlich Speicherort ausgewählt hat
         if (targetFile != null) {
+            // Falls ja dann wird dem InputStream der Dateipfad aus der Projektstruktur übergeben
             try (InputStream inputStream = getClass().getResourceAsStream(templateFileName);
+                 // Im OutputStream werden die Infos übergeben die der Benutzer im Dateidialog
+                 // gewählt hat
                  OutputStream outputStream = new FileOutputStream(targetFile)) {
 
+                // Fehlermeldung falls der Dateipfad in der Projektstruktur nicht gefunden werden kann
                 if (inputStream == null) {
                     showAlert("Error", "Template could not be found.");
                     return;
                 }
 
+                // Temporärer Speicherbereich in den die Daten gelesen werden
                 byte[] buffer = new byte[1024];
                 int bytesRead;
+                // Liest bis zu 1024 Bytes aus der Vorlage und speichert sie im buffer
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    // Schreibt gelesene Bytes in die Zieldatei
                     outputStream.write(buffer, 0, bytesRead);
                 }
-
+                // Erfolgsmeldung
                 showAlert("Success", "The template was successfully downloaded: " + targetFile.getAbsolutePath());
             } catch (IOException e) {
+                // Fehlermeldung im Falle einer Ausnahme inkl. Fehlermeldung in der Konsole
                 e.printStackTrace();
                 showAlert("Error", "The template could not be downloaded.");
             }
         }
+        // Nach Abschluss des Downloads wird der Dialog erneut automatisch angezeigt für Benutzerfreundlichkeit
         showCsvUploadDialog();
     }
 
     private void startLearnMode() {
+        // Überprüft ob ein File hochgeladen wurde
         if (uploadedCsvFile != null) {
             try {
+                // Erstellt FXML Klasse um das learnmode_layout zu laden
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/learnmode_layout.fxml"));
+                // Lädt die FXML Datei und erstellt den Wurzelknoten
                 Parent lernmodusRoot = loader.load();
 
+                // Ruft die Instanz des Controllers ab mit der die geladene FXML-Datei verknüpft ist
                 LearnModeController learnModeController = loader.getController();
+                // Ruft die Instanz des Controllers mit der Methode um die Fragen des CSV files zu lesen und übergibt
+                // das hochgeladene File als Argument
                 learnModeController.loadQuestionsFromCsv(uploadedCsvFile);
 
+                // Prüft ab ob das hochgeladene File leer ist und verhindert das starten des Lernmodus
                 if (learnModeController.getQuestions().isEmpty()) {
                     showAlert("Error", "The CSV-File has no valid data.");
                     return;
                 }
 
+                // Ruft die Szene ab die den Button enthält und wandelt das allgemeine Window in eine Stage um
                 Stage stage = (Stage) learnModeButton.getScene().getWindow();
+                // Wechselt die aktuelle Szene zu der neuen Szene
                 stage.setScene(new Scene(lernmodusRoot));
+                // Abschließend wird die Szene angezeigt
                 stage.show();
             } catch (IOException e) {
+                // Errorhandling im Ausnahmefall inkl. Fehlerausgabe in der Konsole
                 e.printStackTrace();
                 showAlert("Error", "A problem occurred while loading the Learn mode.");
             }
         } else {
+            // Errorhandling im Ausnahmefall
             showAlert("Error", "No CSV-File available. Please upload a file first.");
         }
     }
@@ -374,12 +425,63 @@ public class MainMenuController {
         }
     }
 
+    // Methode zum anzeigen verschiedener PopUp´s
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void onHighscoreClick(ActionEvent event) {
+        try {
+            // FXMLLoader läd FXML Datei (highscore.fxml)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/highscore_layout.fxml"));
+            // liest Datei + gibt zurück den Root Node vom Layout (Start von Scene)
+            Parent root = loader.load();
+
+            // loader.getController() = erhälts controller instance => erstellt + initialisiert von FXMLLoader
+            HighscoreController highscoreController = loader.getController();
+
+            // Aktuelle Stage holen und neue Szene setzen
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // MICE MODE
+
+    public void setMrSqueak() {
+        mrSqueakLabel.setVisible(true);
+        mrSqueakButton.setDisable(true);
+    }
+
+    @FXML
+    private void onMiceModeClick(ActionEvent event) {
+
+        try {
+            // FXMLLoader läd FXML Datei (highscore.fxml)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/micemode_layout.fxml"));
+            // liest Datei + gibt zurück den Root Node vom Layout (Start von Scene)
+            Parent root = loader.load();
+
+            // loader.getController() = erhälts controller instance => erstellt + initialisiert von FXMLLoader
+            MiceModeController miceModeController = loader.getController();
+
+            // Aktuelle Stage holen und neue Szene setzen
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*

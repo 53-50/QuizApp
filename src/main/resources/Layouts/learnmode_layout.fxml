@@ -1,71 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
+
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.LearnModeController">
+<?import java.net.URL?>
+<VBox alignment="CENTER" prefHeight="700.0" prefWidth="1100.0" styleClass="rootQuiz" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.LearnModeController"
+      fillWidth="false">
+    <!-- fillWidth="false" -->
 
-    <children>
-        <!-- Platzhalter für Abstand nach oben -->
-        <Pane VBox.vgrow="ALWAYS" />
+    <!-- reinladen vom CSS File -->
+    <stylesheets>
+        <URL value="@../css/application.css"/>
+    </stylesheets>
 
-        <!-- Bereich für den Timer -->
-        <HBox alignment="TOP_RIGHT" spacing="10" VBox.vgrow="NEVER">
-            <children>
-                <Label fx:id="timerLabel" text="00:00:00">
-                    <padding>
-                        <Insets right="100.0" />
-                    </padding>
-                </Label>
-            </children>
+    <!-- Bereich für den Timer -->
+    <HBox alignment="CENTER" spacing="500">
+        <padding>
+            <Insets bottom="100.0"/>
+        </padding>
+        <Button styleClass="buttonExit" fx:id="btnBack" onAction="#onBackClick" text="Exit"/>
+        <HBox styleClass="parameterBox">
+            <Label alignment="CENTER" styleClass="whiteFont" fx:id="timerLabel" text="00:00:00" prefWidth="100"/>
         </HBox>
+    </HBox>
 
-        <!-- Hauptbereich für die Frage, Eingabe und Buttons -->
-        <VBox alignment="CENTER" spacing="10">
-            <children>
-                <Label fx:id="lblQuestion" text="The question will appear here!" />
-                <TextField fx:id="txtAnswer" promptText="Please enter your answer here!" />
-                <HBox alignment="CENTER" spacing="10">
-                    <children>
-                        <Button fx:id="btnSubmit" onAction="#onSubmitClick" text="Submit" />
-                        <Button fx:id="btnBack" onAction="#onBackClick" text="Back to Menu" />
-                    </children>
-                </HBox>
-                <Label fx:id="lblResult" text="" visible="false" />
-            </children>
-        </VBox>
-
-        <!-- Platzhalter für Abstand nach unten -->
-        <Pane VBox.vgrow="ALWAYS" />
+    <!-- Hauptbereich für die Frage, Eingabe und Buttons -->
+    <VBox alignment="CENTER" spacing="10">
+        <Label fx:id="lblQuestion" text="The question will appear here!" styleClass="label-question"
+               prefHeight="120.0" prefWidth="1000.00" alignment="CENTER" wrapText="true"/>
+        <TextField styleClass="LernModeAnswerTextField" fx:id="txtAnswer" promptText="Please enter your answer here!"/>
+        <HBox alignment="CENTER">
+            <Button fx:id="btnSubmit" onAction="#onSubmitClick" text="Submit"/>
+        </HBox>
+        <Label styleClass="label-feedback" fx:id="lblResult" text="00" visible="false"/>
+        <padding>
+            <Insets bottom="20"/>
+        </padding>
+    </VBox>
 
         <!-- Bereich für die Buttons unten -->
-        <HBox spacing="10" VBox.vgrow="NEVER">
-            <children>
-                <!-- Links ausgerichteter Button -->
-                <HBox alignment="BOTTOM_LEFT" HBox.hgrow="ALWAYS">
-                    <children>
-                        <Button fx:id="btnEvaluation" text="Evaluation" onAction="#onEvaluationClick" visible="false">
-                            <HBox.margin>
-                                <Insets left="10.0" bottom="10.0"/>
-                            </HBox.margin>
-                        </Button>
-                    </children>
-                </HBox>
-
-                <!-- Rechts ausgerichteter Button -->
-                <HBox alignment="BOTTOM_RIGHT" HBox.hgrow="ALWAYS">
-                    <children>
-                        <Button fx:id="btnNext" text="Next Question" onAction="#onNextClick" visible="false">
-                            <HBox.margin>
-                                <Insets right="10.0" bottom="10.0"/>
-                            </HBox.margin>
-                        </Button>
-                    </children>
-                </HBox>
-            </children>
+        <HBox prefWidth="900" alignment="BOTTOM_RIGHT">
+        <!-- Links ausgerichteter Button -->
+        <HBox>
+            <Button fx:id="btnEvaluation" text="Evaluation" onAction="#onEvaluationClick" visible="false"/>
         </HBox>
-    </children>
+
+        <!-- Rechts ausgerichteter Button -->
+        <HBox>
+            <Button fx:id="btnNext" text="Next Question" onAction="#onNextClick" visible="false"/>
+        </HBox>
+    </HBox>
 </VBox>

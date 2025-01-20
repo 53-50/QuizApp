@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -28,6 +29,8 @@ public class WinLoseController {
     private Label rightOnesLabel;
     @FXML
     private Text storyTextLabel;
+    @FXML
+    private Button highscoreButton;
 
     // namen
     @FXML
@@ -40,6 +43,7 @@ public class WinLoseController {
     // damit der modus angezeigt werden kann
     private String mode;
     private String difficulty;
+    private int finalPoints = 0;
 
     public void setPlayerName(String name) {
         this.playerName = name;
@@ -55,6 +59,7 @@ public class WinLoseController {
                 difficulty = "Error";
             }
             mode = "Quiz " + difficulty;  // setze die Variable mode
+            highscoreButton.setVisible(true);
         } else if (controller instanceof TutorialController) { //wenn tutorial dann wird geschichte angezeigt
             storyTextLabel.setText("As we now know, she arrived a few years too early, " +
                             "missing the historic achievement of becoming the first cheese connoisseur in space. " +
@@ -76,11 +81,11 @@ public class WinLoseController {
     }
 
     public void displayPoints() {
-        int finalPoints = controller.getPoints();
+        finalPoints = controller.getPoints();
 
-        // wenn noch leben übrig sind => pro Leben +5 Punkte
+        // wenn noch leben übrig sind => pro Leben +50 Punkte
         if (controller.getLives() > 0) {
-            finalPoints += controller.getLives() * 5;
+            finalPoints += controller.getLives() * 50;
         }
         pointsLabel.setText("Points: " + finalPoints);
     }
@@ -162,7 +167,7 @@ public class WinLoseController {
 
             // Zusätzliche Punkte, wenn Leben übrig sind
             if (controller.getLives() > 0) {
-                finalScore += controller.getLives() * 5;
+                finalScore += controller.getLives() * 50;
             }
 
             // Difficulty aus QuizController holen (easy, medium, hard)
@@ -186,9 +191,9 @@ public class WinLoseController {
             int finalScore = controller.getPoints();
             int finalLives = controller.getLives();
 
-            //Für jedes übrig gebliebene Leben zusätzliche 5 Punkte
+            //Für jedes übrig gebliebene Leben zusätzliche 50 Punkte
             if (controller.getLives() > 0) {
-                finalScore += controller.getLives() * 5;
+                finalScore += controller.getLives() * 50;
             }
 
             String difficulty = ((QuizController) controller).getDifficultyQC(); // "easy" / "medium" / "hard"
@@ -204,17 +209,8 @@ public class WinLoseController {
         // Nur im Quiz-Modus in Highscore speichern
         if (controller instanceof QuizController) {
             String name = playerName;
-            int finalScore = controller.getPoints();
-            int finalLives = controller.getLives();
-
-            //Für jedes übrig gebliebene Leben zusätzliche 5 Punkte
-            if (controller.getLives() > 0) {
-                finalScore += controller.getLives() * 5;
-            }
-
             String difficulty = ((QuizController) controller).getDifficultyQC();
-
-            HighscoreController.addScore(name, finalScore, difficulty);
+            HighscoreController.addScore(name, finalPoints, difficulty);
         }
 
         // in Highscore wechseln

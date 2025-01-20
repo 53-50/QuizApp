@@ -18,34 +18,35 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 import javafx.animation.PauseTransition;
 
-public class TutorialController implements QuizBase, ControllerBase {
+public class MiceModeController implements QuizBase, ControllerBase {
 
     @FXML
-    private Label tutLivesLabel;
+    private Label miceLivesLabel;
     @FXML
-    private Label tutPointsLabel;
+    private Label micePointsLabel;
     @FXML
-    private Label tutTimerLabel;
+    private Label miceTimerLabel;
     @FXML
-    private Button tutAnswer1;
+    private Button miceAnswer1;
     @FXML
-    private Button tutAnswer2;
+    private Button miceAnswer2;
     @FXML
-    private Button tutAnswer3;
+    private Button miceAnswer3;
     @FXML
-    private Button tutAnswer4;
+    private Button miceAnswer4;
     @FXML
-    private Label tutQuestionLabel;
+    private Label miceQuestionLabel;
     @FXML
-    private Label tutQuestionNumberLabel;
+    private Label miceQuestionNumberLabel;
     @FXML
-    private Label tutFeedbackLabel;
+    private Label miceFeedbackLabel;
 
     //der Timer
     private Timeline timer;
@@ -56,7 +57,7 @@ public class TutorialController implements QuizBase, ControllerBase {
     // festlegen der Rahmenbedingungen
     private int points;
     private int lives = 3;
-    final private int questions = 6;
+    final private int questions = 11;
     private int rightOnes = 0;
     private int questionsAsked = 1;
 
@@ -68,18 +69,16 @@ public class TutorialController implements QuizBase, ControllerBase {
     //popups
     private Queue<String> popupMessages;  // Warteschlange für Pop-ups Nachrichten
 
-    //namen übergabe
-    private String playerName;
-
     @Override
     public void setPlayerName(String name) {
-        this.playerName = name;
+        name = "Mr. Squeak";
     }
+
 
     @Override
     public void initialize() {
         // Fragen aus der JSON-Datei laden
-        final String jsonFilePath = "src/main/resources/questions/questions.json";
+        final String jsonFilePath = "src/main/resources/questions/mice.json";
         loadQuestions(jsonFilePath);
 
         // Timer initialisieren
@@ -93,24 +92,20 @@ public class TutorialController implements QuizBase, ControllerBase {
         }
 
         // Rahmenbedingungen setzen in den Labels damit die Punkte, Leben und Fragen Anzahl angezeigt wird
-        tutPointsLabel.setText(Integer.toString(points));
-        tutLivesLabel.setText(Integer.toString(lives));
-        tutQuestionNumberLabel.setText(questionsAsked + "/" + questions);
+        micePointsLabel.setText(Integer.toString(points));
+        miceLivesLabel.setText(Integer.toString(lives));
+        miceQuestionNumberLabel.setText("squeak/squeak");
 
-        //Queue Liste erstellen für Tutorial Pop-Ups
+        //Queue Liste erstellen für Pop-Ups
         popupMessages = new LinkedList<>();
 
         // Pop-up-Nachrichten hinzufügen
-        popupMessages.add("1/3 Tutorial\n\nOnce upon a time, there was a mouse who wanted nothing more " +
-                "than to find the cheese of her dreams - in outer space. " +
-                "With a rocket and unwavering courage, she set off " +
-                "to make history.\n" +
-                "\n" +
-                "Are you ready to test your knowledge of this brave mouse?");
-        popupMessages.add("2/3 Tutorial\n\nYou gain one point if you have impressed the mouse.\n\n" +
-                "You lose a life if you disappoint the mouse.\n\n" + "It's up to you!");
-        popupMessages.add("3/3 Tutorial\n\nBut watch out for the timer! You only have " + timeRemaining + " seconds.\n\n" +
-                "If you take too long, you will disappoint the mouse.");
+        popupMessages.add("squeak squeak squeak, squeak squeak squeak. piep, piep piep piep." +
+                "i-i-i-i i-i-i-I, i-i-i-i i-i-i-i i-i-i-i. cleek cleek cleek, cleek cleek cleek." +
+                "cin cin, cin cin cin. squitt-squitt, squitt-squitt squitt-squitt squitt-squitt." +
+                "chuu-chuu chuu-chuu, chuu-chuu chuu-chuu chuu-chuu. jjik-jjik jjik-jjik jjik-jjik," +
+                "jjik-jjik jjik-jjik jjik-jjik. zī-zī zī-zī zī-zī, zī-zī zī-zī zī-zī. cui-cui cui-cui," +
+                "cui-cui cui-cui cui-cui. pip-pip, pip-pip pip-pip pip-pip.");
 
         // kurze Pause bevor die Pop-Ups gezeigt werden da sich das Spiel erst initialisiert
         // und das Pop-Up sonst hinter die Quiz-Scene verschwindet
@@ -123,7 +118,7 @@ public class TutorialController implements QuizBase, ControllerBase {
     }
 
 
-// ------------ POP-UPS ------------
+    // ------------ POP-UPS ------------
     //es wird in der Queue Liste nachgeschaut ob was da ist und der Befehl gegeben das anzuzeigen
     private void showNextPopup() {
         if (!popupMessages.isEmpty()) {
@@ -154,7 +149,7 @@ public class TutorialController implements QuizBase, ControllerBase {
 
             // Aktuelle Stage holen und neue Szene setzen
             Stage popupStage = new Stage();
-            popupStage.setTitle("Tutorial Pop-up");
+            popupStage.setTitle("squeak squeak squeak");
             popupStage.setScene(new Scene(root));
 
             // Modus von Stage festzulegen
@@ -176,16 +171,16 @@ public class TutorialController implements QuizBase, ControllerBase {
     }
 
 
-// ------------ TIMER ------------
+    // ------------ TIMER ------------
     @Override
     public void startTimer() {
         // Initiale Anzeige der Zeit
-        tutTimerLabel.setText(timeRemaining + "s");
+        miceTimerLabel.setText(timeRemaining + "s");
 
         // Timeline für den Countdown was pro Sekunde passiert
         timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             timeRemaining--;
-            tutTimerLabel.setText(timeRemaining + "s");
+            miceTimerLabel.setText(timeRemaining + "s");
 
             if (timeRemaining <= 0) {
                 timer.stop(); // Timer stoppen
@@ -217,13 +212,13 @@ public class TutorialController implements QuizBase, ControllerBase {
     public void handleTimeOut() {
         // Frage als falsch werten und zur nächsten wechseln
         markQuestionAsWrong();
-        showFeedback("Time is up! The mouse dies because of you :(", false);
+        showFeedback("SQUEAK SQUEAK SQUEAK!!!", false);
 
         //deaktivier die Buttons damit nichts weiter gedrückt werden kann
-        tutAnswer1.setDisable(true);
-        tutAnswer2.setDisable(true);
-        tutAnswer3.setDisable(true);
-        tutAnswer4.setDisable(true);
+        miceAnswer1.setDisable(true);
+        miceAnswer2.setDisable(true);
+        miceAnswer3.setDisable(true);
+        miceAnswer4.setDisable(true);
 
         // Alle Buttons durchlaufen und die Farben ändern je nach richtig oder falsch
         setAnswerButtonColors();
@@ -232,7 +227,7 @@ public class TutorialController implements QuizBase, ControllerBase {
     }
 
 
-// ------------ QUESTION LOADING and DISPLAYING ------------
+    // ------------ QUESTION LOADING and DISPLAYING ------------
     // die Fragen werden geladen dafür wird der QuestionLoader verwendet
     public void loadQuestions(String jsonFilePath) {
         // liste wird befüllt mit all den Fragen vom Json File
@@ -255,16 +250,15 @@ public class TutorialController implements QuizBase, ControllerBase {
 
             pause.setOnFinished(event -> {
                 // Nach der Pause: neue Frage anzeigen und antwortbutton wieder ermöglichen
-                tutAnswer1.setDisable(false);
-                tutAnswer2.setDisable(false);
-                tutAnswer3.setDisable(false);
-                tutAnswer4.setDisable(false);
+                miceAnswer1.setDisable(false);
+                miceAnswer2.setDisable(false);
+                miceAnswer3.setDisable(false);
+                miceAnswer4.setDisable(false);
                 //index erhöhen
                 currentQuestionIndex++;
                 //feedback wieder wegmachen
-                tutFeedbackLabel.setVisible(false);
+                miceFeedbackLabel.setVisible(false);
                 //fragenanzahl aktualisieren
-                tutQuestionNumberLabel.setText(questionsAsked + "/" + questions);
 
                 resetAnswerButtonColors(); //farben der buttons zurücksetzen
                 resetTimer(); // Timer zurücksetzen
@@ -276,7 +270,7 @@ public class TutorialController implements QuizBase, ControllerBase {
             PauseTransition pause = new PauseTransition(Duration.seconds(3));
             pause.setOnFinished(event -> {
                 timer.pause();
-                showEndScreen();
+                switchScene();
             });
             pause.play();
         }
@@ -291,22 +285,22 @@ public class TutorialController implements QuizBase, ControllerBase {
             TutorialQuestions currentQuestion = questionsJson.get(currentQuestionIndex);
 
             // Frage anzeigen
-            tutQuestionLabel.setText(currentQuestion.getQuestionText());
+            miceQuestionLabel.setText(currentQuestion.getQuestionText());
 
-            // Antwortmöglichkeiten wurden randomized in TutorialQuestions hier nur Buttons zugewiesen
+            // Antwortmöglichkeiten wurden randomized in JsonQuestionsClass hier nur Buttons zugewiesen
             List<String> allAnswers = currentQuestion.getAllAnswers();
-            tutAnswer1.setText(allAnswers.get(0));
-            tutAnswer2.setText(allAnswers.get(1));
-            tutAnswer3.setText(allAnswers.get(2));
-            tutAnswer4.setText(allAnswers.get(3));
+            miceAnswer1.setText(allAnswers.get(0));
+            miceAnswer2.setText(allAnswers.get(1));
+            miceAnswer3.setText(allAnswers.get(2));
+            miceAnswer4.setText(allAnswers.get(3));
         } else {
             timer.pause();
-            showEndScreen(); // Falls keine weiteren Fragen vorhanden sind zeig das Ende
+            switchScene();
         }
     }
 
 
-// ------------ ANSWER HANDELING + CORRECTION ------------
+    // ------------ ANSWER HANDELING + CORRECTION ------------
     // kontrollieren ob die givenAnswer stimmt oder nicht
     @Override
     public void checkAnswer(String givenAnswer) {
@@ -316,10 +310,10 @@ public class TutorialController implements QuizBase, ControllerBase {
         // die givenAnswer kommt von der handleAnswerButtonClick() methode
         if (currentQuestion.getCorrectAnswer().equalsIgnoreCase(givenAnswer)) {
             markQuestionAsRight(); // wenn ja dann soll als richtig gewertet werden
-            showFeedback("That's right! You're taking off like a rocket :)", true);
+            showFeedback("cin cin cin", true);
         } else {
             markQuestionAsWrong(); // wenn nein dann soll als falsch gewertet werden
-            showFeedback("The mouse dies because of you :(", false);
+            showFeedback("SQUEAK PIEP CUI-CUI!!!", false);
         }
     }
 
@@ -331,10 +325,10 @@ public class TutorialController implements QuizBase, ControllerBase {
         String selectedAnswer = clickedButton.getText(); //hol dir den Text vom Button
 
         //deaktivier die Buttons damit nichts weiter gedrückt werden kann
-        tutAnswer1.setDisable(true);
-        tutAnswer2.setDisable(true);
-        tutAnswer3.setDisable(true);
-        tutAnswer4.setDisable(true);
+        miceAnswer1.setDisable(true);
+        miceAnswer2.setDisable(true);
+        miceAnswer3.setDisable(true);
+        miceAnswer4.setDisable(true);
 
         // Überprüfen, ob die Antwort korrekt ist
         checkAnswer(selectedAnswer);
@@ -349,29 +343,29 @@ public class TutorialController implements QuizBase, ControllerBase {
     // anzeigen feedback wenn richtig dann grün und wenn nicht dann rot
     @Override
     public void showFeedback(String feedback, boolean isCorrect) {
-        tutFeedbackLabel.setText(feedback);
-        tutFeedbackLabel.setStyle(isCorrect ? "-fx-text-fill: #5cd686;" : "-fx-text-fill: #e85c6c;");
-        tutFeedbackLabel.setVisible(true);  // Feedback anzeigen
+        miceFeedbackLabel.setText(feedback);
+        miceFeedbackLabel.setStyle(isCorrect ? "-fx-text-fill: #5cd686;" : "-fx-text-fill: #e85c6c;");
+        miceFeedbackLabel.setVisible(true);  // Feedback anzeigen
     }
 
     // was passiert wenn frage falsch beantwortet wurde
     private void markQuestionAsWrong() {
         lives--;
-        QuizBase.super.markQuestionAsWrong(getLives(), tutLivesLabel);
+        QuizBase.super.markQuestionAsWrong(getLives(), miceLivesLabel);
     }
 
     // was passiwer wenn frage richtig beantwortet wurde
     private void markQuestionAsRight() {
-        points += 100;
+        points += 1000;
         rightOnes++;
-        QuizBase.super.markQuestionAsRight(getPoints(), getRightOnes(), tutPointsLabel);
+        QuizBase.super.markQuestionAsRight(getPoints(), getRightOnes(), micePointsLabel);
     }
 
     // richtig und falsch buttons anzeigen
     @Override
     public void setAnswerButtonColors() {
         // Über alle Antwort-Buttons iterieren und die Farben ändern
-        Button[] answerButtons = {tutAnswer1, tutAnswer2, tutAnswer3, tutAnswer4};
+        Button[] answerButtons = {miceAnswer1, miceAnswer2, miceAnswer3, miceAnswer4};
 
         // hol dir jeden einzelnen button
         for (Button button : answerButtons) {
@@ -392,11 +386,11 @@ public class TutorialController implements QuizBase, ControllerBase {
 
     // buttons zurücksetzen
     private void resetAnswerButtonColors() {
-        QuizBase.super.resetAnswerButtonColors(tutAnswer1, tutAnswer2, tutAnswer3, tutAnswer4);
+        QuizBase.super.resetAnswerButtonColors(miceAnswer1, miceAnswer2, miceAnswer3, miceAnswer4);
     }
 
 
-// ------------ GETTER ------------
+    // ------------ GETTER ------------
     @Override
     public int getPoints() {
         return points;
@@ -418,17 +412,37 @@ public class TutorialController implements QuizBase, ControllerBase {
     }
 
 
-// ------------ EXIT ------------
-    public void onTutorialExit(ActionEvent event) {
+    // ------------ EXIT ------------
+    public void onMiceExit(ActionEvent event) {
         QuizBase.super.onExit(event, timer); // Ruft die default-Methode aus dem Interface auf
     }
 
 
-// ------------ ENDSCREEN ------------
+    // ------------ ENDSCREEN ------------
     private void showEndScreen() {
-        // brauchen wir für show endscreen
-        Stage stage = (Stage) tutQuestionLabel.getScene().getWindow();
-        QuizBase.super.showEndScreen(stage, playerName, this); // Ruft die default-Methode aus dem Interface auf
+        // brauchen wir hier nicht
+    }
+
+    private void switchScene() {
+        try {
+            // Lade Main Menu (FXML-Datei)
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/main_menu.fxml"));
+            Parent mainRoot = loader.load();
+
+            // MainMenuController holen
+            MainMenuController mainMenuController = loader.getController();
+            mainMenuController.setMrSqueak();
+
+            Stage stage = (Stage) miceQuestionLabel.getScene().getWindow();
+
+            // Szene wechseln
+            Scene winScene = new Scene(mainRoot);
+            stage.setScene(winScene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="700.0" prefWidth="1100.0" styleClass="rootQuiz" xmlns="http://javafx.com/javafx/17.0.2-ea"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.Controller.MiceModeController">
+
+<!-- reinladen vom CSS File -->
+<stylesheets>
+    <URL value="@../css/application.css"/>
+</stylesheets>
+
+<VBox alignment="CENTER" fillWidth="false">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="800.0" spacing="50.0">
+        <Button mnemonicParsing="false" onAction="#onMiceExit" text="squeak" styleClass="buttonExit"/>
+
+        <HBox styleClass="parameterBox" spacing="30">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0">
+                <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../images/Lives_Heart_Pixel.png"/>
+                </ImageView>
+                <Label fx:id="miceLivesLabel" text="00" styleClass="whiteFont"/>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../images/points_star.png"/>
+                </ImageView>
+                <Label fx:id="micePointsLabel" text="Points" styleClass="whiteFont"/>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0">
+                <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../images/timer_clock.png"/>
+                </ImageView>
+                <Label fx:id="miceTimerLabel" text="Timer" styleClass="whiteFont"/>
+            </HBox>
+        </HBox>
+
+        <padding>
+            <Insets bottom="50.0"/>
+        </padding>
+
+    </HBox>
+
+    <VBox alignment="CENTER">
+        <Label fx:id="miceQuestionNumberLabel" text="0/0" styleClass="whiteFont"/>
+        <VBox alignment="CENTER">
+            <VBox.margin>
+                <Insets top="10.0"/>
+            </VBox.margin>
+            <Label alignment="CENTER" wrapText="true" fx:id="miceQuestionLabel" text="Question"
+                   styleClass="label-question" prefHeight="120.0" prefWidth="1000.00"/>
+        </VBox>
+    </VBox>
+
+    <VBox prefHeight="300.0" prefWidth="1000.0">
+        <VBox.margin>
+            <Insets top="20.0"/>
+        </VBox.margin>
+
+        <HBox alignment="CENTER" prefHeight="400.0" prefWidth="1000.0" spacing="50.0">
+            <Button fx:id="miceAnswer1" mnemonicParsing="false" onAction="#handleAnswerButtonClick"
+                    prefHeight="130.0" prefWidth="500.0" text="Antwort 1" textAlignment="CENTER"
+                    wrapText="true" styleClass="buttonAnswer"/>
+            <Button fx:id="miceAnswer2" mnemonicParsing="false" onAction="#handleAnswerButtonClick"
+                    prefHeight="130.0" prefWidth="500.0" text="Antwort 2" textAlignment="CENTER"
+                    wrapText="true" styleClass="buttonAnswer"/>
+        </HBox>
+        <HBox alignment="CENTER" prefHeight="400.0" prefWidth="1000.0" spacing="50.0">
+            <Button fx:id="miceAnswer3" mnemonicParsing="false" onAction="#handleAnswerButtonClick"
+                    prefHeight="130.0" prefWidth="500.0" text="Antwort 3" textAlignment="CENTER"
+                    wrapText="true" styleClass="buttonAnswer"/>
+            <Button fx:id="miceAnswer4" mnemonicParsing="false" onAction="#handleAnswerButtonClick"
+                    prefHeight="130.0" prefWidth="500.0" text="Antwort 4" textAlignment="CENTER"
+                    wrapText="true" styleClass="buttonAnswer"/>
+        </HBox>
+    </VBox>
+    <Label fx:id="miceFeedbackLabel" alignment="CENTER" prefWidth="500.0" styleClass="label-feedback" text="Comment"
+           visible="false"/>
+</VBox>
+</VBox>

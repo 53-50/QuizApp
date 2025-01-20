@@ -19,7 +19,7 @@
          <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
       </padding>
 
-      <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="800.0" spacing="85.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="800.0" spacing="50.0">
          <Button mnemonicParsing="false" onAction="#onTutorialExit" text="Exit" styleClass="buttonExit"/>
 
          <HBox styleClass="parameterBox" spacing="30">
@@ -56,29 +56,29 @@
                <Insets top="10.0"/>
             </VBox.margin>
             <Label alignment="CENTER" wrapText="true" fx:id="tutQuestionLabel" text="Question"
-                   styleClass="label-question" prefHeight="80.0" prefWidth="600.00"/>
+                   styleClass="label-question" prefHeight="120.0" prefWidth="1000.00"/>
          </VBox>
       </VBox>
 
-      <VBox prefHeight="250.0" prefWidth="800.0">
+      <VBox prefHeight="300.0" prefWidth="1000.0">
          <VBox.margin>
             <Insets top="20.0"/>
          </VBox.margin>
 
-         <HBox alignment="CENTER" prefHeight="200.0" prefWidth="800.0" spacing="30.0">
+         <HBox alignment="CENTER" prefHeight="400.0" prefWidth="1000.0" spacing="50.0">
             <Button fx:id="tutAnswer1" mnemonicParsing="false" onAction="#handleAnswerButtonClick"
-                    prefHeight="100.0" prefWidth="300.0" text="Antwort 1" textAlignment="CENTER"
+                    prefHeight="130.0" prefWidth="500.0" text="Antwort 1" textAlignment="CENTER"
                     wrapText="true" styleClass="buttonAnswer"/>
             <Button fx:id="tutAnswer2" mnemonicParsing="false" onAction="#handleAnswerButtonClick"
-                    prefHeight="100.0" prefWidth="300.0" text="Antwort 2" textAlignment="CENTER"
+                    prefHeight="130.0" prefWidth="500.0" text="Antwort 2" textAlignment="CENTER"
                     wrapText="true" styleClass="buttonAnswer"/>
          </HBox>
-         <HBox alignment="CENTER" prefHeight="200.0" prefWidth="800.0" spacing="30.0">
+         <HBox alignment="CENTER" prefHeight="400.0" prefWidth="1000.0" spacing="50.0">
             <Button fx:id="tutAnswer3" mnemonicParsing="false" onAction="#handleAnswerButtonClick"
-                    prefHeight="100.0" prefWidth="300.0" text="Antwort 3" textAlignment="CENTER"
+                    prefHeight="130.0" prefWidth="500.0" text="Antwort 3" textAlignment="CENTER"
                     wrapText="true" styleClass="buttonAnswer"/>
             <Button fx:id="tutAnswer4" mnemonicParsing="false" onAction="#handleAnswerButtonClick"
-                    prefHeight="100.0" prefWidth="300.0" text="Antwort 4" textAlignment="CENTER"
+                    prefHeight="130.0" prefWidth="500.0" text="Antwort 4" textAlignment="CENTER"
                     wrapText="true" styleClass="buttonAnswer"/>
          </HBox>
       </VBox>
