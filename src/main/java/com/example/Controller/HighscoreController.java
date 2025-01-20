@@ -56,10 +56,12 @@ public class HighscoreController {
     private static List<HighscoreEntry> highscoreList = new ArrayList<>();
 
     // Ort zum Speichern und Laden der Datei (CSV)
-    private static final String FILE_PATH = "highscore_data.csv";
+    private static final Path HIGHSCORE_FILE = Paths.get("data", "highscore_data.csv");
 
     // Rang des zuletzt hinzugefügten Scores
     private static int lastAddedRank = -1;
+
+    private static String lastAddedPlayerName = null;
 
     // Daten beim allerersten Zugriff laden
     static {
@@ -76,6 +78,9 @@ public class HighscoreController {
 
         // Rang (= Index + 1)
         lastAddedRank = highscoreList.indexOf(entry) + 1;
+
+        // Neuen Spielernamen merken:
+        lastAddedPlayerName = playerName;
 
         // Speichern
         saveToFile();
@@ -109,38 +114,58 @@ public class HighscoreController {
 
     // Laden aus CSV-Datei
     private static void loadFromFile() {
-        Path p = Paths.get(FILE_PATH);
-        if (!Files.exists(p)) {
-            return; // Keine Datei => leere Liste
-        }
-        List<HighscoreEntry> loaded = new ArrayList<>();
-        try (BufferedReader br = Files.newBufferedReader(p)) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(";");
-                if (parts.length == 3) {
-                    String name = parts[0];
-                    int sc = Integer.parseInt(parts[1]);
-                    String diff = parts[2];
-                    loaded.add(new HighscoreEntry(name, sc, diff));
+        try {
+            // 1) Ordner anlegen, falls er nicht existiert
+            if (Files.notExists(HIGHSCORE_FILE.getParent())) {
+                Files.createDirectories(HIGHSCORE_FILE.getParent());
+            }
+
+            // 2) Falls die Datei noch nicht existiert, gibt es einfach keine Highscore-Daten
+            if (Files.notExists(HIGHSCORE_FILE)) {
+                return;  // => leere Liste
+            }
+
+            // 3) Datei öffnen und Zeilen einlesen
+            try (BufferedReader br = Files.newBufferedReader(HIGHSCORE_FILE)) {
+                List<HighscoreEntry> loaded = new ArrayList<>();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split(";");
+                    if (parts.length == 3) {
+                        String name = parts[0];
+                        int sc = Integer.parseInt(parts[1]);
+                        String diff = parts[2];
+                        loaded.add(new HighscoreEntry(name, sc, diff));
+                    }
                 }
+                // Liste sortieren
+                loaded.sort(Comparator.comparingInt(HighscoreEntry::getScore).reversed());
+                highscoreList = loaded;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Sortieren
-        loaded.sort(Comparator.comparingInt(HighscoreEntry::getScore).reversed());
-        highscoreList = loaded;
     }
 
     // Speichern in CSV
     private static void saveToFile() {
-        Path p = Paths.get(FILE_PATH);
-        try (BufferedWriter bw = Files.newBufferedWriter(p)) {
-            for (HighscoreEntry e : highscoreList) {
-                bw.write(e.getPlayerName() + ";" + e.getScore() + ";" + e.getDifficulty());
-                bw.newLine();
+        try {
+            // 1) Ordner erzeugen, falls nötig
+            if (Files.notExists(HIGHSCORE_FILE.getParent())) {
+                Files.createDirectories(HIGHSCORE_FILE.getParent());
+            }
+
+            // 2) Datei nicht vorhanden? -> evtl. anlegen (optional)
+            if (Files.notExists(HIGHSCORE_FILE)) {
+                Files.createFile(HIGHSCORE_FILE);
+            }
+
+            // 3) Datei beschreiben
+            try (BufferedWriter bw = Files.newBufferedWriter(HIGHSCORE_FILE)) {
+                for (HighscoreEntry e : highscoreList) {
+                    bw.write(e.getPlayerName() + ";" + e.getScore() + ";" + e.getDifficulty());
+                    bw.newLine();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -157,148 +182,81 @@ public class HighscoreController {
     @FXML
     private TableView<HighscoreEntry> tableHighscore;
 
-    // Easy
+    @FXML
+    private MenuButton HighscoreFilterButton;
+
     @FXML
     private TableColumn<HighscoreEntry, Number> colIndex;
-    @FXML
-    private TableColumn<HighscoreEntry, String> colEasyPlayer;
-    @FXML
-    private TableColumn<HighscoreEntry, Number> colEasyScore;
 
-    // Medium
     @FXML
-    private TableColumn<HighscoreEntry, String> colMediumPlayer;
-    @FXML
-    private TableColumn<HighscoreEntry, Number> colMediumScore;
+    private TableColumn<HighscoreEntry, String> colName;
 
-    // Hard
     @FXML
-    private TableColumn<HighscoreEntry, String> colHardPlayer;
+    private TableColumn<HighscoreEntry, Number> colScore;
+
     @FXML
-    private TableColumn<HighscoreEntry, Number> colHardScore;
+    private TableColumn<HighscoreEntry, String> colDifficulty;
+
 
     @FXML
     public void initialize() {
 
-        //Sorgt dafür, dass Tabelle bei Filter setzen sich anpasst
-        tableHighscore.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // Aktuelle Daten in die TableView packen
-        // (ohne Filter => zeigt alle an)
+        // ObservableList erstellen
         ObservableList<HighscoreEntry> data = FXCollections.observableArrayList(highscoreList);
         tableHighscore.setItems(data);
 
-        // Index-Spalte = Zeilennummer bzw. Rang
+        // Rang
         colIndex.setCellValueFactory(cellData -> {
+            // Index = Position + 1
             HighscoreEntry entry = cellData.getValue();
             int idx = tableHighscore.getItems().indexOf(entry) + 1;
             return new SimpleObjectProperty<>(idx);
         });
 
-        // EASY-Spalten
-        colEasyPlayer.setCellValueFactory(cellData -> {
-            HighscoreEntry entry = cellData.getValue();
-            if ("easy".equalsIgnoreCase(entry.getDifficulty())) {
-                return new SimpleStringProperty(entry.getPlayerName());
-            }
-            return new SimpleStringProperty("");
-        });
-        colEasyScore.setCellValueFactory(cellData -> {
-            HighscoreEntry entry = cellData.getValue();
-            if ("easy".equalsIgnoreCase(entry.getDifficulty())) {
-                return new SimpleObjectProperty<>(entry.getScore());
-            }
-            return new SimpleObjectProperty<>(null);
-        });
+        // Name
+        colName.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getPlayerName())
+        );
 
-        // MEDIUM-Spalten
-        colMediumPlayer.setCellValueFactory(cellData -> {
-            HighscoreEntry entry = cellData.getValue();
-            if ("medium".equalsIgnoreCase(entry.getDifficulty())) {
-                return new SimpleStringProperty(entry.getPlayerName());
-            }
-            return new SimpleStringProperty("");
-        });
-        colMediumScore.setCellValueFactory(cellData -> {
-            HighscoreEntry entry = cellData.getValue();
-            if ("medium".equalsIgnoreCase(entry.getDifficulty())) {
-                return new SimpleObjectProperty<>(entry.getScore());
-            }
-            return new SimpleObjectProperty<>(null);
-        });
+        // Score
+        colScore.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getScore())
+        );
 
-        // HARD-Spalten
-        colHardPlayer.setCellValueFactory(cellData -> {
-            HighscoreEntry entry = cellData.getValue();
-            if ("hard".equalsIgnoreCase(entry.getDifficulty())) {
-                return new SimpleStringProperty(entry.getPlayerName());
-            }
-            return new SimpleStringProperty("");
-        });
-        colHardScore.setCellValueFactory(cellData -> {
-            HighscoreEntry entry = cellData.getValue();
-            if ("hard".equalsIgnoreCase(entry.getDifficulty())) {
-                return new SimpleObjectProperty<>(entry.getScore());
-            }
-            return new SimpleObjectProperty<>(null);
-        });
+        // Difficulty (Mode)
+        colDifficulty.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getDifficulty())
+        );
 
-        // Falls zuletzt ein Eintrag hinzugefügt wurde:
-        if (lastAddedRank > 0) {
-            lblCurrentRank.setText("You are currently on rank # " + lastAddedRank + "!");
+        // lastAddedRank
+        if (lastAddedRank > 0 && lastAddedPlayerName != null) {
+            lblCurrentRank.setText(lastAddedPlayerName + ", you are currently on rank # " + lastAddedRank + "!");
         } else {
             lblCurrentRank.setText("");
         }
     }
 
+
     /* -------------------- FILTER-FUNKTION -------------------- */
 
     private void applyFilter(String diff) {
+
+        HighscoreFilterButton.setText(diff.substring(0,1).toUpperCase() + diff.substring(1).toLowerCase());
+
+        // Filtere nach passendem Schwierigkeitsgrad
         List<HighscoreEntry> filtered = highscoreList.stream()
                 .filter(e -> e.getDifficulty().equalsIgnoreCase(diff))
                 .collect(Collectors.toList());
+
+        // Tabelle aktualisieren
         tableHighscore.setItems(FXCollections.observableArrayList(filtered));
 
-        // Regeleung der Spalten-Sichtbarkeit nach Filter setzen
+        // Difficulty-Spalte ausblenden
+        tableHighscore.getColumns().remove(colDifficulty);
 
-        switch (diff.toLowerCase()) {
-            case "easy":
-                colEasyPlayer.setVisible(true); //Easy wird angezeigt
-                colEasyScore.setVisible(true);
-
-                colMediumPlayer.setVisible(false);
-                colMediumScore.setVisible(false);
-
-                colHardPlayer.setVisible(false);
-                colHardScore.setVisible(false);
-                break;
-
-            case "medium":
-                colEasyPlayer.setVisible(false);
-                colEasyScore.setVisible(false);
-
-                colMediumPlayer.setVisible(true); //Medium wird angezeigt
-                colMediumScore.setVisible(true);
-
-                colHardPlayer.setVisible(false);
-                colHardScore.setVisible(false);
-                break;
-
-            case "hard":
-                colEasyPlayer.setVisible(false);
-                colEasyScore.setVisible(false);
-
-                colMediumPlayer.setVisible(false);
-                colMediumScore.setVisible(false);
-
-                colHardPlayer.setVisible(true); //Hard wird angezeigt
-                colHardScore.setVisible(true);
-                break;
-
-            default:
-                onClearFilter(null);
-        }
     }
+
 
     @FXML
     private void onFilterEasy(ActionEvent e) {
@@ -315,19 +273,17 @@ public class HighscoreController {
 
     @FXML
     private void onClearFilter(ActionEvent e) {
-
-        // Filter löschen und alle wieder anzeigen
         tableHighscore.setItems(FXCollections.observableArrayList(highscoreList));
 
-        colEasyPlayer.setVisible(true);
-        colEasyScore.setVisible(true);
+        // Difficulty-Spalte wieder anzeigen
+        if (!tableHighscore.getColumns().contains(colDifficulty)) {
+            tableHighscore.getColumns().add(colDifficulty);
+        }
 
-        colMediumPlayer.setVisible(true);
-        colMediumScore.setVisible(true);
+        HighscoreFilterButton.setText("Filter");
 
-        colHardPlayer.setVisible(true);
-        colHardScore.setVisible(true);
     }
+
 
     /* -------------------- SZENENWECHSEL -------------------- */
 
