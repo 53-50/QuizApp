@@ -188,6 +188,7 @@ public class QuizController implements QuizBase, ControllerBase {
             questionCount++; //Zähler für gestellte Fragen
         }
 
+        //Debugging
         //System.out.println("~DEBUGGING~ *LNQ* loadNewQuestion aufgerufen. isFirstQuestion = " + isFirstQuestion);
 
         // Prüfe, ob das Quiz weitergeht
@@ -200,14 +201,14 @@ public class QuizController implements QuizBase, ControllerBase {
                 });
                 pause.play();
             } else {
-                // Direkt neue Frage vorbereiten
+                //Debugging
                 //System.out.println("~DEBUGGING~ *LNQ* New Questione Else");
-                prepareForNextQuestion();
+                prepareForNextQuestion(); // Direkt neue Frage vorbereiten
             }
         } else {
-            // Quiz beenden
+            //Debugging
             //System.out.println("~DEBUGGING~ *LNQ* Quiz endet. Endscreen wird geladen.");
-            timer.pause();
+            timer.pause(); // Quiz beenden
             showEndScreen();
         }
     }
@@ -310,7 +311,7 @@ public class QuizController implements QuizBase, ControllerBase {
 
             recentQuestion = TriviaApiService.fetchSingleQuestion(difficultyQC); // Fetch a new question based on the selected difficulty
 
-            // progressLabel.setText("~DEBUGGING~ *DCQ* Question " + questionCount + " of " + MAX_QUESTIONS); // Update the progress label
+            //System.out.println("~DEBUGGING~ *DCQ* Question " + questionCount + " of " + MAX_QUESTIONS); // Update the progress label
             //System.out.println("~DEBUGGING~ *DCQ* Loaded Question: " + recentQuestion.getQuestionText()); // Debugging
 
                     questionLabel.setText(recentQuestion.getAPIQuestionData().getText()); //Setter in TriviaQuestion
@@ -385,15 +386,8 @@ public class QuizController implements QuizBase, ControllerBase {
 
     private void markQuestionAsWrong() {
         lives--;
-/*
-Funktion macht gerade gar nix - raus?
-        if (streakCounter > 0) {
-            System.out.println("Streak Lost!");
-            streakLabel.setVisible(false);
-            streakCounter = 0;
-        }
-*/
-        System.out.println("~DEBUGGING~ *mQaW* Leben: " + lives);
+        //Debugging
+        //System.out.println("~DEBUGGING~ *mQaW* Leben: " + lives);
         QuizBase.super.markQuestionAsWrong(getLives(), quizLivesLabel);
     }
 
@@ -426,12 +420,12 @@ Funktion macht gerade gar nix - raus?
             streakLabel.setText("Streak! + 1 Life");
             streakCounter = 0;
         }
+        //Debugging
+        //System.out.println("~DEBUGGING~ *mQaR* StreakCounter: " + streakCounter);
+        //System.out.println("~DEBUGGING~ *mQaR* StreakGoal: " + streakGoal);
+        //System.out.println("~DEBUGGING~ *mQaR* punkte: " + points);
+        //System.out.println("~DEBUGGING~ *mQaR* rightOnes: " + rightOnes);
 
-        System.out.println("~DEBUGGING~ *mQaR* StreakCounter: " + streakCounter);
-        System.out.println("~DEBUGGING~ *mQaR* StreakGoal: " + streakGoal);
-
-        System.out.println("~DEBUGGING~ *mQaR* punkte: " + points);
-        System.out.println("~DEBUGGING~ *mQaR* rightOnes: " + rightOnes);
         QuizBase.super.markQuestionAsRight(getPoints(), getRightOnes(), quizPointsLabel);
     }
 
