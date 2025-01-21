@@ -11,18 +11,18 @@ import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+//Öffentliche Klasse Highscore für Verwaltung der Einträge + JavaFX-Controller-Logik
 public class HighscoreController {
 
-    /* -------------------- EIGENE DATENKLASSE -------------------- */
+    /* ------------------------------------------- EIGENE DATENKLASSE ------------------------------------------- */
 
+    //innere statische Datenklasse, die jeweils einen Eintrag repräsentiert (Name,Score,Difficulty)
     public static class HighscoreEntry {
         private final String playerName;
         private final int score;
@@ -35,8 +35,9 @@ public class HighscoreController {
             this.difficulty = difficulty;
         }
 
-        //----GETTER----//
+    /* -------------------------------------------------- GETTER ------------------------------------------------- */
 
+        //Getter-Methoden, die Wert zurück geben
         public String getPlayerName() {
             return playerName;
         }
@@ -50,39 +51,49 @@ public class HighscoreController {
         }
     }
 
-    /* -------------------- VERWALTUNG EINTRÄGE -------------------- */
+    /* -------------------------------------------- VERWALTUNG EINTRÄGE ------------------------------------------- */
 
-    // Liste aller Einträge
+    // Liste aller Einträge, die in den Highscor aufgenommen wurden (Array Liste, die initial leer ist)
     private static List<HighscoreEntry> highscoreList = new ArrayList<>();
 
-    // Ort zum Speichern und Laden der Datei (CSV)
-    private static final String FILE_PATH = "highscore_data.csv";
+    // Ort zum Speichern und Laden der Datei > in Ordner Data/Highscore
+    private static final Path HIGHSCORE_FILE = Paths.get("data", "highscore_data.csv");
 
-    // Rang des zuletzt hinzugefügten Scores
+    // Rang des zuletzt hinzugefügten Scores (-1 bedeutet noch keiner hinzugefügt)
     private static int lastAddedRank = -1;
 
-    // Daten beim allerersten Zugriff laden
+    //Name des zuletzt hinzugefügten Spielers
+    private static String lastAddedPlayerName = null;
+
+    // Daten beim allerersten Zugriff laden, bevor die Klasse das erste Mal benutzt wird
     static {
         loadFromFile();
     }
 
-    //Methode, um in WinLose Highscore-Einträge hinzuzufügen
+    //Methode, um in WinLose Highscore-Einträge hinzuzufügen zu können
     public static void addScore(String playerName, int score, String difficulty) {
+
+        //Erstellt neues Highscore-Entry Objekt und legt es in Highscore Liste ab
         HighscoreEntry entry = new HighscoreEntry(playerName, score, difficulty);
         highscoreList.add(entry);
 
-        // Sortieren (score absteigend)
+        // Sortiert die Liste nach erziehlten Punkten (reversed = score absteigend)
         highscoreList.sort(Comparator.comparingInt(HighscoreEntry::getScore).reversed());
 
-        // Rang (= Index + 1)
+        // Ermittelt Rang des neuen Eintrags in sortierter Liste und speichert in lastAddedRank
+        // Da Liste bei 0 startet Index + 1 = menschlich lesbarer Rang
         lastAddedRank = highscoreList.indexOf(entry) + 1;
 
-        // Speichern
+        // Neuen Spielernamen merken
+        lastAddedPlayerName = playerName;
+
+        // Speichert aktualisierte Liste in CSV-Datei (damit persistent)
         saveToFile();
     }
 
     // Update des Punktestands bei Retry und ggf. in Highscore überschreiben
     public static void updateScoreIfBetter(String playerName, int newScore, String difficulty) {
+
         // Suche nach vorhandenem Eintrag mit gleichem Namen und Schwierigkeit
         HighscoreEntry existingEntry = null;
         for (HighscoreEntry entry : highscoreList) {
@@ -94,6 +105,7 @@ public class HighscoreController {
         }
 
         if (existingEntry != null) {
+
             // Falls der neue Score höher ist: alten Eintrag entfernen und neuen hinzufügen
             if (newScore > existingEntry.getScore()) {
                 highscoreList.remove(existingEntry);
@@ -101,205 +113,127 @@ public class HighscoreController {
             }
             // Sonst nichts tun, wenn der alte Score schon höher oder gleich hoch ist
         } else {
+
             // Kein Eintrag vorhanden => neuen Score hinzufügen
             addScore(playerName, newScore, difficulty);
         }
     }
 
 
-    // Laden aus CSV-Datei
+    // Highscore Liste laden aus Datei > Ordner: Data/Highscore
     private static void loadFromFile() {
-        Path p = Paths.get(FILE_PATH);
-        if (!Files.exists(p)) {
-            return; // Keine Datei => leere Liste
+        try {
+            // Datei öffnen und Zeilen einlesen
+            try (BufferedReader br = Files.newBufferedReader(HIGHSCORE_FILE)) {
+                List<HighscoreEntry> loaded = new ArrayList<>();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split(";");
+                    if (parts.length == 3) {
+                        String name = parts[0];
+                        int sc = Integer.parseInt(parts[1]);
+                        String diff = parts[2];
+                        loaded.add(new HighscoreEntry(name, sc, diff));
+                    }
+                }
+                // Liste sortieren
+                loaded.sort(Comparator.comparingInt(HighscoreEntry::getScore).reversed());
+                highscoreList = loaded;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        List<HighscoreEntry> loaded = new ArrayList<>();
-        try (BufferedReader br = Files.newBufferedReader(p)) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split(";");
-                if (parts.length == 3) {
-                    String name = parts[0];
-                    int sc = Integer.parseInt(parts[1]);
-                    String diff = parts[2];
-                    loaded.add(new HighscoreEntry(name, sc, diff));
+    }
+
+    // Speichern in Datei > Ordner: Data/Highscore
+    private static void saveToFile() {
+        try {
+            // Datei beschreiben
+            try (BufferedWriter bw = Files.newBufferedWriter(HIGHSCORE_FILE)) {
+                for (HighscoreEntry e : highscoreList) {
+                    bw.write(e.getPlayerName() + ";" + e.getScore() + ";" + e.getDifficulty());
+                    bw.newLine();
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Sortieren
-        loaded.sort(Comparator.comparingInt(HighscoreEntry::getScore).reversed());
-        highscoreList = loaded;
     }
 
-    // Speichern in CSV
-    private static void saveToFile() {
-        Path p = Paths.get(FILE_PATH);
-        try (BufferedWriter bw = Files.newBufferedWriter(p)) {
-            for (HighscoreEntry e : highscoreList) {
-                bw.write(e.getPlayerName() + ";" + e.getScore() + ";" + e.getDifficulty());
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    /* ------------------------------------------- FXML-BINDINGS ------------------------------------------- */
 
-    /* -------------------- FXML-BINDINGS -------------------- */
-
-    // Zeigt den Range an
+    // Zeile in der Spieler sein erreichter Rang angezeigt wird
     @FXML
     private Label lblCurrentRank;
 
-    // Index-Spalte (Platz)
+    // Komplette Tabelle
     @FXML
     private TableView<HighscoreEntry> tableHighscore;
 
-    // Easy
+    //Spalte Rang
     @FXML
     private TableColumn<HighscoreEntry, Number> colIndex;
-    @FXML
-    private TableColumn<HighscoreEntry, String> colEasyPlayer;
-    @FXML
-    private TableColumn<HighscoreEntry, Number> colEasyScore;
 
-    // Medium
+    //Spalte Name
     @FXML
-    private TableColumn<HighscoreEntry, String> colMediumPlayer;
-    @FXML
-    private TableColumn<HighscoreEntry, Number> colMediumScore;
+    private TableColumn<HighscoreEntry, String> colName;
 
-    // Hard
+    //Spalte Score
     @FXML
-    private TableColumn<HighscoreEntry, String> colHardPlayer;
-    @FXML
-    private TableColumn<HighscoreEntry, Number> colHardScore;
+    private TableColumn<HighscoreEntry, Number> colScore;
 
+    //Spalte Schwierigkeit
+    @FXML
+    private TableColumn<HighscoreEntry, String> colDifficulty;
+
+    //wird von JavaFX aufgerufen, wenn die Szene geladen und mit Controller verknüpft wird
     @FXML
     public void initialize() {
 
-        //Sorgt dafür, dass Tabelle bei Filter setzen sich anpasst
-        tableHighscore.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // Aktuelle Daten in die TableView packen
-        // (ohne Filter => zeigt alle an)
+        // Wandelt Highscore Liste in ObservableList um und weist sie TableView zu
         ObservableList<HighscoreEntry> data = FXCollections.observableArrayList(highscoreList);
         tableHighscore.setItems(data);
 
-        // Index-Spalte = Zeilennummer bzw. Rang
+        // Rang
         colIndex.setCellValueFactory(cellData -> {
+            // Index = Position + 1
             HighscoreEntry entry = cellData.getValue();
             int idx = tableHighscore.getItems().indexOf(entry) + 1;
             return new SimpleObjectProperty<>(idx);
         });
 
-        // EASY-Spalten
-        colEasyPlayer.setCellValueFactory(cellData -> {
-            HighscoreEntry entry = cellData.getValue();
-            if ("easy".equalsIgnoreCase(entry.getDifficulty())) {
-                return new SimpleStringProperty(entry.getPlayerName());
-            }
-            return new SimpleStringProperty("");
-        });
-        colEasyScore.setCellValueFactory(cellData -> {
-            HighscoreEntry entry = cellData.getValue();
-            if ("easy".equalsIgnoreCase(entry.getDifficulty())) {
-                return new SimpleObjectProperty<>(entry.getScore());
-            }
-            return new SimpleObjectProperty<>(null);
-        });
+        // Name
+        colName.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getPlayerName())
+        );
 
-        // MEDIUM-Spalten
-        colMediumPlayer.setCellValueFactory(cellData -> {
-            HighscoreEntry entry = cellData.getValue();
-            if ("medium".equalsIgnoreCase(entry.getDifficulty())) {
-                return new SimpleStringProperty(entry.getPlayerName());
-            }
-            return new SimpleStringProperty("");
-        });
-        colMediumScore.setCellValueFactory(cellData -> {
-            HighscoreEntry entry = cellData.getValue();
-            if ("medium".equalsIgnoreCase(entry.getDifficulty())) {
-                return new SimpleObjectProperty<>(entry.getScore());
-            }
-            return new SimpleObjectProperty<>(null);
-        });
+        // Score
+        colScore.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getScore())
+        );
 
-        // HARD-Spalten
-        colHardPlayer.setCellValueFactory(cellData -> {
-            HighscoreEntry entry = cellData.getValue();
-            if ("hard".equalsIgnoreCase(entry.getDifficulty())) {
-                return new SimpleStringProperty(entry.getPlayerName());
-            }
-            return new SimpleStringProperty("");
-        });
-        colHardScore.setCellValueFactory(cellData -> {
-            HighscoreEntry entry = cellData.getValue();
-            if ("hard".equalsIgnoreCase(entry.getDifficulty())) {
-                return new SimpleObjectProperty<>(entry.getScore());
-            }
-            return new SimpleObjectProperty<>(null);
-        });
+        // Difficulty (Mode)
+        colDifficulty.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getDifficulty())
+        );
 
-        // Falls zuletzt ein Eintrag hinzugefügt wurde:
-        if (lastAddedRank > 0) {
-            lblCurrentRank.setText("You are currently on rank # " + lastAddedRank + "!");
+        // lastAddedRank wird über der Tabelle ausgegeben > Name + Rank Nummer
+        if (lastAddedRank > 0 && lastAddedPlayerName != null) {
+            lblCurrentRank.setText(lastAddedPlayerName + ", you are currently on rank # " + lastAddedRank + "!");
         } else {
             lblCurrentRank.setText("");
         }
     }
 
-    /* -------------------- FILTER-FUNKTION -------------------- */
 
-    private void applyFilter(String diff) {
-        List<HighscoreEntry> filtered = highscoreList.stream()
-                .filter(e -> e.getDifficulty().equalsIgnoreCase(diff))
-                .collect(Collectors.toList());
-        tableHighscore.setItems(FXCollections.observableArrayList(filtered));
+    /* ------------------------------------------- FILTER-FUNKTION ------------------------------------------- */
 
-        // Regeleung der Spalten-Sichtbarkeit nach Filter setzen
+    //Filter Button
+    @FXML
+    private MenuButton HighscoreFilterButton;
 
-        switch (diff.toLowerCase()) {
-            case "easy":
-                colEasyPlayer.setVisible(true); //Easy wird angezeigt
-                colEasyScore.setVisible(true);
-
-                colMediumPlayer.setVisible(false);
-                colMediumScore.setVisible(false);
-
-                colHardPlayer.setVisible(false);
-                colHardScore.setVisible(false);
-                break;
-
-            case "medium":
-                colEasyPlayer.setVisible(false);
-                colEasyScore.setVisible(false);
-
-                colMediumPlayer.setVisible(true); //Medium wird angezeigt
-                colMediumScore.setVisible(true);
-
-                colHardPlayer.setVisible(false);
-                colHardScore.setVisible(false);
-                break;
-
-            case "hard":
-                colEasyPlayer.setVisible(false);
-                colEasyScore.setVisible(false);
-
-                colMediumPlayer.setVisible(false);
-                colMediumScore.setVisible(false);
-
-                colHardPlayer.setVisible(true); //Hard wird angezeigt
-                colHardScore.setVisible(true);
-                break;
-
-            default:
-                onClearFilter(null);
-        }
-    }
-
+    //Auswahlmöglichkeiten DropDown Filter Button: Easy, Medium, Hard
     @FXML
     private void onFilterEasy(ActionEvent e) {
         applyFilter("easy");
@@ -313,23 +247,44 @@ public class HighscoreController {
         applyFilter("hard");
     }
 
+    //Methode zum Filter setzen durch User
+    private void applyFilter(String diff) {
+
+        //Zeigt als Text im Button statt "Filter" die jeweilige gefilterte Kategorie an
+        HighscoreFilterButton.setText(diff.substring(0,1).toUpperCase() + diff.substring(1).toLowerCase());
+
+        // Filtere nach passendem Schwierigkeitsgrad
+        List<HighscoreEntry> filtered = highscoreList.stream()
+                .filter(e -> e.getDifficulty().equalsIgnoreCase(diff))
+                .collect(Collectors.toList());
+
+        // Tabelle aktualisieren
+        tableHighscore.setItems(FXCollections.observableArrayList(filtered));
+
+        // Difficulty-Spalte ausblenden, da nach einer Schwierigkeit gefiltert (daher nicht notwendig)
+        tableHighscore.getColumns().remove(colDifficulty);
+
+    }
+
+    // Button zum Filter wieder löschen
     @FXML
     private void onClearFilter(ActionEvent e) {
 
-        // Filter löschen und alle wieder anzeigen
+        //gesamte Highscore Liste wird wieder angezeigt
         tableHighscore.setItems(FXCollections.observableArrayList(highscoreList));
 
-        colEasyPlayer.setVisible(true);
-        colEasyScore.setVisible(true);
+        // Difficulty-Spalte wieder anzeigen
+        if (!tableHighscore.getColumns().contains(colDifficulty)) {
+            tableHighscore.getColumns().add(colDifficulty);
+        }
 
-        colMediumPlayer.setVisible(true);
-        colMediumScore.setVisible(true);
+        //Zeigt wieder "Filter" als Text im Button an
+        HighscoreFilterButton.setText("Filter");
 
-        colHardPlayer.setVisible(true);
-        colHardScore.setVisible(true);
     }
 
-    /* -------------------- SZENENWECHSEL -------------------- */
+
+    /* ------------------------------------------- SZENENWECHSEL ------------------------------------------- */
 
     //Zurück ins Main Menü
     @FXML

@@ -51,13 +51,13 @@ public class MiceModeController implements QuizBase, ControllerBase {
     //der Timer
     private Timeline timer;
     // Zeit pro Frage in Sekunde
-    private final int timeSet = 15;
-    private int timeRemaining = timeSet;
+    private final static int timeSet = 15;
+    private static int timeRemaining = timeSet;
 
     // festlegen der Rahmenbedingungen
     private int points;
     private int lives = 3;
-    final private int questions = 11;
+    private final static int questions = 11;
     private int rightOnes = 0;
     private int questionsAsked = 1;
 
@@ -229,7 +229,7 @@ public class MiceModeController implements QuizBase, ControllerBase {
 
     // ------------ QUESTION LOADING and DISPLAYING ------------
     // die Fragen werden geladen dafür wird der QuestionLoader verwendet
-    public void loadQuestions(String jsonFilePath) {
+    private void loadQuestions(String jsonFilePath) {
         // liste wird befüllt mit all den Fragen vom Json File
         questionsJson = QuestionLoader.loadQuestionsFromJson(jsonFilePath);
 
@@ -239,7 +239,7 @@ public class MiceModeController implements QuizBase, ControllerBase {
     }
 
     // Logik/Vorbereitung zum Laden der nächsten Frage
-    public void loadNewQuestion() {
+    private void loadNewQuestion() {
 
         timer.pause();
         questionsAsked++; // Zähler für gestellte Fragen erhöhen
