@@ -32,10 +32,11 @@ import java.net.http.HttpResponse;
 
 public class TriviaApiService {
     private static final String BASE_URL = "https://the-trivia-api.com/v2/questions?limit=1";
-    // Basis-URL - sodass nur eine Frage pro Anfrage an API zurückgegeben wird
     private static final HttpClient httpClient = HttpClient.newHttpClient();
-    //Es wird ein HttpClient erstellt, der für den Versand der HTTP-Anfrage zuständig ist
     private static final Gson gson = new Gson();
+
+    // Basis-URL - sodass nur eine Frage pro Anfrage an API zurückgegeben wird
+    //Es wird ein HttpClient erstellt, der für den Versand der HTTP-Anfrage zuständig ist
     //Erstellt ein Gson-Objekt, das für die Umwandlung (Serialisierung/Deserialisierung) vbon JSON-Daten verwendet wird
 
     public static TriviaQuestion fetchSingleQuestion(String APIdifficulty) throws IOException, InterruptedException {
@@ -45,10 +46,11 @@ public class TriviaApiService {
 
 
         //Eine HTTP-Anfrage wird an die API geschickt
-        HttpRequest request = HttpRequest.newBuilder() //HTTP-Anfrage Builder
-                .uri(URI.create(apiUrl)) //Legt URI (Uniform Resource Identifier) der Anfrage fest
-                .GET() //Definiert diese Anfrage als eine GET-Anfrage
-                .build(); //Baut das HttpRequest-Objkekt zusammen
+        HttpRequest request = HttpRequest.newBuilder()      //HTTP-Anfrage Builder
+                .uri(URI.create(apiUrl))                    //Legt URI (Uniform Resource Identifier) der Anfrage fest
+                .GET()                                      //Definiert diese Anfrage als eine GET-Anfrage
+                .build();                                   //Baut das HttpRequest-Objkekt zusammen
+
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         //Hier wird die Anfrage gesendet, und auf die Antwort gewartet
@@ -66,8 +68,8 @@ public class TriviaApiService {
         */
 
 
-        if (response.statusCode() == 200) { //Prüft, ob Anfrage erfolgreich war (200 = OK)
-            String json = response.body(); //Hier wird der json string aus response geholt
+        if (response.statusCode() == 200) {             //Prüft, ob Anfrage erfolgreich war (200 = OK)
+            String json = response.body();              //Hier wird der json string aus response geholt
 
             try {
                 // JSON in ein Array von TriviaQuestion-Objekten mappen

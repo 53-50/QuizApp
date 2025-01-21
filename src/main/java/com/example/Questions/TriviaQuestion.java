@@ -24,7 +24,7 @@ public class TriviaQuestion implements QuestionBase {
 
     // Getter/Setter
 
-    public APIQuestionData getAPIQuestionData() {//Liefert die APIQuestionData zurück.
+    public APIQuestionData getAPIQuestionData() { //Liefert die APIQuestionData zurück.
         return APIQuestionData;
     }
 

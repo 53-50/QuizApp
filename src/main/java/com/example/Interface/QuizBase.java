@@ -22,29 +22,38 @@ public interface QuizBase {
     // damit Namen Übergabe vom Main Menu möglich ist
     void setPlayerName(String name);
 
+
     // damit das Spiel initialisiert wird
     void initialize() throws IOException;
+
 
     // Timer wird gestartet
     void startTimer();
 
+
     // Timer wird zurückgesetzt
     void resetTimer();
+
 
     // was passiert wenn die Zeit abläuft wird hier gehandelt
     void handleTimeOut() throws IOException;
 
+
     // die aktuelle Frage wird angezeigt
     void displayCurrentQuestion() throws IOException, InterruptedException;
+
 
     // was passiert wenn ein Button als Antwort geklickt wurde
     void handleAnswerButtonClick(ActionEvent mainEvent) throws IOException, InterruptedException;
 
+
     // Feedback wird angezeigt je nach obs korrekt oder falsch ist
     void showFeedback(String feedback, boolean isCorrect);
 
+
     // es wird kontrolliert ob die angeklickte antwort die richtige antwort ist
     void checkAnswer(String givenAnswer);
+
 
     // was alles passieren soll wenn die frage richtig beantwortet wurde
     default void markQuestionAsRight(int points, int rightOnes, Label pointsLabel) {
@@ -52,14 +61,17 @@ public interface QuizBase {
         pointsLabel.setText(Integer.toString(points));
     }
 
+
     // was alles passieren soll wenn die frage falsch beantwortet wurde
     default void markQuestionAsWrong(int lives, Label livesLabel) {
         // Logik zum Markieren der aktuellen Frage als falsch
         livesLabel.setText(Integer.toString(lives));
     }
 
+
     // richtig und falsch buttons graphisch anzeigen was die richtige/falsche antwort gewesen wäre
     void setAnswerButtonColors();
+
 
     // die buttoncolors zurücksetzten auf ursprünglichen look (black)
     default void resetAnswerButtonColors(Button answer1, Button answer2, Button answer3, Button answer4) {
@@ -69,6 +81,7 @@ public interface QuizBase {
             button.setStyle("-fx-text-fill: white;"); // Standardfarbe zurücksetzen
         }
     }
+
 
     //wenn auf den Exit button geklickt wird
     default void onExit(ActionEvent event, Timeline timer) {
@@ -124,6 +137,7 @@ public interface QuizBase {
 
     }
 
+
     //allgemeinen Scenen switchen festlegen
     default void switchScene(ActionEvent event, String fxmlPath) {
         try {
@@ -141,6 +155,7 @@ public interface QuizBase {
             e.printStackTrace();
         }
     }
+
 
     //showendscreen - Win/Lose wird angezeigt und PlayerName + Controller wird übergeben
     default void showEndScreen(Stage stage, String playerName, ControllerBase controller) {
@@ -173,5 +188,4 @@ public interface QuizBase {
             e.printStackTrace();
         }
     }
-
 }

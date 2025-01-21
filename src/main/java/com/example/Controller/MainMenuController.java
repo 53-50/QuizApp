@@ -14,22 +14,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
-
 import java.io.*;
 
 public class MainMenuController {
 
     @FXML
-    private RadioButton rbEasy;
+    private RadioButton rbEasy; //Button für Difficulty
     @FXML
-    private RadioButton rbMedium;
+    private RadioButton rbMedium; //Button für Difficulty
     @FXML
-    private RadioButton rbHard;
+    private RadioButton rbHard; //Button für Difficulty
     @FXML
-    private ToggleGroup difficultyToggleGroup;
+    private ToggleGroup difficultyToggleGroup; //ToggleGroup für Difficulty
 
     //für Text Eingabe benötigt
     @FXML
@@ -106,8 +103,7 @@ public class MainMenuController {
     }
 
     public String getSelectedDifficultyMMC() {
-        //User wählt schwierigkeit aus, nach Klick auf "Quiz-Play" wird difficulty an QuizController übergeben
-        // Check which radio button is selected
+        //User wählt schwierigkeit aus, nach Click auf "Quiz-Play" wird difficulty an QuizController übergeben
         if (difficultyToggleGroup.getSelectedToggle() == rbEasy) {
             return "easy";
         } else if (difficultyToggleGroup.getSelectedToggle() == rbMedium) {
@@ -115,7 +111,7 @@ public class MainMenuController {
         } else if (difficultyToggleGroup.getSelectedToggle() == rbHard) {
             return "hard";
         }
-        return "easy"; // Default to "easy" if none selected (shouldn't happen with rbEasy setSelected(true))
+        return "easy"; // Absicherung: Default ist als Easy gewählt
     }
 
 
@@ -126,23 +122,20 @@ public class MainMenuController {
 
         if (selectedDifficultyMMC.equals("easy") || selectedDifficultyMMC.equals("medium") || selectedDifficultyMMC.equals("hard")){
             try {
-                // Load the Quiz layout
+                // Quiz-Layout wird geladen
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/quiz_layout.fxml"));
                 Parent quizRoot = loader.load();
 
-                // Get the QuizController
+                // Quiz-Controller wird geladen
                 QuizController quizController = loader.getController();
                 // damit der playername auch beim quizspielen übergeben wird
                 quizController.setPlayerName(currentName);
-                quizController.setDifficulty(getSelectedDifficultyMMC()); //Doppelt, why??
+                quizController.setDifficulty(getSelectedDifficultyMMC()); //Difficulty wird an QController übergeben
 
-               // selectedDifficultyMMC = getSelectedDifficultyMMC();
-                //quizController.setDifficulty(selectedDifficultyMMC); // Pass the selected difficulty
-
-                // Start the quiz (load the first question)
+                // Startet das Quiz aus dem QuizController
                 quizController.loadNewQuestion(true); // <-- Call it explicitly here
 
-                // Switch to the quiz scene
+                // Ändert die Stage
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(new Scene(quizRoot));
                 stage.show();
@@ -152,34 +145,6 @@ public class MainMenuController {
             }
         }
     }
-
-//    @FXML
-//    private void onStartQuizClick(ActionEvent event) {
-//        try {
-//            // Load the Quiz layout
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/quiz_layout.fxml"));
-//            Parent quizRoot = loader.load();
-//
-//            // Get the QuizController
-//            QuizController quizController = loader.getController();
-//
-//            String selectedDifficulty = getSelectedDifficulty();
-//            quizController.setDifficulty(selectedDifficulty); // Pass the selected difficulty
-//
-//            quizController.resetQuiz(); // Reset the quiz for a new game
-//
-//            // Start the quiz (load the first question)
-//            quizController.loadNewQuestion(); // <-- Call it explicitly here
-//
-//            // Switch to the quiz scene
-//            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//            stage.setScene(new Scene(quizRoot));
-//            stage.show();
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     // Methode zur Anzeige des CSV Dialogs
     @FXML
@@ -334,30 +299,6 @@ public class MainMenuController {
         stage.close();
     }
 
-    /*
-    private void loadQuizScene(ActionEvent event, String difficulty) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/quiz_layout.fxml"));
-            Parent quizRoot = loader.load();
-
-            // Controller holen, um den Schwierigkeitsgrad zu übergeben
-            QuizController quizController = loader.getController();
-            quizController.setDifficulty(difficulty);
-
-            // Neue Szene erstellen
-            Scene quizScene = new Scene(quizRoot);
-
-            // Stage ermitteln
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(quizScene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-*/
-
     // Namen Eingabe Handeling - Button Click "Enter"
     @FXML
     public void onButtonClick(ActionEvent event) {
@@ -500,21 +441,4 @@ public class MainMenuController {
         }
     }
 
-    /*
-    // schriftartenwechsel gilt nur für Startseite
-    public void switchFirstFont(ActionEvent actionEvent) {
-        root.getStyleClass().removeAll("second-font");
-        root.getStyleClass().add("first-font");
-        secondFont.setDisable(false);
-        firstFont.setDisable(true);
-    }
-
-    // schriftartenwechsel gilt nur für Startseite
-    public void switchSecondFont(ActionEvent actionEvent) {
-        root.getStyleClass().removeAll("first-font");
-        root.getStyleClass().add("second-font");
-        firstFont.setDisable(false);
-        secondFont.setDisable(true);
-    }
-     */
 }

@@ -69,9 +69,6 @@ public class QuizController implements QuizBase, ControllerBase {
         this.playerName = name;
     } //Damit Spieler-Name übergeben wird
 
-    public QuizController() throws IOException, InterruptedException {
-        //leerer Konstruktor für API-FETCH - Wurde automatisch hinzugefügt -> Herausfinden wieso wichtig
-    }
 
     //Startfunktion für TriviaQuiz
 
@@ -80,8 +77,11 @@ public class QuizController implements QuizBase, ControllerBase {
     public void initialize() throws IOException {
 
         loadNewQuestion(true);
+        //Lädt erste Frage, Aufgrund der Aufmachung wird hier "true" übergeben,
+        // damit die API nicht abschmiert
 
         valuesForLives();
+        //Aus der Difficulty wird die gewünschte Anzahl an Leben übergeben
 
         // Timer initialisiert
         startTimer();
@@ -101,6 +101,7 @@ public class QuizController implements QuizBase, ControllerBase {
     public void startTimer() {
 
         valuesForTime();
+        //Aus der Difficulty wird die gewünschte Timer-Zeit übergeben
 
         if (timer != null) {
             timer.stop(); // Bestehenden Timer stoppen, falls aktiv
@@ -115,7 +116,7 @@ public class QuizController implements QuizBase, ControllerBase {
             //Debugging
             //System.out.println("~DEBUGGING~ *ST* Timer tick: " + timeRemaining);
 
-            timeRemaining--;
+            timeRemaining--; //Zeit wird runtergezählt
             quizTimerLabel.setText(timeRemaining + "s");
 
             if (timeRemaining <= 0) {
@@ -123,7 +124,7 @@ public class QuizController implements QuizBase, ControllerBase {
                 try {
                     //Debugging
                     //System.out.println("~DEBUGGING~ *ST* Timeout! Going to handleTimeOut()");
-                    handleTimeOut(); // Zeit ist abgelaufen
+                    handleTimeOut(); // Methode wird aufgerufen, wenn Zeit abgelaufen ist
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -164,16 +165,11 @@ public class QuizController implements QuizBase, ControllerBase {
             }
         });
         feedbackPause.play();
-
     }
+
     @Override
     public void resetTimer() {
         // Timer stoppen, bevor wir ihn zurücksetzen
-        // Timer wird nur einmal gestartet und nicht mehrfach,
-        //  wodurch du verhindern kannst, dass Timer mehrere Instanzen hat oder unkontrolliert springt.
-        // Durch das Stoppen des Timers vor dem Zurücksetzen stellen wir sicher,
-        // dass der Countdown nach der Pause korrekt fortgesetzt wird und nicht sofort nach
-        // der Pause springt.
         if (timer != null) {
             timer.stop();
         }
@@ -184,8 +180,8 @@ public class QuizController implements QuizBase, ControllerBase {
 
     public void loadNewQuestion(boolean isFirstQuestion) throws IOException {
 
-        if (!isFirstQuestion) {
-            questionCount++; //Zähler für gestellte Fragen
+        if (!isFirstQuestion) { //Solange es nicht die erste Frage/Default Frage ist
+            questionCount++; //Zähler für gestellte Fragen, Zähler fängt bei 1 an
         }
 
         //Debugging
@@ -197,7 +193,7 @@ public class QuizController implements QuizBase, ControllerBase {
                 // Verzögerung nur bei nachfolgenden Fragen
                 PauseTransition pause = new PauseTransition(Duration.seconds(1));
                 pause.setOnFinished(event -> {
-                    prepareForNextQuestion();
+                    prepareForNextQuestion(); //Bereitet die nächste Frage vor
                 });
                 pause.play();
             } else {
@@ -213,40 +209,10 @@ public class QuizController implements QuizBase, ControllerBase {
         }
     }
 
-    private void valuesForTime() {
-        switch (difficultyQC.toLowerCase()) {
-            case "easy":
-                timeRemaining = 15;
-                break;
-
-            case "medium":
-                timeRemaining = 10;
-                break;
-
-            case "hard":
-                timeRemaining = 7;
-                break;
-        }
-    }
-
-    public void valuesForLives() {
-
-        switch (difficultyQC.toLowerCase()) {
-            case "easy":
-                lives = 5;
-                break;
-
-            case "medium":
-                lives = 3;
-                break;
-
-            case "hard":
-                lives = 1;
-                break;
-        }
-    }
-
         private void prepareForNextQuestion() {
+        //Methode, die bei loadNewQuestion() eingeschoben wird, da die aufgrund der Pause sonst immer die erste Frage
+        // übersprungen wurde. - Hier wird essentiell nur die Buttons deaktiviert (anti-spamming),
+        //der counter geupdated und die Farben/Timer zurückgesetzt
 
             // Buttons und Feedback zurücksetzen
             answerBtn1.setDisable(false);
@@ -264,7 +230,7 @@ public class QuizController implements QuizBase, ControllerBase {
             streakLabel.setVisible(false);
 
             try {
-                displayCurrentQuestion();
+                displayCurrentQuestion(); //Methode für die nächste Frage wird aufgerufen
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -272,6 +238,8 @@ public class QuizController implements QuizBase, ControllerBase {
 
     @Override
     public void checkAnswer(String givenAnswer) {
+        //Hier wird überprüft, ob die Frage richtig/Falsch ist und dann jeweils die Methode
+        //MarkQuestionasRight/Wrong aufgerufen
 
      if (recentQuestion.getCorrectAnswer().equals(givenAnswer)) {
             markQuestionAsRight();
@@ -289,7 +257,6 @@ public class QuizController implements QuizBase, ControllerBase {
 
     }
 
-
     // anzeigen ob richtig oder falsch
     @Override
     public void showFeedback(String feedback, boolean isCorrect) {
@@ -298,37 +265,37 @@ public class QuizController implements QuizBase, ControllerBase {
         feedbackLabel.setVisible(true);  // Feedback anzeigen
     }
 
-
     // damit die frage welche dran ist mit den dazugehörigen antworten angezeigt wird
+
     @Override
-    public void displayCurrentQuestion() throws IOException, InterruptedException { //TODO
+    public void displayCurrentQuestion() throws IOException, InterruptedException {
 
         //DEBUGGING
-        //System.out.println("~DEBUGGING~ *DCQ* -> questionCount=" + questionCount
-        //+ ", timeRemaining=" + timeRemaining);
+        //System.out.println("~DEBUGGING~ *DCQ* -> questionCount=" + questionCount + ", timeRemaining=" + timeRemaining);
 
-        if (lives != 0) {
+        if (lives != 0) { //Solange Leben nicht 0 ist
 
-            recentQuestion = TriviaApiService.fetchSingleQuestion(difficultyQC); // Fetch a new question based on the selected difficulty
+            recentQuestion = TriviaApiService.fetchSingleQuestion(difficultyQC); // Holt eine neue Frage aus der API
 
-            //System.out.println("~DEBUGGING~ *DCQ* Question " + questionCount + " of " + MAX_QUESTIONS); // Update the progress label
-            //System.out.println("~DEBUGGING~ *DCQ* Loaded Question: " + recentQuestion.getQuestionText()); // Debugging
+            //Update the progress label
+            //System.out.println("~DEBUGGING~ *DCQ* Question " + questionCount + " of " + MAX_QUESTIONS);
+            //System.out.println("~DEBUGGING~ *DCQ* Loaded Question: " + recentQuestion.getQuestionText());
 
-                    questionLabel.setText(recentQuestion.getAPIQuestionData().getText()); //Setter in TriviaQuestion
+                    questionLabel.setText(recentQuestion.getAPIQuestionData().getText()); //Setter aus TriviaQuestion
 
-                         // Combine and shuffle answers
+                         // Kombiniert und Shuffled alle Antworten
                          List<String> allAnswers = new ArrayList<>();
                          allAnswers.add(recentQuestion.getCorrectAnswer());
                          allAnswers.addAll(recentQuestion.getIncorrectAnswers());
                          Collections.shuffle(allAnswers);
 
-                         // Assign answers to buttons
+                         // Gibt die Antworten auf die Buttons
                          answerBtn1.setText(allAnswers.get(0));
                          answerBtn2.setText(allAnswers.get(1));
                          answerBtn3.setText(allAnswers.get(2));
                          answerBtn4.setText(allAnswers.get(3));
 
-                         // Store correct answer in button UserData
+                         // Mapped die richtigen Antworten zu den richtigen Buttons
                          answerBtn1.setUserData(allAnswers.get(0).equals(recentQuestion.getCorrectAnswer()));
                          answerBtn2.setUserData(allAnswers.get(1).equals(recentQuestion.getCorrectAnswer()));
                          answerBtn3.setUserData(allAnswers.get(2).equals(recentQuestion.getCorrectAnswer()));
@@ -341,10 +308,9 @@ public class QuizController implements QuizBase, ControllerBase {
         }
     }
 
-
     @FXML
     @Override
-    public void handleAnswerButtonClick(ActionEvent actionEvent) throws IOException, InterruptedException {
+    public void handleAnswerButtonClick(ActionEvent actionEvent) {
         //TODO
         //System.out.println("~DEBUGGING~ *oAC* Timer gestoppt bei Antwortauswahl");
         // Stoppe den Timer
@@ -370,7 +336,7 @@ public class QuizController implements QuizBase, ControllerBase {
         PauseTransition feedbackPause = new PauseTransition(Duration.seconds(1)); //Zeigt antwort für 1 Sekunde
         feedbackPause.setOnFinished(event -> {
             try {
-                loadNewQuestion(false);
+                loadNewQuestion(false); //Ruft Methode loadNewQuestion auf -> diese ruft prepare und dann displaynewQuestion auf
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -378,27 +344,60 @@ public class QuizController implements QuizBase, ControllerBase {
         feedbackPause.play();
     }
 
+
     // ~~~~~~~~~~~~~ WEITERE METHODEN ~~~~~~~~~~~~~
+    public void valuesForTime() { //Hier wird die Zeit für versch. Schwierigkeitsgrade festgelegt
+        switch (difficultyQC.toLowerCase()) {
+            case "easy":
+                timeRemaining = 15;
+                break;
+
+            case "medium":
+                timeRemaining = 10;
+                break;
+
+            case "hard":
+                timeRemaining = 7;
+                break;
+        }
+    }
+
+    public void valuesForLives() { //Hier wird die Lebensanzahl für versch. Schwierigkeitsgrade festgelegt
+
+        switch (difficultyQC.toLowerCase()) {
+            case "easy":
+                lives = 5;
+                break;
+
+            case "medium":
+                lives = 3;
+                break;
+
+            case "hard":
+                lives = 1;
+                break;
+        }
+    }
 
     public void onExit(ActionEvent event) {
         QuizBase.super.onExit(event, timer); // Ruft die default-Methode aus dem Interface auf
     }
 
-    private void markQuestionAsWrong() {
+    private void markQuestionAsWrong() { //Markiert eine Frage als Falsch und zieht Leben ab
         lives--;
         //Debugging
         //System.out.println("~DEBUGGING~ *mQaW* Leben: " + lives);
         QuizBase.super.markQuestionAsWrong(getLives(), quizLivesLabel);
     }
 
-    private void markQuestionAsRight() {
+    private void markQuestionAsRight() { //Markiert eine Frage als Richtig und gibt Punkte/Leben sowie rechnet Streak
         points += 100;
         rightOnes++;
         streakCounter++;
 
         final int streakGoal = 3;
 
-        switch (streakCounter) {
+        switch (streakCounter) { //Streak wird hochgezählt + angezeigt
             case 1:
                 streakLabel.setText("Streak: 1/"+ streakGoal);
                 streakLabel.setVisible(true);
@@ -413,7 +412,7 @@ public class QuizController implements QuizBase, ControllerBase {
                 break;
             }
 
-        if (streakCounter == streakGoal) {
+        if (streakCounter == streakGoal) { //Wenn Streak 3/3 erreicht, dann wird 1 leben dazugerechnet
             lives++;
             quizLivesLabel.setText(Integer.toString(lives));
             streakLabel.setVisible(true);
@@ -423,7 +422,7 @@ public class QuizController implements QuizBase, ControllerBase {
         //Debugging
         //System.out.println("~DEBUGGING~ *mQaR* StreakCounter: " + streakCounter);
         //System.out.println("~DEBUGGING~ *mQaR* StreakGoal: " + streakGoal);
-        //System.out.println("~DEBUGGING~ *mQaR* punkte: " + points);
+        //System.out.println("~DEBUGGING~ *mQaR* Points: " + points);
         //System.out.println("~DEBUGGING~ *mQaR* rightOnes: " + rightOnes);
 
         QuizBase.super.markQuestionAsRight(getPoints(), getRightOnes(), quizPointsLabel);
@@ -443,12 +442,12 @@ public class QuizController implements QuizBase, ControllerBase {
         return difficultyQC;
     }
 
-    public void setDifficulty(String selectedDifficultyQC) { //Brauchen wir
-        this.difficultyQC = selectedDifficultyQC; // Set the difficulty based on user selection
+    public void setDifficulty(String selectedDifficultyQC) { //Nimmt die User-gewählte Difficulty
+        this.difficultyQC = selectedDifficultyQC;
         valuesForLives(); // Leben direkt aktualisieren, wenn Schwierigkeit gesetzt wird
-        valuesForTime();
+        valuesForTime(); // Zeit direkt aktualisieren, wenn Schwierigkeit gesetzt wird
         quizLivesLabel.setText(Integer.toString(lives));
-        quizTimerLabel.setText(Integer.toString(timeRemaining) + "s");
+        quizTimerLabel.setText((timeRemaining) + "s");
 
         //System.out.println("~DEBUGGING~ Leben nach setDifficulty: " + leben);
     }
