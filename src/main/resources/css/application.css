@@ -16,11 +16,13 @@ red         #e85c6c
 yellow      #e2aa4e
 */
 
+/* Schriftart festlegen und aufrufbar machen über "Galindo" */
 @font-face {
     font-family: "Galindo";
     src: url("/fonts/Galindo-Regular.ttf"); /* Relativer Pfad zur Schriftartdatei */
 }
 
+/* general class that applies to the whole fxml file as soon as it has CSS integrated */
 .root {
     -fx-background-image: url("/images/menue_background.jpg");
     -fx-background-repeat: no-repeat;
@@ -29,6 +31,7 @@ yellow      #e2aa4e
     -fx-alignment: center;
 }
 
+/* variante zu der class darüber, mit dem anderen Hintergrund - da wir zwei haben */
 .rootQuiz {
     -fx-background-image: url("/images/quiz_background.jpg");
     -fx-background-repeat: no-repeat;
@@ -47,11 +50,11 @@ yellow      #e2aa4e
     -fx-border-radius: 120;
     -fx-border-color: white;
     -fx-text-fill: white;
-    -fx-padding: 0 150 0 150;
+    -fx-padding: 0 150 0 150; /* oben rechts unten links */
 }
 
 .label-winorlose {
-    -fx-text-fill: white; /* Beispiel */
+    -fx-text-fill: white;
     -fx-font-size: 24px;
 }
 
@@ -94,21 +97,6 @@ yellow      #e2aa4e
     -fx-font-size: 16px;
 }
 
-.mrSqueakOpinion {
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-}
-
-.LernModeAnswerTextField {
-    -fx-border-color: #8f89c0; /* RAND */
-    -fx-background-color: white;
-    -fx-opacity: 0.9;
-    -fx-background-radius: 30;
-    -fx-border-width: 4;
-    -fx-border-radius: 30;
-    -fx-font-size: 16px;
-}
-
 .evaluationLabel {
     -fx-font-size: 25px;
     -fx-text-fill: white;
@@ -123,7 +111,9 @@ yellow      #e2aa4e
     -fx-text-fill: #e2aa4e;
 }
 
+
 /* Styling für Buttons */
+
 .button {
     -fx-padding: 10 20;
     -fx-font-size: 18px;
@@ -137,22 +127,6 @@ yellow      #e2aa4e
 
 .button:hover {
     -fx-background-color: #332e37;
-}
-
-.nameInputButton {
-    -fx-padding: 5 10;
-    -fx-font-size: 12px;
-    -fx-background-color: #8f89c0;
-    -fx-text-fill: white;
-    -fx-background-radius: 30;
-    -fx-border-width: 4;
-    -fx-border-radius: 30;
-    -fx-border-color: #8f89c0;
-}
-
-.nameInputButton:hover {
-    -fx-background-color: #332e37;
-    -fx-text-fill: white;
 }
 
 .buttonExit {
@@ -171,35 +145,6 @@ yellow      #e2aa4e
     -fx-text-fill: white;
 }
 
-.radioButton {
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-}
-
-.radioButton .radio {
-    -fx-border-width: 2px;
-    -fx-border-color: #332e37;
-    -fx-background-color: white;
-    -fx-border-radius: 15px;
-    -fx-padding: 3px;
-}
-.radioButton .radio:selected {
-    -fx-background-color: white;
-}
-.radioButton -radio:armed {
-    -fx-background-color: white;
-}
-.radioButton -radio:determinate {
-    -fx-background-color: white;
-}
-.radioButton -radio:indeterminate {
-    -fx-background-color: white;
-}
-.radioButton .dot {
-    -fx-background-radius: 15px;
-    -fx-padding: 8px;
-}
-
 .buttonAnswer {
     -fx-padding: 10 20;
     -fx-font-size: 16px;
@@ -215,15 +160,43 @@ yellow      #e2aa4e
     -fx-border-color: #efd07a;
 }
 
-/* Styling für Main Menu*/
+/* Main Menu Buttons */
 
-.mainMenuHBoxActionButtons {
-    -fx-translate-x: -150;
+.nameInputButton {
+    -fx-padding: 5 10;
+    -fx-font-size: 12px;
+    -fx-background-color: #8f89c0;
+    -fx-text-fill: white;
+    -fx-background-radius: 30;
+    -fx-border-width: 4;
+    -fx-border-radius: 30;
+    -fx-border-color: #8f89c0;
 }
 
-.hbox-radio {
-    -fx-alignment: CENTER_LEFT;
-    -fx-spacing: 10;
+.nameInputButton:hover {
+    -fx-background-color: #332e37;
+    -fx-text-fill: white;
+}
+
+/* text vom radio button */
+.radioButton {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+
+/* macht den border schwarz */
+.radioButton .radio {
+    -fx-border-width: 2px;
+    -fx-border-radius: 15px;
+    -fx-border-color: #332e37;
+    -fx-background-color: white;
+    -fx-padding: 3px;
+}
+
+/* macht den dot größer */
+.radioButton .dot {
+    -fx-background-radius: 15px;
+    -fx-padding: 8px;
 }
 
 .subnavHigh {
@@ -266,8 +239,17 @@ yellow      #e2aa4e
     -fx-border-color: #c6c6c6;
 }
 
-/* Styling für Nameneingabe */
+/* Styling für Main Menu*/
+.mainMenuHBoxActionButtons {
+    -fx-translate-x: -150;
+}
 
+.hbox-radio {
+    -fx-alignment: CENTER_LEFT;
+    -fx-spacing: 10;
+}
+
+/* Styling für Nameneingabe */
 .required-field {
     -fx-border-color: #8f89c0; /* RAND */
     -fx-background-color: white;
@@ -278,13 +260,23 @@ yellow      #e2aa4e
 }
 
 .error-message {
-    -fx-text-fill: #e85c6c; /* Rote Farbe für die Fehlermeldung */
+    -fx-text-fill: #e85c6c;
+}
+
+/* Lernmode Styling */
+.LernModeAnswerTextField {
+    -fx-border-color: #8f89c0;
+    -fx-background-color: white;
+    -fx-opacity: 0.9;
+    -fx-background-radius: 30;
+    -fx-border-width: 4;
+    -fx-border-radius: 30;
+    -fx-font-size: 16px;
 }
 
 
 /* Styling für Quiz */
-
-.parameterBox {
+.parameterBox { /* die schwarze box hinter leben, sterne, usw. */
     -fx-background-color: rgba(0,0,0,0.5);
     -fx-background-radius: 30;
     -fx-border-radius: 30;
@@ -327,25 +319,24 @@ yellow      #e2aa4e
     -fx-background-color: rgba(0,0,0,0.1);
 }
 
-
+/* Standardwert */
 .table-row-cell {
     -fx-background-color: transparent;
-    -fx-text-fill: white; /* Standard-Textfarbe */
+    -fx-text-fill: white;
 }
 
-/* Stil für Zeile, wenn sie gehovert wird */
 .table-row-cell:hover {
     -fx-background-color: rgba(0,0,0,0.1);
 }
 
-/* Stil für ausgewählte Zeile */
+/* ausgewählte Zeile */
 .table-row-cell:selected {
-    -fx-background-color: #b16b96; /* Hintergrundfarbe für ausgewählte Zeile */
-    -fx-text-fill: white; /* Textfarbe für ausgewählte Zeile */
+    -fx-background-color: #b16b96;
+    -fx-text-fill: white;
 }
 
-/* Optional: Stil für Zeilen mit Fokus */
+/* Zeilen mit Fokus */
 .table-row-cell:focused {
-    -fx-border-color: #e2aa4e; /* Rahmenfarbe bei Fokus */
-    -fx-border-width: 2; /* Breite des Rahmens */
+    -fx-border-color: #e2aa4e;
+    -fx-border-width: 2;
 }

@@ -16,6 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
 
 import java.io.*;
 
@@ -182,43 +183,33 @@ public class MainMenuController {
 
     // Methode zur Anzeige des CSV Dialogs
     @FXML
-    private void showCsvUploadDialog() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION); // Erstellt neues Alert Objekt für das PopUp
-        alert.setTitle("Learning Mode"); // Setzt den Titel des Fensters auf "Learning Mode"
-        alert.setHeaderText(null); // Gibt an das es keinen Header Text gibt
-        // Setzt des Inhalt des Fensters
-        alert.setContentText("Welcome to the Learning Mode !\n\nPlease download a template if you dont have one yet " +
-                "and enter your questions in the column <Questions> and your answers in the column <Answers>.\n\nFinally " +
-                "upload the filled out template. The Learning Mode will start automatically after the upload.\n\nHappy learning :)");
-
+    private void showLearnModeDialog() {
         try {
-            // Ändert das Icon des Fensters welches links vom Text angezeigt wird
-            // Standardmäßig war es ein Rufzeichen
-            // Passt Höhe und Breite des neuen Icons an
-            // Gibt Fehlermeldung in Konsole aus falls File nicht gefunden werden kann
-            ImageView customIcon = new ImageView(new Image(getClass().getResourceAsStream("/images/KLKM_Logo.png")));
-            customIcon.setFitWidth(50);
-            customIcon.setFitHeight(50);
-            alert.setGraphic(customIcon);
-        } catch (Exception e) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/learnmode_dialog_layout.fxml"));
+            Parent dialogRoot = loader.load();
+
+            LearnmodeDialogController controller = loader.getController();
+            controller.setListener(new LearnmodeDialogController.LearnmodeDialogListener() {
+                @Override
+                public void onUploadSelected() {
+                    uploadCsvFile();
+                }
+
+                @Override
+                public void onDownloadTemplateSelected() {
+                    downloadCsvTemplate();
+                }
+            });
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Learning Mode");
+            dialogStage.setScene(new Scene(dialogRoot));
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.showAndWait();
+        } catch (IOException e) {
             e.printStackTrace();
+            showPopup("The dialog could not be loaded", true);
         }
-
-        ButtonType uploadButton = new ButtonType("Upload"); // Button für das hochladen
-        ButtonType downloadTemplateButton = new ButtonType("Download Template"); // Button für das runterladen
-        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE); // Button zum schließen
-
-        // Entfernt standard Buttons aus dem Alert Fenster und tauscht sie mit upload, download und cancel
-        alert.getButtonTypes().setAll(uploadButton, downloadTemplateButton, cancelButton);
-
-        // Pürft Useraktion ab und ruft dann die passende methode dazu auf
-        alert.showAndWait().ifPresent(response -> {
-            if (response == uploadButton) {
-                uploadCsvFile();
-            } else if (response == downloadTemplateButton) {
-                downloadCsvTemplate();
-            }
-        });
     }
 
     // Methode für den Fileupload
@@ -244,7 +235,7 @@ public class MainMenuController {
             startLearnMode();
         } else {
             // Fehlermeldung im Falle einer Ausnahme
-            showAlert("Error", "No file chosen. Please upload a file first.");
+            showPopup("No file chosen. Please upload a file first.", true);
         }
     }
 
@@ -274,7 +265,7 @@ public class MainMenuController {
 
                 // Fehlermeldung falls der Dateipfad in der Projektstruktur nicht gefunden werden kann
                 if (inputStream == null) {
-                    showAlert("Error", "Template could not be found.");
+                    showPopup("Template could not be found.", false);
                     return;
                 }
 
@@ -287,15 +278,15 @@ public class MainMenuController {
                     outputStream.write(buffer, 0, bytesRead);
                 }
                 // Erfolgsmeldung
-                showAlert("Success", "The template was successfully downloaded: " + targetFile.getAbsolutePath());
+                showPopup("The template was successfully downloaded: " + targetFile.getAbsolutePath(), true);
             } catch (IOException e) {
                 // Fehlermeldung im Falle einer Ausnahme inkl. Fehlermeldung in der Konsole
                 e.printStackTrace();
-                showAlert("Error", "The template could not be downloaded.");
+                showPopup("The template could not be downloaded.", false);
             }
         }
         // Nach Abschluss des Downloads wird der Dialog erneut automatisch angezeigt für Benutzerfreundlichkeit
-        showCsvUploadDialog();
+        showLearnModeDialog();
     }
 
     private void startLearnMode() {
@@ -315,7 +306,7 @@ public class MainMenuController {
 
                 // Prüft ab ob das hochgeladene File leer ist und verhindert das starten des Lernmodus
                 if (learnModeController.getQuestions().isEmpty()) {
-                    showAlert("Error", "The CSV-File has no valid data.");
+                    showPopup("The CSV-File has no valid data.", true);
                     return;
                 }
 
@@ -328,11 +319,11 @@ public class MainMenuController {
             } catch (IOException e) {
                 // Errorhandling im Ausnahmefall inkl. Fehlerausgabe in der Konsole
                 e.printStackTrace();
-                showAlert("Error", "A problem occurred while loading the Learn mode.");
+                showPopup("A problem occurred while loading the Learn mode.", true);
             }
         } else {
             // Errorhandling im Ausnahmefall
-            showAlert("Error", "No CSV-File available. Please upload a file first.");
+            showPopup("No CSV-File available. Please upload a file first.", true);
         }
     }
 
@@ -426,12 +417,37 @@ public class MainMenuController {
     }
 
     // Methode zum anzeigen verschiedener PopUp´s
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
+    public void showPopup(String message, boolean showExitButton) {
+        try {
+            // FXML Objekt wird erstellt um das PopUp Layout zu laden
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/popups.fxml"));
+            // Ladet FXML-Layout in ein Parent-Objekt die als Wurzel für eine Szene dient
+            Parent popupRoot = loader.load();
+
+            // Ruft PopUp Controller auf
+            PopupController popupController = loader.getController();
+            // Übergibt Nachricht an den Controller
+            popupController.setPopupMessage(message);
+
+            popupController.exitButton.setVisible(false);
+
+            // Erstellt neue Stage für separates Fenster
+            Stage popupStage = new Stage();
+            // Erstellt neue Szene mit dem geladenen Layout als Wurzel
+            popupStage.setScene(new Scene(popupRoot));
+            // Setzt Titel
+            popupStage.setTitle("Message");
+            // Blockiert andere Fenster, solange das Popup aktiv ist
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            // Übergibt der PopUpController-Instanz die Stage Referenz
+            // ermöglicht schließung der Stage indem User zb auf "Close" klickt
+            popupController.setPopupStage(popupStage);
+            // Wartet, bis der Benutzer das Popup schließt
+            popupStage.showAndWait();
+        } catch (IOException e) {
+            // Gibt vollständige Fehlermeldung in der Konsole aus
+            e.printStackTrace();
+        }
     }
 
     @FXML

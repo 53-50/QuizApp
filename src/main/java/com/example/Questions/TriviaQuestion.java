@@ -5,26 +5,26 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class TriviaQuestion implements QuestionBase {
-    private String correctAnswer; //Aus Interface
-    private List<String> incorrectAnswers; //Aus Interface
-    private String QuestionText; //Aus Interface
+    private String correctAnswer; //Speichert korrekte Antwort, Aus Interface
+    private List<String> incorrectAnswers; //Speichert inkorrekte Antwort, Aus Interface
+    private String QuestionText; //Speichert Text der Frage, Aus Interface
 
 
-    // Der Feldname muss 'question' sein, um mit dem JSON übereinzustimmen
-    @SerializedName("question") //Damit aus dem gson zum Json gelesen werden kann -> Fragen
-    private APIQuestionData APIQuestionData;
+    //@SerializedName: Gibt an, dass das JSON-Feld question mit dem Java-Feld APIQuestionData verknüpft werden soll.
+    @SerializedName("question") //Damit können aus JSON die Fragen gelesen werden
+    private APIQuestionData APIQuestionData; //Enthält die Daten des verschachtelten JSON-Objekts
 
     // Innere Klasse für das verschachtelte JSON-Objekt "question"
     public static class APIQuestionData {
-        private String text;
-        public String getText() { return text; }
+        private String text; //Speichert den eigentlichen Text der Frage
+        public String getText() { return text; } //Liefert Text zurück
         public void setText(String text) { this.text = text; }
     }
 
 
     // Getter/Setter
 
-    public APIQuestionData getAPIQuestionData() {
+    public APIQuestionData getAPIQuestionData() {//Liefert die APIQuestionData zurück.
         return APIQuestionData;
     }
 
@@ -37,6 +37,7 @@ public class TriviaQuestion implements QuestionBase {
     public String getCorrectAnswer() {
         return correctAnswer;
     }
+    //Liefert die richtige Antwort zurück. Diese Methode wird durch das QuestionBase-Interface gefordert.
 
     public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
@@ -47,6 +48,7 @@ public class TriviaQuestion implements QuestionBase {
     public List<String> getIncorrectAnswers() {
         return incorrectAnswers;
     }
+    //Liefert die Liste der falschen Antworten zurück (vom Interface gefordert).
 
     public void setIncorrectAnswers(List<String> incorrectAnswers) {
         this.incorrectAnswers = incorrectAnswers;
@@ -57,6 +59,7 @@ public class TriviaQuestion implements QuestionBase {
     public String getQuestionText() {
         return QuestionText;
     }
+    //Liefert den Text der Frage zurück (vom Interface gefordert).
 
     public void setQuestionText(String questionText) {
         QuestionText = questionText;

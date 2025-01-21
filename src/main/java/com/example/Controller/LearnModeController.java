@@ -14,6 +14,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
@@ -63,6 +64,12 @@ public class LearnModeController implements QuizBase {
         btnNext.setDisable(true);
         btnNext.setVisible(false);
         btnEvaluation.setVisible(false);
+        // Listener für das Antwortfeld - überprüft ob sich Text ändert
+        // wenn leer dann wird btnSubmit disabled
+        txtAnswer.textProperty().addListener((observable, oldValue, newValue) -> {
+            btnSubmit.setDisable(newValue.trim().isEmpty());
+        });
+        btnSubmit.setDisable(true);
     }
 
     // Methode zum starten des Timers
@@ -157,7 +164,7 @@ public class LearnModeController implements QuizBase {
             startTimer(); // Startet Timer neu
             displayQuestion(); // Zeigt die erste Frage an
         } catch (IOException e) {
-            showAlert("Error", "The CSV-File could not be read.");
+            showPopup("The CSV-File could not be read.", true);
         }
     }
 
@@ -204,6 +211,7 @@ public class LearnModeController implements QuizBase {
             // Aktiviert wieder den Button "Next Question"
             btnNext.setVisible(true);
             btnNext.setDisable(false);
+            txtAnswer.setDisable(true);
         }
     }
 
@@ -227,6 +235,7 @@ public class LearnModeController implements QuizBase {
             btnNext.setVisible(false);
             btnEvaluation.setVisible(true);
         }
+        txtAnswer.setDisable(false);
     }
 
     // Methode zum Anzeigen der Auswertungsliste
@@ -241,6 +250,10 @@ public class LearnModeController implements QuizBase {
             EvaluationController evaluationController = loader.getController();
             // Übergibt die Liste der Antworten an den EvaluationController für die Auswertung
             evaluationController.setAnswers(answers);
+
+            // Berechnete Zeit übergeben
+            String formattedTime = String.format("%02d:%02d:%02d", elapsedSeconds / 3600, (elapsedSeconds % 3600) / 60, elapsedSeconds % 60);
+            evaluationController.setCompletionTime(formattedTime);
 
             Stage stage = new Stage(); // Erstellt ein neues Stage Objekt für das Auswertungs Fenster
             stage.setTitle("Evaluation"); // Setzt den Titel
@@ -258,12 +271,37 @@ public class LearnModeController implements QuizBase {
     }
 
     // Methode zur Anzeige einiger PopUp´s
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
+    public void showPopup(String message, boolean showExitButton) {
+        try {
+            // FXML Objekt wird erstellt um das PopUp Layout zu laden
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/popups.fxml"));
+            // Ladet FXML-Layout in ein Parent-Objekt die als Wurzel für eine Szene dient
+            Parent popupRoot = loader.load();
+
+            // Ruft PopUp Controller auf
+            PopupController popupController = loader.getController();
+            // Übergibt Nachricht an den Controller
+            popupController.setPopupMessage(message);
+
+            popupController.exitButton.setVisible(false);
+
+            // Erstellt neue Stage für separates Fenster
+            Stage popupStage = new Stage();
+            // Erstellt neue Szene mit dem geladenen Layout als Wurzel
+            popupStage.setScene(new Scene(popupRoot));
+            // Setzt Titel
+            popupStage.setTitle("Message");
+            // Blockiert andere Fenster, solange das Popup aktiv ist
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            // Übergibt der PopUpController-Instanz die Stage Referenz
+            // ermöglicht schließung der Stage indem User zb auf "Close" klickt
+            popupController.setPopupStage(popupStage);
+            // Wartet, bis der Benutzer das Popup schließt
+            popupStage.showAndWait();
+        } catch (IOException e) {
+            // Gibt vollständige Fehlermeldung in der Konsole aus
+            e.printStackTrace();
+        }
     }
 
     // Methode zum holen der Fragen für die startLearnMode Methode

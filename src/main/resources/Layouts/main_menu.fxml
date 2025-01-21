@@ -41,7 +41,7 @@
             <HBox styleClass="mainMenuHBoxActionButtons" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="800.0" spacing="20">
 
                 <VBox alignment="CENTER" spacing="40">
-                    <Button fx:id="learnModeButton" mnemonicParsing="false" onAction="#showCsvUploadDialog"
+                    <Button fx:id="learnModeButton" mnemonicParsing="false" onAction="#showLearnModeDialog"
                             prefHeight="50" prefWidth="250" text="Learning Mode"/>
                     <Button fx:id="playTutorial" onAction="#onTutorialModeClick" styleClass="button"
                             text="Start Storymode" prefHeight="50" prefWidth="250"/>
@@ -87,7 +87,7 @@
                             prefWidth="100.0" onAction="#onHighscoreClick"/>
                     <Button fx:id="mrSqueakButton" styleClass="subnavMice" mnemonicParsing="false" prefHeight="45.0"
                             prefWidth="100.0" onAction="#onMiceModeClick"/>
-                    <Label styleClass="mrSqueakOpinion" fx:id="mrSqueakLabel" text="Mr. Squeak doesn't want to talk to you right now."
+                    <Label styleClass="whiteFont" fx:id="mrSqueakLabel" text="Mr. Squeak doesn't want to talk to you right now."
                            visible="false" wrapText="true" maxWidth="300"/>
                 </HBox>
             </VBox>
