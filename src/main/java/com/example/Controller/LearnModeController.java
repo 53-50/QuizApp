@@ -2,15 +2,13 @@ package com.example.Controller;
 
 import com.example.Interface.QuizBase;
 import com.example.Questions.AnswerEvaluation;
-import com.example.Questions.LernmodusQuestion;
+import com.example.Questions.LearnmodeQuestion;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -40,7 +38,7 @@ public class LearnModeController implements QuizBase {
     @FXML
     private Label timerLabel; // Label für die Anzeige des Timers
 
-    private List<LernmodusQuestion> questions; // Liste der Fragen die aus der CSV-Datei geladen wurden
+    private List<LearnmodeQuestion> questions; // Liste der Fragen die aus der CSV-Datei geladen wurden
     private List<AnswerEvaluation> answers; // Liste mit Bewertungen der Antworten des Benutzers
     private int currentQuestionIndex; // Index der aktuell angezeigten Frage
 
@@ -77,7 +75,8 @@ public class LearnModeController implements QuizBase {
     public void startTimer() {
         elapsedSeconds = 0; // Setzt den Timer-Zähler auf 0
         // Erstellt eine Timeline, die ein Ereignis (hier ein KeyFrame) in regelmäßigen Abständen ausführt
-        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> { // Führt jede Sekunde die Lambda-Funktion aus
+        // Führt jede Sekunde die Lambda-Funktion aus
+        timer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             elapsedSeconds++; // Erhöht den Zähler für vergangene Sekunden
             updateTimerLabel(); // Aktualisiert den Timer-Label
         }));
@@ -88,7 +87,7 @@ public class LearnModeController implements QuizBase {
     @Override
     public void resetTimer() {
         if (timer != null) { // Überprüft ob ein Timer existiert
-            timer.stop(); // Stoppt den Timer falls er läuft
+            stopTimer(); // Stoppt den Timer falls er läuft
         }
         elapsedSeconds = 0; // Setzt den Zähler auf 0
         updateTimerLabel(); // Aktualisiert das Timer-Label auf "00:00:00"
@@ -135,7 +134,8 @@ public class LearnModeController implements QuizBase {
         int hours = elapsedSeconds / 3600; // Berechnet die Stunden aus den vergangenen Sekunden
         int minutes = (elapsedSeconds % 3600) / 60; // Berechnet die Minuten aus den verbleibenden Sekunden
         int seconds = elapsedSeconds % 60; // Berechnet die verbleibenden Sekunden
-        String formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds); // Formatiert die Zeit als HH:MM:SS
+        // Formatiert die Zeit als HH:MM:SS
+        String formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds);
         timerLabel.setText(formattedTime); // Aktualisiert das Timer-Label mit der formatierten Zeit
     }
 
@@ -157,7 +157,7 @@ public class LearnModeController implements QuizBase {
                 String delimiter = line.contains(";") ? ";" : ","; // Prüft (Ternary Operator) ob Trennzeichen ein ";" falls nein dann ","
                 String[] parts = line.split(delimiter); // Teilt die Zeile anhand des Trennzeichens in Spalten auf
                 if (parts.length == 2) {
-                    questions.add(new LernmodusQuestion(parts[0], parts[1])); // Fügt nur gültige Zeilen mit genau zwei Spalten hinzu
+                    questions.add(new LearnmodeQuestion(parts[0], parts[1])); // Fügt nur gültige Zeilen mit genau zwei Spalten hinzu
                 }
             }
             resetTimer(); // Setzt Timer zurück
@@ -305,7 +305,7 @@ public class LearnModeController implements QuizBase {
     }
 
     // Methode zum holen der Fragen für die startLearnMode Methode
-    public List<LernmodusQuestion> getQuestions() {
+    public List<LearnmodeQuestion> getQuestions() {
         return questions;
     }
 

@@ -10,6 +10,7 @@ public class PopupController {
 
     // Exit Button damit man beim schließen nachfragt bist du sicher und abbrechen kann
     // muss public sein weil er woanders aufgegriffen wird
+    @FXML
     public Button exitButton;
 
     @FXML
@@ -23,7 +24,7 @@ public class PopupController {
     // wird erst true wenn "OK" geklickt wurde und somit handleClosePopup() ausgelöst wird
     // erst dort wird userSure auf true gesetzt - davor kann nie Scene gewechselt werden
     // weil in QuizBase der Scneneswitch von userSure abhängt (getUserSure)
-    private boolean userSure = false;
+    private static boolean userSure = false;
 
     // die wird dann gesetet wo es aufgerufen wird da man dann die spezifschie
     // bei handlenotcloseup braucht damit dieses popup abgebrochen wird
@@ -51,7 +52,7 @@ public class PopupController {
 
     // Gibt zurück, ob der Benutzer die Aktion bestätigt hat
     // wird gebraucht im QuizBase
-    public boolean getUserSure() {
+    public static boolean getUserSure() {
         return userSure;
     }
 
