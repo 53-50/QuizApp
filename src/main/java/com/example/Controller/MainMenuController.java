@@ -185,10 +185,14 @@ public class MainMenuController {
     @FXML
     private void showLearnModeDialog() {
         try {
+            // Ladet das benötigte Layout in den FXMLLoader
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/Layouts/learnmode_dialog_layout.fxml"));
+            // Speichert den Wurzelknoten
             Parent dialogRoot = loader.load();
 
+            // Ruft den verknüpften controller auf
             LearnmodeDialogController controller = loader.getController();
+            // Setzt den listener um mit den übergebenen Informationen richtig um zu gehen
             controller.setListener(new LearnmodeDialogController.LearnmodeDialogListener() {
                 @Override
                 public void onUploadSelected() {
@@ -201,9 +205,13 @@ public class MainMenuController {
                 }
             });
 
+            // Erstellt Stage
             Stage dialogStage = new Stage();
+            // Setzt titel
             dialogStage.setTitle("Learning Mode");
+            // Übergibt der neu erstellten szene den Wurzelknoten
             dialogStage.setScene(new Scene(dialogRoot));
+            // Blockt andere Fenster bis Benutzer eine Aktion macht
             dialogStage.initModality(Modality.APPLICATION_MODAL);
             dialogStage.showAndWait();
         } catch (IOException e) {
