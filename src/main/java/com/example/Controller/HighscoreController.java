@@ -11,18 +11,18 @@ import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+//Öffentliche Klasse Highscore für Verwaltung der Einträge + JavaFX-Controller-Logik
 public class HighscoreController {
 
-    /* -------------------- EIGENE DATENKLASSE -------------------- */
+    /* ------------------------------------------- EIGENE DATENKLASSE ------------------------------------------- */
 
+    //innere statische Datenklasse, die jeweils einen Eintrag repräsentiert (Name,Score,Difficulty)
     public static class HighscoreEntry {
         private final String playerName;
         private final int score;
@@ -35,8 +35,9 @@ public class HighscoreController {
             this.difficulty = difficulty;
         }
 
-        //----GETTER----//
+    /* -------------------------------------------------- GETTER ------------------------------------------------- */
 
+        //Getter-Methoden, die Wert zurück geben
         public String getPlayerName() {
             return playerName;
         }
@@ -50,44 +51,49 @@ public class HighscoreController {
         }
     }
 
-    /* -------------------- VERWALTUNG EINTRÄGE -------------------- */
+    /* -------------------------------------------- VERWALTUNG EINTRÄGE ------------------------------------------- */
 
-    // Liste aller Einträge
+    // Liste aller Einträge, die in den Highscor aufgenommen wurden (Array Liste, die initial leer ist)
     private static List<HighscoreEntry> highscoreList = new ArrayList<>();
 
-    // Ort zum Speichern und Laden der Datei (CSV)
+    // Ort zum Speichern und Laden der Datei > in Ordner Data/Highscore
     private static final Path HIGHSCORE_FILE = Paths.get("data", "highscore_data.csv");
 
-    // Rang des zuletzt hinzugefügten Scores
+    // Rang des zuletzt hinzugefügten Scores (-1 bedeutet noch keiner hinzugefügt)
     private static int lastAddedRank = -1;
 
+    //Name des zuletzt hinzugefügten Spielers
     private static String lastAddedPlayerName = null;
 
-    // Daten beim allerersten Zugriff laden
+    // Daten beim allerersten Zugriff laden, bevor die Klasse das erste Mal benutzt wird
     static {
         loadFromFile();
     }
 
-    //Methode, um in WinLose Highscore-Einträge hinzuzufügen
+    //Methode, um in WinLose Highscore-Einträge hinzuzufügen zu können
     public static void addScore(String playerName, int score, String difficulty) {
+
+        //Erstellt neues Highscore-Entry Objekt und legt es in Highscore Liste ab
         HighscoreEntry entry = new HighscoreEntry(playerName, score, difficulty);
         highscoreList.add(entry);
 
-        // Sortieren (score absteigend)
+        // Sortiert die Liste nach erziehlten Punkten (reversed = score absteigend)
         highscoreList.sort(Comparator.comparingInt(HighscoreEntry::getScore).reversed());
 
-        // Rang (= Index + 1)
+        // Ermittelt Rang des neuen Eintrags in sortierter Liste und speichert in lastAddedRank
+        // Da Liste bei 0 startet Index + 1 = menschlich lesbarer Rang
         lastAddedRank = highscoreList.indexOf(entry) + 1;
 
-        // Neuen Spielernamen merken:
+        // Neuen Spielernamen merken
         lastAddedPlayerName = playerName;
 
-        // Speichern
+        // Speichert aktualisierte Liste in CSV-Datei (damit persistent)
         saveToFile();
     }
 
     // Update des Punktestands bei Retry und ggf. in Highscore überschreiben
     public static void updateScoreIfBetter(String playerName, int newScore, String difficulty) {
+
         // Suche nach vorhandenem Eintrag mit gleichem Namen und Schwierigkeit
         HighscoreEntry existingEntry = null;
         for (HighscoreEntry entry : highscoreList) {
@@ -99,6 +105,7 @@ public class HighscoreController {
         }
 
         if (existingEntry != null) {
+
             // Falls der neue Score höher ist: alten Eintrag entfernen und neuen hinzufügen
             if (newScore > existingEntry.getScore()) {
                 highscoreList.remove(existingEntry);
@@ -106,26 +113,17 @@ public class HighscoreController {
             }
             // Sonst nichts tun, wenn der alte Score schon höher oder gleich hoch ist
         } else {
+
             // Kein Eintrag vorhanden => neuen Score hinzufügen
             addScore(playerName, newScore, difficulty);
         }
     }
 
 
-    // Laden aus CSV-Datei
+    // Highscore Liste laden aus Datei > Ordner: Data/Highscore
     private static void loadFromFile() {
         try {
-            // 1) Ordner anlegen, falls er nicht existiert
-            if (Files.notExists(HIGHSCORE_FILE.getParent())) {
-                Files.createDirectories(HIGHSCORE_FILE.getParent());
-            }
-
-            // 2) Falls die Datei noch nicht existiert, gibt es einfach keine Highscore-Daten
-            if (Files.notExists(HIGHSCORE_FILE)) {
-                return;  // => leere Liste
-            }
-
-            // 3) Datei öffnen und Zeilen einlesen
+            // Datei öffnen und Zeilen einlesen
             try (BufferedReader br = Files.newBufferedReader(HIGHSCORE_FILE)) {
                 List<HighscoreEntry> loaded = new ArrayList<>();
                 String line;
@@ -147,20 +145,10 @@ public class HighscoreController {
         }
     }
 
-    // Speichern in CSV
+    // Speichern in Datei > Ordner: Data/Highscore
     private static void saveToFile() {
         try {
-            // 1) Ordner erzeugen, falls nötig
-            if (Files.notExists(HIGHSCORE_FILE.getParent())) {
-                Files.createDirectories(HIGHSCORE_FILE.getParent());
-            }
-
-            // 2) Datei nicht vorhanden? -> evtl. anlegen (optional)
-            if (Files.notExists(HIGHSCORE_FILE)) {
-                Files.createFile(HIGHSCORE_FILE);
-            }
-
-            // 3) Datei beschreiben
+            // Datei beschreiben
             try (BufferedWriter bw = Files.newBufferedWriter(HIGHSCORE_FILE)) {
                 for (HighscoreEntry e : highscoreList) {
                     bw.write(e.getPlayerName() + ";" + e.getScore() + ";" + e.getDifficulty());
@@ -172,37 +160,38 @@ public class HighscoreController {
         }
     }
 
-    /* -------------------- FXML-BINDINGS -------------------- */
+    /* ------------------------------------------- FXML-BINDINGS ------------------------------------------- */
 
-    // Zeigt den Range an
+    // Zeile in der Spieler sein erreichter Rang angezeigt wird
     @FXML
     private Label lblCurrentRank;
 
-    // Index-Spalte (Platz)
+    // Komplette Tabelle
     @FXML
     private TableView<HighscoreEntry> tableHighscore;
 
-    @FXML
-    private MenuButton HighscoreFilterButton;
-
+    //Spalte Rang
     @FXML
     private TableColumn<HighscoreEntry, Number> colIndex;
 
+    //Spalte Name
     @FXML
     private TableColumn<HighscoreEntry, String> colName;
 
+    //Spalte Score
     @FXML
     private TableColumn<HighscoreEntry, Number> colScore;
 
+    //Spalte Schwierigkeit
     @FXML
     private TableColumn<HighscoreEntry, String> colDifficulty;
 
-
+    //wird von JavaFX aufgerufen, wenn die Szene geladen und mit Controller verknüpft wird
     @FXML
     public void initialize() {
 
 
-        // ObservableList erstellen
+        // Wandelt Highscore Liste in ObservableList um und weist sie TableView zu
         ObservableList<HighscoreEntry> data = FXCollections.observableArrayList(highscoreList);
         tableHighscore.setItems(data);
 
@@ -229,7 +218,7 @@ public class HighscoreController {
                 new SimpleStringProperty(cellData.getValue().getDifficulty())
         );
 
-        // lastAddedRank
+        // lastAddedRank wird über der Tabelle ausgegeben > Name + Rank Nummer
         if (lastAddedRank > 0 && lastAddedPlayerName != null) {
             lblCurrentRank.setText(lastAddedPlayerName + ", you are currently on rank # " + lastAddedRank + "!");
         } else {
@@ -238,26 +227,13 @@ public class HighscoreController {
     }
 
 
-    /* -------------------- FILTER-FUNKTION -------------------- */
+    /* ------------------------------------------- FILTER-FUNKTION ------------------------------------------- */
 
-    private void applyFilter(String diff) {
+    //Filter Button
+    @FXML
+    private MenuButton HighscoreFilterButton;
 
-        HighscoreFilterButton.setText(diff.substring(0,1).toUpperCase() + diff.substring(1).toLowerCase());
-
-        // Filtere nach passendem Schwierigkeitsgrad
-        List<HighscoreEntry> filtered = highscoreList.stream()
-                .filter(e -> e.getDifficulty().equalsIgnoreCase(diff))
-                .collect(Collectors.toList());
-
-        // Tabelle aktualisieren
-        tableHighscore.setItems(FXCollections.observableArrayList(filtered));
-
-        // Difficulty-Spalte ausblenden
-        tableHighscore.getColumns().remove(colDifficulty);
-
-    }
-
-
+    //Auswahlmöglichkeiten DropDown Filter Button: Easy, Medium, Hard
     @FXML
     private void onFilterEasy(ActionEvent e) {
         applyFilter("easy");
@@ -271,8 +247,30 @@ public class HighscoreController {
         applyFilter("hard");
     }
 
+    //Methode zum Filter setzen durch User
+    private void applyFilter(String diff) {
+
+        //Zeigt als Text im Button statt "Filter" die jeweilige gefilterte Kategorie an
+        HighscoreFilterButton.setText(diff.substring(0,1).toUpperCase() + diff.substring(1).toLowerCase());
+
+        // Filtere nach passendem Schwierigkeitsgrad
+        List<HighscoreEntry> filtered = highscoreList.stream()
+                .filter(e -> e.getDifficulty().equalsIgnoreCase(diff))
+                .collect(Collectors.toList());
+
+        // Tabelle aktualisieren
+        tableHighscore.setItems(FXCollections.observableArrayList(filtered));
+
+        // Difficulty-Spalte ausblenden, da nach einer Schwierigkeit gefiltert (daher nicht notwendig)
+        tableHighscore.getColumns().remove(colDifficulty);
+
+    }
+
+    // Button zum Filter wieder löschen
     @FXML
     private void onClearFilter(ActionEvent e) {
+
+        //gesamte Highscore Liste wird wieder angezeigt
         tableHighscore.setItems(FXCollections.observableArrayList(highscoreList));
 
         // Difficulty-Spalte wieder anzeigen
@@ -280,12 +278,13 @@ public class HighscoreController {
             tableHighscore.getColumns().add(colDifficulty);
         }
 
+        //Zeigt wieder "Filter" als Text im Button an
         HighscoreFilterButton.setText("Filter");
 
     }
 
 
-    /* -------------------- SZENENWECHSEL -------------------- */
+    /* ------------------------------------------- SZENENWECHSEL ------------------------------------------- */
 
     //Zurück ins Main Menü
     @FXML
