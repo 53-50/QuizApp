@@ -153,15 +153,9 @@ public class WinLoseController {
     public void onRetryClick(ActionEvent event) {
         if (controller instanceof TutorialController) {
             switchScene(event, "/Layouts/tutorial_layout.fxml");
+
         } else if (controller instanceof QuizController) {
             switchScene(event, "/Layouts/quiz_layout.fxml");
-        } else if (controller instanceof LearnModeController) {
-            switchScene(event, "/Layouts/learnmode_layout.fxml");
-        } else {
-            switchScene(event, "/Layouts/main_menu.fxml");
-        }
-
-        if (controller instanceof QuizController) {
             String name = playerName;
             int finalScore = displayPoints();
 
@@ -170,6 +164,12 @@ public class WinLoseController {
 
             // Prüfen im Highscore Controller, ob Wert vorhanden und ggf. überschreiben
             HighscoreController.updateScoreIfBetter(name, finalScore, difficulty);
+
+        } else if (controller instanceof LearnModeController) {
+            switchScene(event, "/Layouts/learnmode_layout.fxml");
+
+        } else {
+            switchScene(event, "/Layouts/main_menu.fxml");
 
         }
     }
