@@ -31,15 +31,6 @@ public class QuizApp extends Application {
         mainMenuScene.getStylesheets().add("/css/application.css");
         primaryStage.getIcons().add(new Image("/images/KLKM_Logo.png")) ;
 
-        // Breite der Stage fix festlegen am Beginn
-        // primaryStage.setMaximized(true);
-
-        //primaryStage.setMaxHeight(500);
-        //primaryStage.setMaxWidth(500);
-
-        // Zum Debuggen vielleicht hilfreich weil Infos angezeigt wegen Versionen
-        // System.out.println(System.getProperties());
-
         // Titel der Application wird gesetzt
         primaryStage.setTitle("Mice in Space");
         primaryStage.setScene(mainMenuScene);
