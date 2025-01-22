@@ -59,18 +59,16 @@ public class WinLoseController {
             }
             mode = "Quiz " + difficulty;  // setze die Variable mode
             highscoreButton.setVisible(true);
+
         } else if (controller instanceof TutorialController) { //wenn tutorial dann wird geschichte angezeigt
             storyTextLabel.setText("As we now know, she arrived a few years too early, " +
-                            "missing the historic achievement of becoming the first cheese connoisseur in space. " +
-                            "Tragically, her dream was cut short by human error. Let us take a moment to honor " +
-                            "this unknown mouse, who gave her life in pursuit of her heroic aspirations. "+
-                            "THE END ");
+                    "missing the historic achievement of becoming the first cheese connoisseur in space. " +
+                    "Tragically, her dream was cut short by human error. Let us take a moment to honor " +
+                    "this unknown mouse, who gave her life in pursuit of her heroic aspirations. " +
+                    "THE END ");
             storyTextLabel.setVisible(true);
             mode = "Tutorial"; // setze die Variable mode
-        } else if (controller instanceof LearnModeController){ // wenn lernmodus
-            mode = "Learning"; // setze die Variable mode
         }
-
     }
 
 
