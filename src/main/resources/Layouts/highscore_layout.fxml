@@ -44,7 +44,7 @@
     <!-- Ganzes Fenster 700/1100 -->
     <TableView fx:id="tableHighscore"
                prefHeight="500.0"
-               maxWidth="450">
+               maxWidth="465">
 
         <columns>
 

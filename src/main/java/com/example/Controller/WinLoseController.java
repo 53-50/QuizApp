@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableRow;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -204,6 +205,7 @@ public class WinLoseController {
 
             HighscoreController.addScore(name, finalScore, difficulty);
         }
+
 
         // in Highscore wechseln
         switchScene(event, "/Layouts/highscore_layout.fxml");
