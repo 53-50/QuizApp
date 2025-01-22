@@ -60,18 +60,16 @@ public class WinLoseController {
             }
             mode = "Quiz " + difficulty;  // setze die Variable mode
             highscoreButton.setVisible(true);
+
         } else if (controller instanceof TutorialController) { //wenn tutorial dann wird geschichte angezeigt
             storyTextLabel.setText("As we now know, she arrived a few years too early, " +
-                            "missing the historic achievement of becoming the first cheese connoisseur in space. " +
-                            "Tragically, her dream was cut short by human error. Let us take a moment to honor " +
-                            "this unknown mouse, who gave her life in pursuit of her heroic aspirations. "+
-                            "THE END ");
+                    "missing the historic achievement of becoming the first cheese connoisseur in space. " +
+                    "Tragically, her dream was cut short by human error. Let us take a moment to honor " +
+                    "this unknown mouse, who gave her life in pursuit of her heroic aspirations. " +
+                    "THE END ");
             storyTextLabel.setVisible(true);
             mode = "Tutorial"; // setze die Variable mode
-        } else if (controller instanceof LearnModeController){ // wenn lernmodus
-            mode = "Learning"; // setze die Variable mode
         }
-
     }
 
 
@@ -154,15 +152,9 @@ public class WinLoseController {
     public void onRetryClick(ActionEvent event) {
         if (controller instanceof TutorialController) {
             switchScene(event, "/Layouts/tutorial_layout.fxml");
+
         } else if (controller instanceof QuizController) {
             switchScene(event, "/Layouts/quiz_layout.fxml");
-        } else if (controller instanceof LearnModeController) {
-            switchScene(event, "/Layouts/learnmode_layout.fxml");
-        } else {
-            switchScene(event, "/Layouts/main_menu.fxml");
-        }
-
-        if (controller instanceof QuizController) {
             String name = playerName;
             int finalScore = displayPoints();
 
@@ -171,6 +163,12 @@ public class WinLoseController {
 
             // Prüfen im Highscore Controller, ob Wert vorhanden und ggf. überschreiben
             HighscoreController.updateScoreIfBetter(name, finalScore, difficulty);
+
+        } else if (controller instanceof LearnModeController) {
+            switchScene(event, "/Layouts/learnmode_layout.fxml");
+
+        } else {
+            switchScene(event, "/Layouts/main_menu.fxml");
 
         }
     }

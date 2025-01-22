@@ -76,7 +76,7 @@ public class QuizController implements QuizBase, ControllerBase {
     @Override
     public void initialize() throws IOException {
 
-        loadNewQuestion(true);
+        //loadNewQuestion(true);
         //Lädt erste Frage, Aufgrund der Aufmachung wird hier "true" übergeben,
         // damit die API nicht abschmiert
 
@@ -289,17 +289,11 @@ public class QuizController implements QuizBase, ControllerBase {
                          allAnswers.addAll(recentQuestion.getIncorrectAnswers());
                          Collections.shuffle(allAnswers);
 
-                         // Gibt die Antworten auf die Buttons
+                         // Gibt die Antworten auf die Buttons //TODO
                          answerBtn1.setText(allAnswers.get(0));
                          answerBtn2.setText(allAnswers.get(1));
                          answerBtn3.setText(allAnswers.get(2));
                          answerBtn4.setText(allAnswers.get(3));
-
-                         // Mapped die richtigen Antworten zu den richtigen Buttons
-                         answerBtn1.setUserData(allAnswers.get(0).equals(recentQuestion.getCorrectAnswer()));
-                         answerBtn2.setUserData(allAnswers.get(1).equals(recentQuestion.getCorrectAnswer()));
-                         answerBtn3.setUserData(allAnswers.get(2).equals(recentQuestion.getCorrectAnswer()));
-                         answerBtn4.setUserData(allAnswers.get(3).equals(recentQuestion.getCorrectAnswer()));
 
         } else {
             //System.out.println("~DEBUGGING~ *DCQ* displayCurQue Endscreen");
