@@ -308,5 +308,4 @@ public class LearnModeController implements QuizBase {
     public List<LearnmodeQuestion> getQuestions() {
         return questions;
     }
-
 }

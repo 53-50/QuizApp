@@ -14,7 +14,6 @@ public class EvaluationController {
     private Label timeLabel;
 
     private List<AnswerEvaluation> answers; // Liste für die Antworten
-    private String completionTime;
 
     // Setter für die Antworten
     public void setAnswers(List<AnswerEvaluation> answers) {
@@ -35,9 +34,6 @@ public class EvaluationController {
     private void displayEvaluation() {
         if (answers != null) {
             // Timer hinzufügen
-            if (completionTime != null) {
-                evaluationListView.getItems().add("Time Taken: " + completionTime + "\n");
-            }
             for (AnswerEvaluation answer : answers) {
                 // Erstellt einen String für jede beantwortete Frage
                 String result = "Question: " + answer.getQuestion() + "\n"

@@ -257,9 +257,9 @@ public class MainMenuController {
                 e.printStackTrace();
                 showPopup("The template could not be downloaded.", false);
             }
+        } else {
+            showPopup("No file selected. Returning to Main Menu", false);
         }
-        // Nach Abschluss des Downloads wird der Dialog erneut automatisch angezeigt für Benutzerfreundlichkeit
-        showLearnModeDialog();
     }
 
     private void startLearnMode() {
