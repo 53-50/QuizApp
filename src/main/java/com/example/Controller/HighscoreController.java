@@ -110,7 +110,7 @@ public class HighscoreController {
 
     /* ------------------------------------------- VARIABLEN ------------------------------------------- */
 
-    // Liste aller Einträge, die in den Highscor aufgenommen wurden (Array Liste, die leer ist)
+    // Liste aller Einträge, die in den Highscore aufgenommen wurden (Array Liste, die leer ist)
     private static List<HighscoreEntry> highscoreList = new ArrayList<>();
 
     // Ort zum Speichern und Laden der Datei > in Ordner Data/Highscore
