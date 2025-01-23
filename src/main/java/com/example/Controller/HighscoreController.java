@@ -159,6 +159,7 @@ public class HighscoreController {
     //Methode, um in WinLose Highscore-Einträge hinzuzufügen zu können
     public static void addScore(String playerName, int finalScore, String difficulty) {
 
+        loadFromFile();
         //Erstellt neues Highscore-Entry Objekt und legt es in Highscore Liste ab
         HighscoreEntry entry = new HighscoreEntry(playerName, finalScore, difficulty);
         highscoreList.add(entry);
@@ -198,8 +199,8 @@ public class HighscoreController {
                 addScore(playerName, newScore, difficulty);
             }
             // Sonst nichts tun, wenn der alte Score schon höher oder gleich hoch ist
-        } else {
 
+        } else {
             // Kein Eintrag vorhanden => neuen Score hinzufügen
             addScore(playerName, newScore, difficulty);
         }
@@ -259,13 +260,30 @@ public class HighscoreController {
         HighscoreFilterButton.setText(diff.substring(0,1).toUpperCase()
                 + diff.substring(1).toLowerCase());
 
-        // Filtere nach passendem Schwierigkeitsgrad //TODO
+        // Filtere nach passendem Schwierigkeitsgrad
         List<HighscoreEntry> filtered = highscoreList.stream()
                 .filter(e -> e.getDifficulty().equalsIgnoreCase(diff))
                 .collect(Collectors.toList());
 
         // Tabelle aktualisieren
         tableHighscore.setItems(FXCollections.observableArrayList(filtered));
+
+        // Berechnet den neuen Rang des zuletzt hinzugefügten Spielers in der gefilterten Liste
+        int filteredRank = -1;
+        for (int i = 0; i < filtered.size(); i++) {
+            if (filtered.get(i).getPlayerName().equals(lastAddedPlayerName)) {
+                filteredRank = i + 1; // Index + 1, um den Rang anzuzeigen
+                break;
+            }
+        }
+
+        // Aktualisiert das Label über der Tabelle
+        if (filteredRank > 0 && lastAddedPlayerName != null) {
+            lblCurrentRank.setText(lastAddedPlayerName + ", your rank in this difficulty is #" +
+                    filteredRank + "!");
+        } else {
+            lblCurrentRank.setText("");
+        }
 
         // Difficulty-Spalte ausblenden, da nach einer Schwierigkeit gefiltert (daher nicht notwendig)
         tableHighscore.getColumns().remove(colDifficulty);
@@ -278,6 +296,13 @@ public class HighscoreController {
 
         //gesamte Highscore Liste wird wieder angezeigt
         tableHighscore.setItems(FXCollections.observableArrayList(highscoreList));
+
+        // Zeigt den Rang des zuletzt hinzugefügten Spielers wieder in der gesamten Liste an
+        if (lastAddedRank > 0 && lastAddedPlayerName != null) {
+            lblCurrentRank.setText(lastAddedPlayerName + ", you are currently on rank #" + lastAddedRank + "!");
+        } else {
+            lblCurrentRank.setText("");
+        }
 
         // Difficulty-Spalte wieder anzeigen
         if (!tableHighscore.getColumns().contains(colDifficulty)) {
