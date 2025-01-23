@@ -133,7 +133,7 @@ public class MainMenuController {
                 quizController.setDifficulty(getSelectedDifficultyMMC()); //Difficulty wird an QController übergeben
 
                 // Startet das Quiz aus dem QuizController
-                quizController.loadNewQuestion(true); // <-- Call it explicitly here
+                // quizController.loadNewQuestion(true); // <-- Call it explicitly here
 
                 // Ändert die Stage
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
