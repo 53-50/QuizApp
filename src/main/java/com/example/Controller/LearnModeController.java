@@ -198,6 +198,7 @@ public class LearnModeController implements QuizBase {
                 lblResult.setStyle("-fx-text-fill: #e85c6c;");
             }
             lblResult.setVisible(true); // Ergebnis wird angezeigt
+            btnSubmit.setDisable(true);
 
             // Fügt eine neue Instanz der Klasse AnswerEvaluation der Liste answers hinzu und erstellt ein neues AnswerEvaluation Objekt
             // mit den unten aufgelisteten Informationen - Wird für auswertung gespeichert
@@ -224,9 +225,9 @@ public class LearnModeController implements QuizBase {
         // der "Next Question" inkl. "Submit" Button werden deaktiviert und "Evaluation" wird aktiviert
         if (currentQuestionIndex < questions.size()) {
             displayQuestion();
+            txtAnswer.setDisable(false);
         } else {
             lblQuestion.setText("All questions answered!");
-            txtAnswer.setDisable(true);
             btnSubmit.setDisable(true);
             lblResult.setText("Quiz finished!");
             lblResult.setStyle("-fx-text-fill: white;");
@@ -234,8 +235,10 @@ public class LearnModeController implements QuizBase {
             stopTimer();
             btnNext.setVisible(false);
             btnEvaluation.setVisible(true);
+            txtAnswer.setDisable(true);
+            txtAnswer.clear();
         }
-        txtAnswer.setDisable(false);
+        // txtAnswer.setDisable(false);
     }
 
     // Methode zum Anzeigen der Auswertungsliste
