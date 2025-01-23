@@ -76,6 +76,8 @@ public class QuizController implements QuizBase, ControllerBase {
     @Override
     public void initialize() throws IOException {
 
+        loadNewQuestion(true);
+
         valuesForLives();
         //Aus der Difficulty wird die gewünschte Anzahl an Leben übergeben
 
